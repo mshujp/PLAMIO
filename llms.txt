@@ -1,0 +1,271 @@
+# PLAMIO
+
+> PLAMIO is a lightweight C++ game framework for RP2040 and RP2350, designed for human and AI-assisted game development.
+
+PLAMIO uses the Raspberry Pi Pico SDK and CMake. Games are statically discovered from the `games/` directory and interact with the platform only through the public API in `sdk/PLAMIO.h`.
+
+## Start Here
+
+Read these documents in this order before generating or modifying a game:
+
+1. [Public API](sdk/PLAMIO.h): Canonical declarations, lifecycle contracts, and supported game-facing APIs
+2. [AI Guidelines](sdk/PLAMIO_AI_GUIDELINES.md): Mandatory generation, timing, rendering, audio, storage, and file rules
+3. [Game Design Template](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md): Target hardware and game-specific design requirements
+4. [README](README.md): Build requirements, configuration, deployment, supported hardware, and project overview
+
+The files above are the source of truth. Do not invent APIs or rely on remembered behavior from other frameworks or earlier PLAMIO versions.
+
+## Public Game API
+
+Game code may use the platform-independent APIs declared in `sdk/PLAMIO.h`, including:
+
+- `PLAMIO::Game`
+- `PLAMIO::Graphics`
+- `PLAMIO::Input`
+- `PLAMIO::Audio`
+- `PLAMIO::Storage`
+- `PLAMIO::Platform`
+- `PLAMIO::Math`
+- `PLAMIO::Collision`
+- `PLAMIO::Tween`
+- `PLAMIO::SaveData`
+
+The runtime provides abstracted Graphics, Input, Audio, and Storage objects. Game code must not access GPIO, SPI, I2C, PWM, I2S, SD drivers, display drivers, or other platform-specific implementations directly.
+
+## Game File Contract
+
+A game consists of exactly two source files:
+
+```text
+games/
+└── MyGame/
+    ├── MyGame.h
+    └── MyGame.cpp
+```
+
+The directory name, class name, header filename, and implementation filename must match exactly.
+
+After adding or renaming a game, reconfigure CMake before building:
+
+```sh
+cmake -S . -B build
+cmake --build build
+```
+
+Directories beginning with `_` are ignored by automatic game discovery.
+
+## Required Game Interface
+
+A game derives from `PLAMIO::Game`.
+
+Implement the metadata and screen-size functions declared by `PLAMIO::Game`, including:
+
+- `getId()`
+- `getName()`
+- `getMenuName()`
+- `getLogicalScreenWidth()`
+- `getLogicalScreenHeight()`
+- `getTargetScreenWidth()`
+- `getTargetScreenHeight()`
+
+`getMenuGroup()` is optional.
+
+Override the protected lifecycle callbacks:
+
+1. `onInit(Storage&)`
+2. `onUpdate(Input&, Audio&, Storage&, float deltaSec)`
+3. `onDraw(Graphics&, bool requestFullRedraw)`
+4. `onTerminate(Storage&)`
+
+`onRequestTerminate()` is optional and should be overridden only when the game may reject a user termination request.
+
+Do not override, hide, redefine, or bypass the runtime entry points:
+
+- `init()`
+- `update()`
+- `draw()`
+- `requestTerminate()`
+- `terminate()`
+
+## Lifecycle Rules
+
+- `onInit()` is called once each time the game starts or restarts.
+- Input is updated before `onUpdate()` runs.
+- `deltaSec` is elapsed time in seconds and must be used for movement, timers, physics, and animation.
+- Request audio playback from `onUpdate()`, not from `onDraw()`.
+- Return `Game::GameState::RUNNING` while the game continues.
+- Return `Game::GameState::TERMINATE_REQUEST` or `Game::GameState::TERMINATED` to end the game.
+- `onTerminate()` is called exactly once by the guarded runtime termination path.
+- After termination, no further update or draw callback is performed.
+- Use a private game-mode enum for title, play, pause, game-over, and other gameplay states. Do not use `GameState` for internal gameplay modes.
+
+## Dirty Rendering Contract
+
+- `dirty` starts as `true`.
+- Set `dirty = true` whenever visible state changes.
+- When `requestFullRedraw` is true, draw even if `dirty` is false.
+- When `requestFullRedraw` is false and `dirty` is false, return `false` without drawing.
+- Perform all drawing before clearing the flag.
+- Set `dirty = false` only at the end of a successful draw.
+- Return `true` only when drawing was performed.
+- Realtime games may mark every active frame dirty.
+- Static screens should redraw only for visible changes or active time-based effects.
+
+## Input Rules
+
+- Pass exactly one `Input::Button` to each input query.
+- Never combine buttons with bitwise OR in one call.
+- Test combinations with separate calls.
+- Use `justPressed()` for one-shot actions.
+- Use `pressed()` or `held()` for continuous actions.
+- Use `repeat()` for menu or cursor movement requiring DAS/ARR behavior.
+- `A` is confirm and `B` is cancel unless the game design explicitly specifies otherwise.
+
+## Timing and Performance
+
+- The system targets 30 FPS, but actual frame rate may be lower.
+- Never assume one frame has a fixed duration.
+- Use `deltaSec`, `Platform::getMsec()`, or `Platform::elapsed()` as appropriate.
+- Use bounded physics substeps when fast movement could skip collisions.
+- Avoid repeated dynamic allocation inside `onUpdate()` and `onDraw()`.
+- Prefer fixed-size arrays and resource-conscious C++17 code suitable for RP2040/RP2350.
+
+## Graphics Rules
+
+- Perform all drawing through `PLAMIO::Graphics`.
+- Respect the logical buffer size and target display size returned by the game.
+- Drawing outside the visible screen is safe because Graphics clips primitives.
+- Use viewport and camera APIs rather than accessing display hardware.
+- For SSD1306 games, use monochrome color constants such as `Graphics::SSD1306_ON` and `Graphics::SSD1306_OFF`.
+- Follow the exact parameter order declared in `sdk/PLAMIO.h`.
+
+## Audio Rules
+
+- Start music once during a state transition, not every update.
+- Stop music explicitly when entering pause or ending gameplay.
+- Restart music once when leaving pause.
+- PWM audio supports MUTE or ON only; adjustable volume requires external hardware.
+- Do not call unsupported or undocumented audio functions.
+
+## Storage Rules
+
+- Use only the `Storage` and `SaveData` APIs declared in `sdk/PLAMIO.h`.
+- Do not construct SD-card filesystem paths directly in game code.
+- Use a valid lowercase game ID of at most 16 characters.
+- Storage may be unavailable; handle failures safely.
+- Save persistent data or perform final cleanup in `onTerminate()`.
+
+## Header and Source Rules
+
+Header file:
+
+- Begin with `#pragma once`.
+- Include `"PLAMIO.h"`.
+- Declare the complete game class.
+- Do not use `using namespace` in a header.
+- Keep non-inline implementations out of the header.
+
+Implementation file:
+
+- Include the matching game header.
+- Use `using namespace PLAMIO;`.
+- Do not include `PLAMIO.h` directly when the header already includes it.
+- Keep tuning and balancing constants centralized near the top of the implementation.
+
+## Canonical Samples
+
+Use samples as focused references, but always verify APIs against `sdk/PLAMIO.h`.
+
+- [PLAMIO API sample](samples/PlamioAPIs/): Broad public API demonstration for ILI9341-class targets
+- [PLAMIO API OLED sample](samples/PlamioAPIsSSD1306/): Monochrome SSD1306 API example
+- [Game template](samples/GameTemplate/): Minimal starting structure
+- [Collision Lab](samples/CollisionLab/): Collision handling
+- [SoundTile](samples/SoundTile/): Audio and input
+- [Sprite Adventure](samples/SpriteAdventure/): Sprite rendering
+- [Fire Effect](samples/FireEffect/): Procedural graphics
+- [Particle Lab](samples/ParticleLab/): Particle animation
+- [Water Ripple](samples/WaterRipple/): Procedural animation
+- [Tiny Starfield](samples/TinyStarfield/): Simple 3D-style rendering
+- [Wireframe Tunnel](samples/WireframeTunnel/): Wireframe rendering
+- [Software 3D](samples/Software3D/): Advanced software rendering
+- [SL](samples/SL/): Simple realtime animation
+
+## Example Games
+
+These are complete games rather than API specifications:
+
+- [ChromaticTwist](games/ChromaticTwist/)
+- [CyberBeat](games/CyberBeat/)
+- [GroundFront](games/GroundFront/)
+- [NeonReversi](games/NeonReversi/)
+- [SignalLost](games/SignalLost/)
+- [VectorFlite](games/VectorFlite/)
+
+## Framework Architecture
+
+- [SDK](sdk/): Public API and AI-facing design documents
+- [Games](games/): User games discovered and statically registered by CMake
+- [Samples](samples/): Learning examples and tools; included when `PLAMIO_SAMPLES` is enabled
+- [System](system/): Runtime, catalog, UI, utilities, and hardware abstraction implementations
+- [Pico platform](system/platform/pico/): RP2040/RP2350 display, input, audio, storage, battery, and board-profile implementations
+- [Board profiles](system/platform/pico/boards/): Board-specific pins and hardware configuration
+- [Scripts](scripts/): Optional Windows-oriented build and UF2 deployment helpers
+- [Build configuration](CMakeLists.txt): Default target, display, storage, audio, input, font, PSRAM, samples, and board profile
+
+Game code should normally modify only files under `games/`. Framework or public API changes must be discussed with the human developer before editing `sdk/PLAMIO.h` or files under `system/`.
+
+## Hardware Configuration
+
+Board profiles under `system/platform/pico/boards/` define board-specific:
+
+- Pin assignments
+- Graphics configuration
+- Input configuration
+- Audio configuration
+- Storage configuration
+- Battery configuration
+
+Select the active profile in the `ENVIRONMENT START` block of `CMakeLists.txt`.
+
+Verified configurations and hardware notes are documented in [README.md](README.md).
+
+## Build and Deployment
+
+Basic build:
+
+```sh
+cmake -S . -B build
+cmake --build build
+```
+
+Generated firmware:
+
+```text
+build/system/plamio.uf2
+```
+
+Copy the UF2 file to a board in BOOTSEL mode. VSCode tasks or custom scripts may automate deployment.
+
+## AI Generation Workflow
+
+1. Read `sdk/PLAMIO.h`.
+2. Read `sdk/PLAMIO_AI_GUIDELINES.md`.
+3. Read the completed `sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md`.
+4. Discuss and finalize the game specification with the user.
+5. Generate `<GameName>.h`.
+6. Generate `<GameName>.cpp`.
+7. Place both files in `games/<GameName>/`.
+8. Reconfigure CMake and build.
+9. Fix compile errors without inventing APIs or changing framework architecture.
+
+When requirements conflict, use this priority:
+
+1. `sdk/PLAMIO.h`
+2. `sdk/PLAMIO_AI_GUIDELINES.md`
+3. The user's latest explicit instructions and completed game design document
+4. Canonical samples
+5. Existing complete games
+
+## License
+
+PLAMIO is released under the MIT License. See [LICENSE.txt](LICENSE.txt).
