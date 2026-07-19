@@ -60,7 +60,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 
 | Sample | Description |
 |--------|-------------|
-| 01 PLAMIO API | Learn the basic API |
+| 01 PLAMIO APIs | Learn the basic APIs |
 | 02 Collision Lab | Collision detection |
 | 03 SoundTile | Audio and input |
 | 04–06 Graphics Effects | Animation techniques |
