@@ -35,7 +35,7 @@ A lightweight game framework designed for AI-assisted game development.
 | ![](docs/images/ss15.png) | ![](docs/images/ss16.png) | 
 | ![](docs/images/ss17.png) | ![](docs/images/ss18.png) |
 | ![](docs/images/ss19.png) | ![](docs/images/ss20.png) |
-| ![](docs/images/ss21.png) |
+| ![](docs/images/ss21.png) | |
 
 ------------------------------------------------------------------------
 
