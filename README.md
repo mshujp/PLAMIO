@@ -22,10 +22,13 @@ A lightweight game framework designed for AI-assisted game development.
   - Raspberry Pi Pico family (RP2040 / RP2350)
   - ESP32 (planned)
   
+
+| Hardware |  |
 | :---: | :---: |
 | ![](docs/images/01.jpg) | ![](docs/images/02.jpg) |
 | ![](docs/images/03.jpg) | ![](docs/images/04.jpg) |
 
+| ScreenShots | |
 | :---: | :---: |
 | ![](docs/images/ss01.png) | ![](docs/images/ss02.png) |
 | ![](docs/images/ss03.png) | ![](docs/images/ss04.png) |
