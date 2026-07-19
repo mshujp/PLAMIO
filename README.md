@@ -58,16 +58,16 @@ This allows game logic to remain clean, portable, and easy to generate.
 
 # Sample Games
 
-  Sample                    Description
-  ------------------------- ------------------------
-  01 PLAMIO API             Learn the basic API
-  02 Collision Lab          Collision detection
-  03 SoundTile              Audio and input
-  04--06 Graphics Effects   Animation techniques
-  07 Sprite Adventure       Sprite rendering
-  08--10 3D Samples         Advanced rendering
-  11 SL                     Bonus sample
-  GameTemplate              Empty project template
+| Sample | Description |
+|--------|-------------|
+| 01 PLAMIO API | Learn the basic API |
+| 02 Collision Lab | Collision detection |
+| 03 SoundTile | Audio and input |
+| 04–06 Graphics Effects | Animation techniques |
+| 07 Sprite Adventure | Sprite rendering |
+| 08–10 3D Samples | Advanced rendering |
+| 11 SL | Bonus sample |
+| GameTemplate | Empty project template |
 
 ## Learning Path
 
