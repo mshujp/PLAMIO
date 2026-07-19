@@ -22,19 +22,20 @@ A lightweight game framework designed for AI-assisted game development.
   - Raspberry Pi Pico family (RP2040 / RP2350)
   - ESP32 (planned)
   
-| | |
-|---|---|
 | ![](docs/images/01.jpg) | ![](docs/images/02.jpg) |
 | ![](docs/images/03.jpg) | ![](docs/images/04.jpg) |
-| | | |
-|---|---|---|
-| ![](docs/images/ss01.png) | ![](docs/images/ss02.png) | ![](docs/images/ss03.png) |
-| ![](docs/images/ss04.png) | ![](docs/images/ss05.png) | ![](docs/images/ss06.png) |
-| ![](docs/images/ss07.png) | ![](docs/images/ss08.png) | ![](docs/images/ss09.png) |
-| ![](docs/images/ss10.png) | ![](docs/images/ss11.png) | ![](docs/images/ss12.png) |
-| ![](docs/images/ss13.png) | ![](docs/images/ss14.png) | ![](docs/images/ss15.png) |
-| ![](docs/images/ss16.png) | ![](docs/images/ss17.png) | ![](docs/images/ss18.png) |
-| ![](docs/images/ss19.png) | ![](docs/images/ss20.png) | ![](docs/images/ss21.png) |
+
+| ![](docs/images/ss01.png) | ![](docs/images/ss02.png) |
+| ![](docs/images/ss03.png) | ![](docs/images/ss04.png) |
+| ![](docs/images/ss05.png) | ![](docs/images/ss06.png) |
+| ![](docs/images/ss07.png) | ![](docs/images/ss08.png) |
+| ![](docs/images/ss09.png) | ![](docs/images/ss10.png) |
+| ![](docs/images/ss11.png) | ![](docs/images/ss12.png) |
+| ![](docs/images/ss13.png) | ![](docs/images/ss14.png) |
+| ![](docs/images/ss15.png) | ![](docs/images/ss16.png) | 
+| ![](docs/images/ss17.png) | ![](docs/images/ss18.png) |
+| ![](docs/images/ss19.png) | ![](docs/images/ss20.png) |
+| ![](docs/images/ss21.png) |
 
 ------------------------------------------------------------------------
 
