@@ -131,7 +131,7 @@ To support a new board, create a new hardware profile in this directory and sele
 
 ## Project Configuration
 
-The `###### ENVIRONMENT START ######` section also defines the project's default configuration.
+Edit the `###### ENVIRONMENT START ######` section in the root `CMakeLists.txt` to configure the project's default settings.
 
 Available options include:
 
