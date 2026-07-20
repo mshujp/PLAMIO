@@ -69,6 +69,8 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [11 SL](samples/SL/) | Bonus sample |
 | GameTemplate | Empty project template |
 
+Each sample is placed under the [`samples`](samples) directory.
+
 ## Learning Path
 
 The samples are intended to be completed in numerical order.
