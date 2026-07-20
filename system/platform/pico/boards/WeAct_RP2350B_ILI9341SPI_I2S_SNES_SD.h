@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "InputBase.h"
 
@@ -19,7 +19,7 @@ constexpr PLAMIO::GraphicsILI9341::Config GRAPHICS_CONFIG {
     .backlightPin = 22,
 
     // ===== Display =====
-    .lcdRotate = 3,  // 0: Normal  3: Inverted
+    .lcdRotate = 3,  // 0: Normal  3: Rotated 180 degrees
 
     // ===== Buffer =====
     .maxBufferWidth = PLAMIO::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2350,

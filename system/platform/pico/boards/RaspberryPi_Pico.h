@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "InputBase.h"
 
@@ -23,7 +23,7 @@ constexpr PLAMIO::GraphicsILI9341::Config GRAPHICS_CONFIG {
     .backlightPin = 22,
 
     // ===== Display =====
-    .lcdRotate = 3,  // 0: Normal  3: Inverted
+    .lcdRotate = 3,  // 0: Normal  3: Rotated 180 degrees
 
     // ===== Buffer =====
     .maxBufferWidth = PLAMIO::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2040,
@@ -34,7 +34,7 @@ constexpr PLAMIO::GraphicsILI9341::Config GRAPHICS_CONFIG {
 constexpr PLAMIO::GraphicsSSD1306::Config GRAPHICS_CONFIG {
     // ===== I2C0 =====
     .i2cPort = 0,
-    .i2cAddr = 0x3C,
+    .i2cAddr = 0x3C,  // 0x3C or 0x3D, depending on the module
 
     // ===== OLED Pins =====
     .sdaPin = 0,
@@ -42,7 +42,7 @@ constexpr PLAMIO::GraphicsSSD1306::Config GRAPHICS_CONFIG {
     .resetPin = -1,
 
     // ===== Display =====
-    .oledRotate = 0
+    .oledRotate = 0  // 0: Normal  2: Rotated 180 degrees
 };
 #endif
 
