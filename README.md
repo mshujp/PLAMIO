@@ -182,6 +182,46 @@ VSCode tasks or custom scripts can also be used to automate the deployment proce
 
 # Creating a Game
 
+To create a game, simply create **one class** that inherits from the `PLAMIO::Game` class.
+
+The PLAMIO system automatically manages the game loop, rendering, input, audio, and storage.
+
+Your game only needs to implement its own game logic.
+
+## Core API
+
+PLAMIO provides the following hardware abstraction interfaces to every game.
+
+Game code does not need to access platform-specific hardware or drivers directly.
+
+| Class | Purpose |
+|------|---------|
+| `PLAMIO::Graphics` | Drawing API for text, shapes, images, and sprites. |
+| `PLAMIO::Input` | Controller input, button state, repeat, and hold detection. |
+| `PLAMIO::Audio` | Play sound effects and music. |
+| `PLAMIO::Storage` | Read and write save data and configuration files. |
+
+For the complete API reference, see:
+
+- `sdk/PLAMIO.h`
+
+## `PLAMIO::Game` class
+
+Your game class should inherit from the `PLAMIO::Game` class.
+
+Most games implement their game logic in:
+
+- `onInit()`
+- `onUpdate()`
+- `onDraw()`
+- `onTerminate()`
+
+Other required virtual functions provide game metadata, such as the game name and ID.
+
+For the complete `PLAMIO::Game` class reference, see:
+
+- `sdk/PLAMIO.h`
+
 ## Project Structure
 
 Each game is placed under the `games` directory.
@@ -197,28 +237,21 @@ games/
 
 After adding a new game, reconfigure CMake and build the project.
 
-## Game Lifecycle
-
-Implement only the following methods:
-
-- `onInit()`
-- `onUpdate()`
-- `onDraw()`
-- `onTerminate()`
-
-PLAMIO manages the game loop and provides abstracted `Graphics`, `Input`, `Audio`, and `Storage` objects.
-
-Game code does not need to access platform-specific hardware or drivers directly.
-
 ## AI Workflow
 
 PLAMIO is designed for AI-assisted game development.
 
+Provide only the SDK files listed below.
+Do not provide platform-specific source files.
+
 1. Edit `sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md` to describe your game.
-2. Provide the following SDK files to your AI assistant:
-   - `sdk/PLAMIO.h`
-   - `sdk/PLAMIO_AI_GUIDELINES.md`
-   - `sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md`
+2. Upload the following SDK files to your AI chat:
+
+   - sdk/PLAMIO.h
+   - sdk/PLAMIO_AI_GUIDELINES.md
+   - sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md
+
+If your AI does not support file uploads, copy and paste the file contents into the chat instead.
 3. Discuss the game design with the AI.
 4. Let the AI generate the game source files.
 5. Add the generated files to the `games` directory, reconfigure CMake, and build the project.
@@ -236,6 +269,7 @@ Based on current development experience:
 | **ChatGPT** | **Highly Recommended** | Best overall experience with PLAMIO |
 | **Gemini** | **Recommended** | Works well for most tasks |
 | **Copilot** | **Best for code completion** | Less suitable for full game generation |
+| **Google Search AI Mode** | **Not Recommended** | Does not currently support file uploads, making it difficult to provide the PLAMIO SDK. |
 
 ------------------------------------------------------------------------
 
