@@ -13,7 +13,7 @@ A lightweight game framework designed for AI-assisted game development.
 -   Unified Graphics / Input / Audio / Storage APIs
 -   Fixed 30 FPS game loop
 -   Built-in SaveData helper
--   Camera & viewport support
+-   2D viewport and scrolling support
 -   PWM / I2S audio support
 -   SSD1306 / ILI9341 display support
 -   AI-oriented documentation and API design
