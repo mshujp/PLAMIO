@@ -113,10 +113,12 @@ PLAMIO/
 
 PLAMIO uses hardware profiles to describe the complete hardware configuration of a board.
 
-Select the hardware profile in the `###### ENVIRONMENT START ######` section of `CMakeLists.txt`.
+Select the hardware profile in the `###### ENVIRONMENT START ######` section of [`CMakeLists.txt`](CMakeLists.txt).
 
 ```cmake
-set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WaveShare_RP2040-ZERO.h")
+set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico.h")
+#set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico2.h")
+#set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WaveShare_RP2040-ZERO.h")
 ```
 
 Hardware profiles are stored in:
@@ -127,11 +129,11 @@ system/platform/pico/boards/
 
 Each profile defines the board-specific hardware settings, including graphics, input, audio, storage, battery, and pin assignments.
 
-To support a new board, create a new hardware profile in this directory and select it in `CMakeLists.txt`.
+To support a new board, create a new hardware profile in this directory and select it in [`CMakeLists.txt`](CMakeLists.txt).
 
 ## Project Configuration
 
-Edit the `###### ENVIRONMENT START ######` section in the root `CMakeLists.txt` to configure the project's default settings.
+Edit the `###### ENVIRONMENT START ######` section in the root [`CMakeLists.txt`](CMakeLists.txt) to configure the project's default settings.
 
 Available options include:
 
@@ -203,7 +205,7 @@ Game code does not need to access platform-specific hardware or drivers directly
 
 For the complete API reference, see:
 
-- `sdk/PLAMIO.h`
+- [`sdk/PLAMIO.h`](sdk/PLAMIO.h)
 
 ## `PLAMIO::Game` class
 
@@ -220,11 +222,11 @@ Other required virtual functions provide game metadata, such as the game name an
 
 For the complete `PLAMIO::Game` class reference, see:
 
-- `sdk/PLAMIO.h`
+- [`sdk/PLAMIO.h`](sdk/PLAMIO.h)
 
 ## Project Structure
 
-Each game is placed under the `games` directory.
+Each game is placed under the [`games`](games) directory.
 
 The directory name and the game class name must match.
 
@@ -244,17 +246,18 @@ PLAMIO is designed for AI-assisted game development.
 Provide only the SDK files listed below.
 Do not provide platform-specific source files.
 
-1. Edit `sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md` to describe your game.
+1. Edit [`sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md`](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md) to describe your game.
 2. Upload the following SDK files to your AI chat:
 
-   - sdk/PLAMIO.h
-   - sdk/PLAMIO_AI_GUIDELINES.md
-   - sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md
+  - [sdk/PLAMIO.h](sdk/PLAMIO.h)
+  - [sdk/PLAMIO_AI_GUIDELINES.md](sdk/PLAMIO_AI_GUIDELINES.md)
+  - [sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md)
 
-If your AI does not support file uploads, copy and paste the file contents into the chat instead.
+    If your AI does not support file uploads, copy and paste the file contents into the chat instead.
+
 3. Discuss the game design with the AI.
 4. Let the AI generate the game source files.
-5. Add the generated files to the `games` directory, reconfigure CMake, and build the project.
+5. Add the generated files to the [`games`](games) directory, reconfigure CMake, and build the project.
 
 ------------------------------------------------------------------------
 
@@ -267,6 +270,7 @@ Based on current development experience:
 | AI | Recommendation | Notes |
 |----|---------------|-------|
 | **ChatGPT** | **Highly Recommended** | Best overall experience with PLAMIO |
+| **Claude** | **Recommended** | Strong at understanding the SDK and generating well-structured game code |
 | **Gemini** | **Recommended** | Works well for most tasks |
 | **Copilot** | **Best for code completion** | Less suitable for full game generation |
 | **Google Search AI Mode** | **Not Recommended** | Does not currently support file uploads, making it difficult to provide the PLAMIO SDK. |

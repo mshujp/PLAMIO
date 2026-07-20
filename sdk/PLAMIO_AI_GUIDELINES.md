@@ -122,7 +122,7 @@
     The system OS automatically overwrites the volume and battery level as transparent text/icons within the bottom 15 pixels (Y: 225 to 240). 
     To achieve a more polished and professional aesthetic, you MUST always render the game's background graphics completely down to the bottom edge (Y: 239);
     having the transparent system overlay sit directly on top of the live game background looks significantly cooler and more integrated. However, to avoid
-    overlapping with these indicators, you must never place important game UI elements (such as text, scores, or gauges) at or below Y: 228.
+    overlapping with these indicators, you must never place important game UI elements (such as text, scores, or gauges) at or below Y: 225.
   - Font selection.
     AI tends to choose fonts that are too small.
     Prefer SIZE_18 or larger unless screen space is very limited.
@@ -307,6 +307,10 @@ The PLAMIO runtime provides:
   - Graphics initialization
   - Storage initialization
 
+## Game Logic
+  - Game Logic is intentionally left to the developer.
+  - The SDK provides the building blocks, not the game rules.
+
 ## Workflow
   1. Discuss the game idea.
   2. Confirm the final specification with the user.
@@ -340,6 +344,5 @@ protected:
 private:
 };
 ```
-
 
 ## Feel free to propose improvements when appropriate!
