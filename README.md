@@ -67,7 +67,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [07 Sprite Adventure](samples/SpriteAdventure/) | Sprite rendering |
 | [08](samples/TinyStarfield/) [09](samples/WireframeTunnel/) [10](samples/Software3D/) 3D Samples | Advanced rendering |
 | [11 SL](samples/SL/) | Bonus sample |
-| GameTemplate | Empty project template |
+| [GameTemplate](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.
 
