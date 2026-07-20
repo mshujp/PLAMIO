@@ -60,13 +60,13 @@ This allows game logic to remain clean, portable, and easy to generate.
 
 | Sample | Description |
 |--------|-------------|
-| 01 PLAMIO APIs | Learn the basic APIs |
-| 02 Collision Lab | Collision detection |
-| 03 SoundTile | Audio and input |
-| 04–06 Graphics Effects | Animation techniques |
-| 07 Sprite Adventure | Sprite rendering |
-| 08–10 3D Samples | Advanced rendering |
-| 11 SL | Bonus sample |
+| [01 PLAMIO APIs](samples/PlamioAPIs/) | Learn the basic APIs |
+| [02 Collision Lab](samples/CollisionLab/) | Collision detection |
+| [03 SoundTile](samples/SoundTile/) | Audio and input |
+| [04](samples/ParticleLab/) [05](samples/FireEffect/) [06](samples/WaterRipple/) Graphics Effects | Animation techniques |
+| [07 Sprite Adventure](samples/SpriteAdventure/) | Sprite rendering |
+| [08](samples/TinyStarfield/) [09](samples/WireframeTunnel/) [10](samples/Software3D/) 3D Samples | Advanced rendering |
+| [11 SL](samples/SL/) | Bonus sample |
 | GameTemplate | Empty project template |
 
 ## Learning Path
