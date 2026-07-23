@@ -281,6 +281,32 @@ Based on current development experience:
 
 # Hardware Notes
 
+## Minimum Configuration
+
+- **Main board:** RP2040  
+  Examples: Waveshare RP2040 Zero
+- **Input:** About 7 tactile switches  
+  D-pad, A, B, and Home
+- **Display:** SSD1306
+- **Audio:** PWM  
+  Add a potentiometer for volume adjustment if needed.
+
+## Standard Configuration
+
+- **Main board:** RP2350  
+  Examples: Raspberry Pi Pico 2
+- **Input:** About 7 tactile switches  
+  D-pad, A, B, and Home
+  (Optional: X, Y, Start, Select, L, R, VolumeUp, VolumeDown and Mute)
+- **Display:** ILI9341
+- **Audio:** I2S
+- **Storage:** SD card reader
+
+## Pin Assignment Advice
+
+Ask an AI assistant to read this page, then describe your hardware configuration and request advice on suitable pin assignments.
+
+
 ## SD Card SPI
 
 For SD card builds, the following configuration is recommended and has been verified on both RP2040 and RP2350.
