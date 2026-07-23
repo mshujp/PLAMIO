@@ -306,6 +306,9 @@ Based on current development experience:
 
 Ask an AI assistant to read this page, then describe your hardware configuration and request advice on suitable pin assignments.
 
+## GPIO BUTTONS
+
+Internal pull-up resistors are used.
 
 ## SD Card SPI
 
