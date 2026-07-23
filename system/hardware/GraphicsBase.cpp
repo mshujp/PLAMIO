@@ -50,6 +50,8 @@ void GraphicsBase::drawRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, u
     const int thickness = std::min(t, std::min(w, h));
     for (int i = 0; i < thickness; ++i)
     {
+    	if (w - i*2 <= 0) break;
+    	
         drawRoundRect(
             static_cast<int16_t>(x + i),
             static_cast<int16_t>(y + i),

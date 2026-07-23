@@ -214,7 +214,7 @@ uint16_t GraphicsILI9341::getTextWidth(const char* text, Font font)
 
 void GraphicsILI9341::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t spriteScale,  Color transparentColor, bool flipX, bool flipY)
 {
-    if (bitmap == nullptr) return;
+    if (bitmap == nullptr || spriteScale == 0) return;
 
     if (spriteScale == 1 && !flipX && !flipY)
     {

@@ -1,4 +1,4 @@
-#include "GraphicsSSD1306.h"
+﻿#include "GraphicsSSD1306.h"
 #include <algorithm>
 
 using namespace PLAMIO;
@@ -178,28 +178,34 @@ uint16_t GraphicsSSD1306::getTextWidth(const char* text, Font font)
     return canvas.textWidth(text);
 }
 
-void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t scale,  Color transparentColor, bool flipX, bool flipY)
+void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t scale,Color transparentColor, bool flipX, bool flipY)
 {
-    if (bitmap == nullptr) return;
-    if (scale == 0 || scale > 4) return;
+    if (bitmap == nullptr || scale == 0) return;
 
     for (uint16_t sy = 0; sy < h; ++sy)
     {
         const uint16_t srcY = flipY ? (h - 1 - sy) : sy;
+
         for (uint16_t sx = 0; sx < w; ++sx)
         {
             const uint16_t srcX = flipX ? (w - 1 - sx) : sx;
-            const Graphics::Color c = static_cast<Graphics::Color>(bitmap[srcY * w + srcX]);
+            const Graphics::Color c = static_cast<Graphics::Color>(bitmap[static_cast<uint32_t>(srcY) * w + srcX]);
+
             if (c == transparentColor) continue;
-            for (uint8_t yy = 0; yy < scale; ++yy)
+
+            const int32_t dx = static_cast<int32_t>(x) + static_cast<int32_t>(sx) * scale;
+            const int32_t dy = static_cast<int32_t>(y) + static_cast<int32_t>(sy) * scale;
+
+            if (dx >= canvas.width() || dy >= canvas.height() || dx + scale <= 0 || dy + scale <= 0)
             {
-                for (uint8_t xx = 0; xx < scale; ++xx)
+                continue;
+            }
+
+            for (uint16_t yy = 0; yy < scale; ++yy)
+            {
+                for (uint16_t xx = 0; xx < scale; ++xx)
                 {
-                    canvas.drawPixel(
-                        x + sx * scale + xx,
-                        y + sy * scale + yy,
-                        1
-                    );
+                    canvas.drawPixel(dx + xx, dy + yy, 1);
                 }
             }
         }

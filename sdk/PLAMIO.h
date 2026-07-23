@@ -292,7 +292,6 @@ public:
     //       static const uint16_t player_sprite[] = { ... };
     //   - Recommended sprite size: 32x32 pixels or smaller.
     //   - Enlarge sprites using `scale` instead of larger bitmap data.
-    //   - Valid scale range: 1-3. Values of 0 or >=4 are ignored.
     virtual void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t scale, Color transparentColor, bool flipX = false, bool flipY = false) = 0;
 
     // ## Viewport control

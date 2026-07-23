@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "PLAMIO.h"
 
@@ -43,11 +43,7 @@ public:
     bool writeUserFile(const char* gameId, const char* fileName, Storage::UserFileLineWriterHandler writer, void* arg) override;
     bool writeUserFile(const char* gameId, const char* fileName, const char* data) override;
 
-    // UserFile領域にファイルが存在するか確認する。
     bool userFileExists(const char* gameId, const char* fileName);
-
-    // UserFile領域へ任意のバイナリデータを書き込む。
-    // ファイルのopen/closeはStorageBaseが管理する。
     bool writeBinaryFile(const char* gameId, const char* fileName, BinaryFileWriterHandler writer, void* arg);
 };
 
