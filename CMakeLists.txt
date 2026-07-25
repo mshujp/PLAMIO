@@ -12,9 +12,16 @@ set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico.h")
 #set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WaveShare_RP2040-ZERO.h")
 #set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WeAct_RP2350B_ILI9341SPI_I2S_SNES_SD.h")
 
-# Board target options: RP2040, RP2350
-set(PRUZEA_TARGET_DEFAULT "RP2040")
-#set(PRUZEA_TARGET_DEFAULT "RP2350")
+# Pico SDK board name:
+# pico, pico2, waveshare_rp2040_zero, weact_studio_rp2350b_core, etc.
+#
+# If your board is not listed above, find its definition in the Pico SDK:
+# https://github.com/raspberrypi/pico-sdk/tree/master/src/boards/include/boards
+# Set PICO_BOARD_DEFAULT to the header filename without the ".h" extension.
+#set(PICO_BOARD_DEFAULT "pico")
+set(PICO_BOARD_DEFAULT "pico2")
+#set(PICO_BOARD_DEFAULT "waveshare_rp2040_zero")
+#set(PICO_BOARD_DEFAULT "weact_studio_rp2350b_core")
 
 # Display options: ILI9341, SSD1306
 set(PRUZEA_DISPLAY_DEFAULT "SSD1306")
@@ -53,8 +60,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/CMakeLocalConfig.cmake" OPTIONAL)
 
 
 
-set(PRUZEA_TARGET "${PRUZEA_TARGET_DEFAULT}" CACHE STRING "RP2040 or RP2350")
-set_property(CACHE PRUZEA_TARGET PROPERTY STRINGS RP2040 RP2350)
+set(PICO_BOARD "${PICO_BOARD_DEFAULT}" CACHE STRING "Pico SDK board name")
 
 set(PRUZEA_DISPLAY "${PRUZEA_DISPLAY_DEFAULT}" CACHE STRING "SSD1306 or ILI9341")
 set_property(CACHE PRUZEA_DISPLAY PROPERTY STRINGS SSD1306 ILI9341)
@@ -98,14 +104,6 @@ string(TOUPPER "${PRUZEA_DISPLAY}" PRUZEA_DISPLAY)
 string(TOUPPER "${PRUZEA_STORAGE}" PRUZEA_STORAGE)
 string(TOUPPER "${PRUZEA_AUDIO}" PRUZEA_AUDIO)
 string(TOUPPER "${PRUZEA_INPUT}" PRUZEA_INPUT)
-
-if (PRUZEA_TARGET STREQUAL "RP2040")
-    set(PICO_BOARD pico CACHE STRING "" FORCE)
-elseif (PRUZEA_TARGET STREQUAL "RP2350")
-    set(PICO_BOARD pico2 CACHE STRING "" FORCE)
-else()
-    message(FATAL_ERROR "PRUZEA_TARGET must be RP2040 or RP2350")
-endif()
 
 foreach(option_name PRUZEA_DISPLAY PRUZEA_STORAGE PRUZEA_AUDIO PRUZEA_INPUT)
     if ("${${option_name}}" STREQUAL "")
@@ -193,10 +191,12 @@ else()
     message(FATAL_ERROR "PRUZEA_INPUT must be GPIO_BUTTONS, SNES or PS")
 endif()
 
-if (PRUZEA_TARGET STREQUAL "RP2040")
+if (PICO_PLATFORM MATCHES "^rp2040")
     set(PRUZEA_TARGET_RP2040 1)
-else()
+elseif (PICO_PLATFORM MATCHES "^rp2350")
     set(PRUZEA_TARGET_RP2350 1)
+else()
+    message(FATAL_ERROR "PICO_BOARD must select an RP2040 or RP2350 board")
 endif()
 
 if (PRUZEA_JAPANESE_FONT)

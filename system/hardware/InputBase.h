@@ -27,9 +27,9 @@ public:
         int16_t R        = -1;
         int16_t START    = -1;
         int16_t SELECT   = -1;
+        int16_t HOME     = -1;
         int16_t VOL_UP   = -1;
         int16_t VOL_DOWN = -1;
-        int16_t HOME     = -1;
         int16_t MUTE     = -1;
     };
 
@@ -51,9 +51,9 @@ private:
         Button::R,
         Button::START,
         Button::SELECT,
+        Button::HOME,
         Button::VOL_UP,
         Button::VOL_DOWN,
-        Button::HOME,
         Button::MUTE
     };
 

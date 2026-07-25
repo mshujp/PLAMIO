@@ -40,9 +40,9 @@ void GpioButtons::init(const InputBase::ButtonMapping& mapping)
     initPin(mapping.R);
     initPin(mapping.START);
     initPin(mapping.SELECT);
+    initPin(mapping.HOME);
     initPin(mapping.VOL_UP);
     initPin(mapping.VOL_DOWN);
-    initPin(mapping.HOME);
     initPin(mapping.MUTE);
 }
 
@@ -62,9 +62,9 @@ uint32_t GpioButtons::read(const InputBase::ButtonMapping& mapping)
     if (isPressed(mapping.R))        buttons |= static_cast<uint32_t>(Input::Button::R);
     if (isPressed(mapping.START))    buttons |= static_cast<uint32_t>(Input::Button::START);
     if (isPressed(mapping.SELECT))   buttons |= static_cast<uint32_t>(Input::Button::SELECT);
+    if (isPressed(mapping.HOME))     buttons |= static_cast<uint32_t>(Input::Button::HOME);
     if (isPressed(mapping.VOL_UP))   buttons |= static_cast<uint32_t>(Input::Button::VOL_UP);
     if (isPressed(mapping.VOL_DOWN)) buttons |= static_cast<uint32_t>(Input::Button::VOL_DOWN);
-    if (isPressed(mapping.HOME))     buttons |= static_cast<uint32_t>(Input::Button::HOME);
     if (isPressed(mapping.MUTE))     buttons |= static_cast<uint32_t>(Input::Button::MUTE);
 
     return buttons;
