@@ -165,7 +165,7 @@ void drawGrid(Graphics& g) {
 }
 }
 
-const char* PruzeaAPIs::getId() const { return "pruzeaapisssample"; }
+const char* PruzeaAPIs::getId() const { return "pruzeaapis_sample"; }
 const char* PruzeaAPIs::getName() const { return "PRUZEA APIs"; }
 const char* PruzeaAPIs::getMenuName() const{ return "01 PRUZEA APIs"; }
 uint16_t PruzeaAPIs::getLogicalScreenWidth() const { return 320; }
