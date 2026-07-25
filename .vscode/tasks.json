@@ -2,15 +2,25 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Configure PLAMIO (Local)",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--preset",
+        "local"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Build PLAMIO",
       "type": "shell",
       "command": "cmake",
       "args": [
         "--build",
-        "${workspaceFolder}/build",
-        "--target",
-        "plamio"
+        "--preset",
+        "local-build"
       ],
+      "dependsOn": "Configure PLAMIO (Local)",
       "group": {
         "kind": "build",
         "isDefault": false
@@ -25,10 +35,10 @@
       "command": "cmake",
       "args": [
         "--build",
-        "${workspaceFolder}/build",
-        "--target",
-        "deploy_plamio_uf2"
+        "--preset",
+        "local-deploy"
       ],
+      "dependsOn": "Configure PLAMIO (Local)",
       "group": {
         "kind": "build",
         "isDefault": true

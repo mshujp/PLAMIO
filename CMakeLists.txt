@@ -45,6 +45,10 @@ set(PLAMIO_PSRAM_DEFAULT OFF)
 set(PLAMIO_SAMPLES_DEFAULT ON)
 #set(PLAMIO_SAMPLES_DEFAULT OFF)
 
+# Optional developer-specific overrides. This file is ignored by Git.
+set(PLAMIO_PICOTOOL_PATH_DEFAULT "")
+include("${CMAKE_CURRENT_LIST_DIR}/CMakeLocalConfig.cmake" OPTIONAL)
+
 ###### ENVIRONMENT END #######
 
 
@@ -69,7 +73,25 @@ option(PLAMIO_PSRAM "Enable PSRAM" ${PLAMIO_PSRAM_DEFAULT})
 option(PLAMIO_SAMPLES "Build sample games and tools" ${PLAMIO_SAMPLES_DEFAULT})
 
 set(PLAMIO_PIN_CONFIG "${PLAMIO_PIN_CONFIG_DEFAULT}" CACHE FILEPATH "Pin config header")
-set(PLAMIO_PICOTOOL_PATH "" CACHE FILEPATH "Optional path to picotool executable used for automatic BOOTSEL reboot")
+set(PLAMIO_PICOTOOL_PATH "${PLAMIO_PICOTOOL_PATH_DEFAULT}" CACHE FILEPATH "Optional path to picotool executable used for automatic BOOTSEL reboot")
+
+if (IS_ABSOLUTE "${PLAMIO_PIN_CONFIG}")
+    file(RELATIVE_PATH PLAMIO_PIN_CONFIG_FROM_BINARY "${CMAKE_BINARY_DIR}" "${PLAMIO_PIN_CONFIG}")
+    if (
+        NOT PLAMIO_PIN_CONFIG_FROM_BINARY MATCHES "^\\.\\."
+        AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${PLAMIO_PIN_CONFIG_FROM_BINARY}"
+    )
+        set(PLAMIO_PIN_CONFIG "${CMAKE_CURRENT_SOURCE_DIR}/${PLAMIO_PIN_CONFIG_FROM_BINARY}")
+    endif()
+else()
+    get_filename_component(
+        PLAMIO_PIN_CONFIG
+        "${PLAMIO_PIN_CONFIG}"
+        ABSOLUTE
+        BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+endif()
+set(PLAMIO_PIN_CONFIG "${PLAMIO_PIN_CONFIG}" CACHE FILEPATH "Pin config header" FORCE)
 
 string(TOUPPER "${PLAMIO_TARGET}" PLAMIO_TARGET)
 string(TOUPPER "${PLAMIO_DISPLAY}" PLAMIO_DISPLAY)

@@ -1,0 +1,36 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "PLAMIO default",
+      "description": "Public Raspberry Pi Pico configuration",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default-build",
+      "configurePreset": "default",
+      "targets": [
+        "plamio"
+      ]
+    },
+    {
+      "name": "default-deploy",
+      "configurePreset": "default",
+      "targets": [
+        "deploy_plamio_uf2"
+      ]
+    }
+  ]
+}

@@ -25,6 +25,7 @@ cmake_install.cmake
 Makefile
 compile_commands.json
 CMakeUserPresets.json
+CMakeLocalConfig.cmake
 
 #===============================================================================
 # Ninja
