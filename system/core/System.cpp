@@ -219,6 +219,8 @@ bool System::loop()
             requestFullRedraw = true;
             lastFrameMsec = 0;
         }
+
+        if (input.pressed(Input::Button::X) && input.justPressed(Input::Button::SELECT)) debugMode = !debugMode;
     }
     else if (execState == ExecState::IN_GAME)
     {
@@ -285,9 +287,6 @@ void System::waitFor30Fps()
 void System::updateSystem()
 {
     fpsFrameCounter++;
-
-    if (!debugMode && input.pressed(Input::Button::X)) debugMode = true;
-    if (debugMode && input.pressed(Input::Button::Y)) debugMode = false;
 
     if (debugMode)
     {
