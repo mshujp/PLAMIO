@@ -4,6 +4,11 @@
 
 A lightweight game framework designed for AI-assisted game development.
 
+
+> [!TIP]
+> Looking for an Arduino IDE version?
+> [PRUZEA mini](https://github.com/mshujp/PRUZEAmini) is designed for single games and UI applications, while PRUZEA provides a complete multi-game system built with the Raspberry Pi Pico SDK and CMake.
+
 ------------------------------------------------------------------------
 
 # Features
@@ -86,6 +91,12 @@ Each sample introduces one or more new concepts while building on previous examp
 -   CMake
 -   Ninja
 -   Arm GNU Toolchain
+
+## Arduino IDE Version
+
+For a simpler single-application version that works with the Arduino IDE, see:
+
+- [PRUZEA mini](https://github.com/mshujp/PRUZEAmini)
 
 ------------------------------------------------------------------------
 
