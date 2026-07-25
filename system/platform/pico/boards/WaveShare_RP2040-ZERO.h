@@ -73,9 +73,9 @@ constexpr PLAMIO::InputSnes::Config INPUT_CONFIG {
     // ===== Extra Buttons =====
     .buttonMapping = BUTTON_MAPPING
 };
-#elif PLAMIO_INPUT_PS2
+#elif PLAMIO_INPUT_PS
 /// PlayStation 2 controller (experimental; hardware-unverified)
-constexpr PLAMIO::InputPS2::Config INPUT_CONFIG {
+constexpr PLAMIO::InputPS::Config INPUT_CONFIG {
     // ===== GPIO Pins =====
     .clockPin = -1,
     .commandPin = -1,

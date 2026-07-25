@@ -143,10 +143,10 @@ elseif (PLAMIO_INPUT STREQUAL "GPIO_BUTTONS")
         platform/pico/GpioButtons.cpp
         platform/pico/InputGpioButtons.cpp
     )
-elseif (PLAMIO_INPUT STREQUAL "PS2")
+elseif (PLAMIO_INPUT STREQUAL "PS")
     target_sources(plamio PRIVATE
         platform/pico/GpioButtons.cpp
-        platform/pico/InputPS2.cpp
+        platform/pico/InputPS.cpp
     )
 endif()
 

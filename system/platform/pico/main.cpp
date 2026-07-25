@@ -6,8 +6,8 @@
 #include "InputGpioButtons.h"
 #elif PLAMIO_INPUT_SNES
 #include "InputSnes.h"
-#elif PLAMIO_INPUT_PS2
-#include "InputPS2.h"
+#elif PLAMIO_INPUT_PS
+#include "InputPS.h"
 #endif
 
 #if PLAMIO_AUDIO_I2S
@@ -57,8 +57,8 @@ SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SS
 InputGpioButtons inputImpl(BUTTON_MAPPING);
 #elif PLAMIO_INPUT_SNES
 InputSnes inputImpl(INPUT_CONFIG);
-#elif PLAMIO_INPUT_PS2
-InputPS2 inputImpl(INPUT_CONFIG);
+#elif PLAMIO_INPUT_PS
+InputPS inputImpl(INPUT_CONFIG);
 #endif
 
 #if PLAMIO_STORAGE_SD

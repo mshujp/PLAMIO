@@ -4,11 +4,11 @@
 
 namespace PLAMIO {
 
-// Experimental PlayStation 2 controller input implementation.
+// Experimental PlayStation controller input implementation.
 // Compile-tested only; communication with real hardware has not been verified.
 // Supports digital buttons only. ACK, analog axes, vibration, and mode setup
 // are intentionally not implemented.
-class InputPS2 : public InputBase
+class InputPS : public InputBase
 {
 private:
     int8_t clockPin;
@@ -31,9 +31,9 @@ public:
         ButtonMapping buttonMapping{};
     };
 
-    explicit InputPS2(const Config& config);
+    explicit InputPS(const Config& config);
 
-    const char* getName() const override { return "PS2 PAD (EXPERIMENTAL)"; }
+    const char* getName() const override { return "PS PAD (EXPERIMENTAL)"; }
     bool begin() override;
     void end() override;
 };

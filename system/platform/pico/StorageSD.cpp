@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <cstdio>
+#include <pico/time.h>
 
 namespace PLAMIO {
 
@@ -99,28 +100,33 @@ uint32_t StorageSDFile::write(const void* buffer, uint32_t bytes)
 
 void StorageSDFile::close()
 {
-    if (mode != OpenMode::CLOSED)
+    const bool wasOpen = mode != OpenMode::CLOSED;
+    if (wasOpen)
     {
         f_close(&file);
         mode = OpenMode::CLOSED;
         fileSize = 0;
     }
+    if (wasOpen && owner != nullptr) owner->unmountCard();
 }
 
 bool StorageSDFile::closeWrite()
 {
     if (mode != OpenMode::WRITE) return false;
 
-    const FRESULT fr = f_close(&file);
+    const FRESULT syncResult = f_sync(&file);
+    const FRESULT closeResult = f_close(&file);
     mode = OpenMode::CLOSED;
     fileSize = 0;
-    return fr == FR_OK;
+    if (owner != nullptr) owner->unmountCard();
+    return syncResult == FR_OK && closeResult == FR_OK;
 }
 
 
 StorageSD::StorageSD(const Config& config)
     : spiHost(config.spiHost), pinMiso(config.misoPin), pinSck(config.sckPin),
-      pinMosi(config.mosiPin), pinCs(config.csPin), baudRate(config.baudRate)
+      pinMosi(config.mosiPin), pinCs(config.csPin), baudRate(config.baudRate),
+      fileSlot(this)
 {
 }
 
@@ -153,10 +159,8 @@ bool StorageSD::makeFatPath(const char* path, char* outBuffer, size_t bufferSize
 
 bool StorageSD::begin()
 {
-    if (sdAvailable)
-    {
-        return true;
-    }
+    if (driverReady) return isAvailable();
+    if (spiHost > 1 || pinMiso < 0 || pinSck < 0 || pinMosi < 0 || pinCs < 0) return false;
 
     g_spi = {};
     g_spi.hw_inst   = (spiHost == 1) ? spi1 : spi0;
@@ -176,21 +180,23 @@ bool StorageSD::begin()
 
     if (!sd_init_driver())
     {
-        sdAvailable = false;
+        driverReady = false;
         return false;
     }
 
-    FRESULT fr = f_mount(&g_fatFs, kVolumePath, 1);
-    if (fr != FR_OK)
+    driverReady = true;
+    availabilityCached = false;
+
+    if (!mountCard())
     {
-        f_unmount(kVolumePath);
-        sdAvailable = false;
+        driverReady = false;
         return false;
     }
 
-    sdAvailable = true;
-
-    if (!ensureDirectory(ROOT_DIR))
+    const bool rootReady = ensureDirectory(ROOT_DIR);
+    unmountCard();
+    updateAvailabilityCache(rootReady);
+    if (!rootReady)
     {
         end();
         return false;
@@ -201,21 +207,68 @@ bool StorageSD::begin()
 
 void StorageSD::end()
 {
-    if (fileSlot.isOpen())
-    {
-        fileSlot.close();
-    }
+    fileSlot.close();
+    unmountCard();
+    driverReady = false;
+    availabilityCached = false;
+    cachedAvailable = false;
+    lastAvailabilityCheckMsec = 0;
+}
 
-    if (sdAvailable)
+bool StorageSD::mountCard()
+{
+    if (!driverReady) return false;
+    if (mounted) return true;
+
+    const FRESULT fr = f_mount(&g_fatFs, kVolumePath, 1);
+    if (fr != FR_OK)
     {
         f_unmount(kVolumePath);
-        sdAvailable = false;
+        updateAvailabilityCache(false);
+        return false;
     }
+
+    mounted = true;
+    updateAvailabilityCache(true);
+    return true;
+}
+
+void StorageSD::unmountCard()
+{
+    if (!mounted) return;
+    f_unmount(kVolumePath);
+    mounted = false;
+}
+
+void StorageSD::updateAvailabilityCache(bool available) const
+{
+    cachedAvailable = available;
+    availabilityCached = true;
+    lastAvailabilityCheckMsec = static_cast<uint32_t>(to_ms_since_boot(get_absolute_time()));
+}
+
+bool StorageSD::isAvailable() const
+{
+    if (!driverReady) return false;
+
+    const uint32_t now = static_cast<uint32_t>(to_ms_since_boot(get_absolute_time()));
+    if (availabilityCached &&
+        static_cast<uint32_t>(now - lastAvailabilityCheckMsec) < AVAILABILITY_CACHE_MSEC)
+    {
+        return cachedAvailable;
+    }
+
+    StorageSD* self = const_cast<StorageSD*>(this);
+    const bool wasMounted = self->mounted;
+    const bool available = self->mountCard();
+    if (!wasMounted && available) self->unmountCard();
+    self->updateAvailabilityCache(available);
+    return available;
 }
 
 bool StorageSD::ensureDirectory(const char* path)
 {
-    if (!sdAvailable || path == nullptr || path[0] == '\0')
+    if (!mounted || path == nullptr || path[0] == '\0')
     {
         return false;
     }
@@ -268,24 +321,21 @@ bool StorageSD::ensureDirectory(const char* path)
 
 Storage::File* StorageSD::openRead(const char* path)
 {
-    if (!sdAvailable || path == nullptr)
-    {
-        return nullptr;
-    }
+    if (path == nullptr) return nullptr;
 
-    if (fileSlot.isOpen())
-    {
-        fileSlot.close();
-    }
+    fileSlot.close();
+    if (!mountCard()) return nullptr;
 
     char fatPath[FAT_PATH_MAX];
     if (!makeFatPath(path, fatPath, sizeof(fatPath)))
     {
+        unmountCard();
         return nullptr;
     }
 
     if (!fileSlot.openRead(fatPath))
     {
+        unmountCard();
         return nullptr;
     }
 
@@ -322,14 +372,15 @@ bool StorageSD::isValidUserFileName(const char* fileName)
 
 Storage::File* StorageSD::openRead(const char* gameId, const char* fileName)
 {
-    if (!sdAvailable || !isValidUserFileName(fileName))
-    {
-        return nullptr;
-    }
+    if (!isValidUserFileName(fileName)) return nullptr;
+
+    fileSlot.close();
+    if (!mountCard()) return nullptr;
 
     char dataDir[FAT_PATH_MAX];
     if (!getDataDir(dataDir, sizeof(dataDir), gameId))
     {
+        unmountCard();
         return nullptr;
     }
 
@@ -337,10 +388,17 @@ Storage::File* StorageSD::openRead(const char* gameId, const char* fileName)
     const int written = snprintf(path, sizeof(path), "%s/%s", dataDir, fileName);
     if (written < 0 || written >= static_cast<int>(sizeof(path)))
     {
+        unmountCard();
         return nullptr;
     }
 
-    return openRead(path);
+    char fatPath[FAT_PATH_MAX];
+    if (!makeFatPath(path, fatPath, sizeof(fatPath)) || !fileSlot.openRead(fatPath))
+    {
+        unmountCard();
+        return nullptr;
+    }
+    return &fileSlot;
 }
 
 bool StorageSD::getDataDir(char* outBuffer, uint16_t bufferSize, const char* gameId)
@@ -348,7 +406,7 @@ bool StorageSD::getDataDir(char* outBuffer, uint16_t bufferSize, const char* gam
     if (outBuffer == nullptr || bufferSize == 0) return false;
     outBuffer[0] = '\0';
 
-    if (!isAvailable() || !isValidGameId(gameId)) return false;
+    if (!mounted || !isValidGameId(gameId)) return false;
 
     const int written = snprintf(outBuffer, bufferSize, "%s/%s", ROOT_DIR, gameId);
     if (written < 0 || written >= static_cast<int>(bufferSize))
@@ -362,14 +420,15 @@ bool StorageSD::getDataDir(char* outBuffer, uint16_t bufferSize, const char* gam
 
 StorageBaseFile* StorageSD::openWrite(const char* gameId, const char* fileName)
 {
-    if (!sdAvailable || !isValidUserFileName(fileName))
-    {
-        return nullptr;
-    }
+    if (!isValidUserFileName(fileName)) return nullptr;
+
+    fileSlot.close();
+    if (!mountCard()) return nullptr;
 
     char dataDir[FAT_PATH_MAX];
     if (!getDataDir(dataDir, sizeof(dataDir), gameId))
     {
+        unmountCard();
         return nullptr;
     }
 
@@ -377,17 +436,20 @@ StorageBaseFile* StorageSD::openWrite(const char* gameId, const char* fileName)
     const int pathLength = snprintf(path, sizeof(path), "%s/%s", dataDir, fileName);
     if (pathLength < 0 || pathLength >= static_cast<int>(sizeof(path)))
     {
+        unmountCard();
         return nullptr;
     }
 
     char fatPath[FAT_PATH_MAX];
     if (!makeFatPath(path, fatPath, sizeof(fatPath)))
     {
+        unmountCard();
         return nullptr;
     }
 
     if (!fileSlot.openWrite(fatPath))
     {
+        unmountCard();
         return nullptr;
     }
 
@@ -396,48 +458,44 @@ StorageBaseFile* StorageSD::openWrite(const char* gameId, const char* fileName)
 
 bool StorageSD::directoryExists(const char* path)
 {
-    if (!sdAvailable || path == nullptr)
-    {
-        return false;
-    }
+    if (path == nullptr) return false;
+
+    fileSlot.close();
+    if (!mountCard()) return false;
 
     char fatPath[FAT_PATH_MAX];
     if (!makeFatPath(path, fatPath, sizeof(fatPath)))
     {
+        unmountCard();
         return false;
     }
 
     FILINFO fno;
     FRESULT fr = f_stat(fatPath, &fno);
-    if (fr != FR_OK)
-    {
-        return false;
-    }
-
-    return (fno.fattrib & AM_DIR) != 0;
+    const bool exists = fr == FR_OK && (fno.fattrib & AM_DIR) != 0;
+    unmountCard();
+    return exists;
 }
 
 bool StorageSD::fileExists(const char* path)
 {
-    if (!sdAvailable || path == nullptr)
-    {
-        return false;
-    }
+    if (path == nullptr) return false;
+
+    fileSlot.close();
+    if (!mountCard()) return false;
 
     char fatPath[FAT_PATH_MAX];
     if (!makeFatPath(path, fatPath, sizeof(fatPath)))
     {
+        unmountCard();
         return false;
     }
 
     FILINFO fno;
     FRESULT fr = f_stat(fatPath, &fno);
-    if (fr != FR_OK)
-    {
-        return false;
-    }
-
-    return (fno.fattrib & AM_DIR) == 0;
+    const bool exists = fr == FR_OK && (fno.fattrib & AM_DIR) == 0;
+    unmountCard();
+    return exists;
 }
 
 } // namespace PLAMIO

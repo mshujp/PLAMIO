@@ -4,7 +4,7 @@ param(
     [string]$Mode = 'Quick',
     [string]$BuildRoot = 'build-matrix',
     [int]$Jobs = 0,
-    [switch]$IncludeExperimentalPS2,
+    [switch]$IncludeExperimentalPS,
     [switch]$KeepBuildDirectories,
     [switch]$StopOnFailure
 )
@@ -39,9 +39,9 @@ function Get-QuickMatrix {
         New-MatrixEntry RP2350 ILI9341 GPIO_BUTTONS PWM  NONE $false $true  $false
         New-MatrixEntry RP2350 SSD1306 SNES         I2S  SD   $true  $false $true
     )
-    if ($IncludeExperimentalPS2) {
-        $matrix.Add((New-MatrixEntry RP2040 ILI9341 PS2 PWM NONE $false $false $false))
-        $matrix.Add((New-MatrixEntry RP2350 SSD1306 PS2 NONE SD $true $true $true))
+    if ($IncludeExperimentalPS) {
+        $matrix.Add((New-MatrixEntry RP2040 ILI9341 PS PWM NONE $false $false $false))
+        $matrix.Add((New-MatrixEntry RP2350 SSD1306 PS NONE SD $true $true $true))
     }
     $matrix
 }
@@ -51,7 +51,7 @@ function Get-FullMatrix {
     foreach ($target in @('RP2040', 'RP2350')) {
         foreach ($display in @('ILI9341', 'SSD1306')) {
             $inputTypes = @('GPIO_BUTTONS', 'SNES')
-            if ($IncludeExperimentalPS2) { $inputTypes += 'PS2' }
+            if ($IncludeExperimentalPS) { $inputTypes += 'PS' }
             foreach ($inputType in $inputTypes) {
                 foreach ($audio in @('I2S', 'PWM', 'NONE')) {
                     foreach ($storage in @('SD', 'NONE')) {
@@ -94,10 +94,10 @@ $matrix = if ($Mode -eq 'Full') { @(Get-FullMatrix) } else { @(Get-QuickMatrix) 
 $results = [Collections.Generic.List[object]]::new()
 New-Item -ItemType Directory -Path $buildRootPath -Force | Out-Null
 Write-Host "PLAMIO build matrix: $Mode ($($matrix.Count) configurations)"
-if ($IncludeExperimentalPS2) {
-    Write-Host 'Experimental PS2 input is compile-tested but hardware-unverified.'
+if ($IncludeExperimentalPS) {
+    Write-Host 'Experimental PS input is compile-tested but hardware-unverified.'
 } else {
-    Write-Host 'PS2 input is excluded. Use -IncludeExperimentalPS2 to include it.'
+    Write-Host 'PS input is excluded. Use -IncludeExperimentalPS to include it.'
 }
 
 for ($index = 0; $index -lt $matrix.Count; $index++) {
