@@ -184,7 +184,7 @@ void GraphicsILI9341::setFont(const char* str, Font font)
         case Font::SIZE_32B: targetFont = &fonts::FreeSansBold12pt7b; scaleS = 1.10; break;
         case Font::SIZE_42:  targetFont = &fonts::DejaVu40; break;
         case Font::SIZE_42B: targetFont = &fonts::FreeSansBold18pt7b; break;
-#ifdef PLAMIO_JAPANESE_FONT
+#if PLAMIO_ENABLE_JAPANESE_FONT
         case Font::SIZE_16J: targetFont = &fonts::efontJA_16; break;
         case Font::SIZE_20J: targetFont = &fonts::efontJA_16; scaleS = 1.25; break;
         case Font::SIZE_32J: targetFont = &fonts::efontJA_16; scaleS = 2; break;
