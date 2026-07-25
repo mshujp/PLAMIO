@@ -1,6 +1,6 @@
 #include "AudioStub.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 bool AudioStub::begin()
 {

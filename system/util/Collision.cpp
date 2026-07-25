@@ -1,7 +1,7 @@
-﻿#include <cmath>
-#include "PLAMIO.h"
+#include <cmath>
+#include "PRUZEA.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 bool Collision::pointRect(float px, float py, float rx, float ry, float rw, float rh)
 {

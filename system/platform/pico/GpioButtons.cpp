@@ -1,7 +1,7 @@
 #include "GpioButtons.h"
 #include "pico/stdlib.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 void GpioButtons::initPin(int16_t pin)
 {

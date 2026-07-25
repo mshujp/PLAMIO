@@ -4,7 +4,7 @@
 #include "pico/stdlib.h"
 #include "pico/audio_i2s.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class AudioI2S : public AudioBase
 {
@@ -44,4 +44,4 @@ public:
     void end() override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

@@ -1,9 +1,9 @@
-#include "PLAMIOMusicEditor.h"
+#include "PRUZEAMusicEditor.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -28,15 +28,15 @@ constexpr const char* MAIN_MENU_ITEMS[] = {
 constexpr uint8_t MAIN_MENU_COUNT = sizeof(MAIN_MENU_ITEMS) / sizeof(MAIN_MENU_ITEMS[0]);
 }
 
-const char* PLAMIOMusicEditor::getId() const { return "plamio_musiceditor"; }
-const char* PLAMIOMusicEditor::getName() const { return "PLAMIO Music Editor"; }
-const char* PLAMIOMusicEditor::getMenuName() const { return "PLAMIO MUSIC EDITOR"; }
-uint16_t PLAMIOMusicEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOMusicEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
-uint16_t PLAMIOMusicEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOMusicEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+const char* PRUZEAMusicEditor::getId() const { return "pruzea_musiceditor"; }
+const char* PRUZEAMusicEditor::getName() const { return "PRUZEA Music Editor"; }
+const char* PRUZEAMusicEditor::getMenuName() const { return "PRUZEA MUSIC EDITOR"; }
+uint16_t PRUZEAMusicEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEAMusicEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+uint16_t PRUZEAMusicEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEAMusicEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
 
-void PLAMIOMusicEditor::onInit(Storage& storage)
+void PRUZEAMusicEditor::onInit(Storage& storage)
 {
     cursorStep = 0;
     cursorPitch = 7;
@@ -55,7 +55,7 @@ void PLAMIOMusicEditor::onInit(Storage& storage)
     dirty = true;
 }
 
-Game::GameState PLAMIOMusicEditor::onUpdate(Input& input, Audio& audio,
+Game::GameState PRUZEAMusicEditor::onUpdate(Input& input, Audio& audio,
                                       Storage& storage, float deltaSec)
 {
     (void)deltaSec;
@@ -89,7 +89,7 @@ Game::GameState PLAMIOMusicEditor::onUpdate(Input& input, Audio& audio,
     return terminateRequested ? GameState::TERMINATE_REQUEST : GameState::RUNNING;
 }
 
-void PLAMIOMusicEditor::updateEdit(Input& input, Audio& audio)
+void PRUZEAMusicEditor::updateEdit(Input& input, Audio& audio)
 {
     if (input.justPressed(Input::SELECT))
     {
@@ -150,7 +150,7 @@ void PLAMIOMusicEditor::updateEdit(Input& input, Audio& audio)
     }
 }
 
-void PLAMIOMusicEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
+void PRUZEAMusicEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
 {
     if (mode == Mode::CONFIRM_EXIT)
     {
@@ -310,7 +310,7 @@ void PLAMIOMusicEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
     dirty = true;
 }
 
-bool PLAMIOMusicEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
+bool PRUZEAMusicEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
 {
     if (!requestFullRedraw && !dirty)
         return false;
@@ -341,7 +341,7 @@ bool PLAMIOMusicEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
     return true;
 }
 
-void PLAMIOMusicEditor::drawEditor(Graphics& graphics)
+void PRUZEAMusicEditor::drawEditor(Graphics& graphics)
 {
     graphics.fillScreen(COLOR_BG);
     graphics.fillRect(0, 0, 320, 38, COLOR_PANEL);
@@ -398,7 +398,7 @@ void PLAMIOMusicEditor::drawEditor(Graphics& graphics)
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
 }
 
-void PLAMIOMusicEditor::drawMainMenu(Graphics& graphics)
+void PRUZEAMusicEditor::drawMainMenu(Graphics& graphics)
 {
     graphics.fillRect(62, 43, 196, 170, COLOR_PANEL);
     graphics.drawRect(62, 43, 196, 170, 2, COLOR_CURSOR);
@@ -413,7 +413,7 @@ void PLAMIOMusicEditor::drawMainMenu(Graphics& graphics)
     }
 }
 
-void PLAMIOMusicEditor::drawSlotMenu(Graphics& graphics, bool saving)
+void PRUZEAMusicEditor::drawSlotMenu(Graphics& graphics, bool saving)
 {
     graphics.fillRect(54, 55, 212, 142, COLOR_PANEL);
     graphics.drawRect(54, 55, 212, 142, 2, COLOR_CURSOR);
@@ -437,7 +437,7 @@ void PLAMIOMusicEditor::drawSlotMenu(Graphics& graphics, bool saving)
     }
 }
 
-void PLAMIOMusicEditor::drawConfirmation(Graphics& graphics, const char* title,
+void PRUZEAMusicEditor::drawConfirmation(Graphics& graphics, const char* title,
                                    const char* message, const char* yesText)
 {
     graphics.fillRect(38, 77, 244, 94, COLOR_PANEL);
@@ -451,7 +451,7 @@ void PLAMIOMusicEditor::drawConfirmation(Graphics& graphics, const char* title,
                         Graphics::HorizontalAlign::RIGHT, Graphics::VerticalAlign::TOP);
 }
 
-void PLAMIOMusicEditor::drawExitConfirmation(Graphics& graphics)
+void PRUZEAMusicEditor::drawExitConfirmation(Graphics& graphics)
 {
     static const char* ITEMS[] = {"SAVE", "DON'T SAVE", "CANCEL"};
     graphics.fillRect(42, 55, 236, 142, COLOR_PANEL);
@@ -467,7 +467,7 @@ void PLAMIOMusicEditor::drawExitConfirmation(Graphics& graphics)
     }
 }
 
-Game::TerminateResponse PLAMIOMusicEditor::onRequestTerminate()
+Game::TerminateResponse PRUZEAMusicEditor::onRequestTerminate()
 {
     if (!hasUnsavedChanges()) return TerminateResponse::ACCEPT;
     mode = Mode::CONFIRM_EXIT;
@@ -477,30 +477,30 @@ Game::TerminateResponse PLAMIOMusicEditor::onRequestTerminate()
     return TerminateResponse::REJECT;
 }
 
-void PLAMIOMusicEditor::captureSavedState()
+void PRUZEAMusicEditor::captureSavedState()
 {
     std::memcpy(savedGrid, grid, sizeof(grid));
     savedBpm = bpm;
 }
 
-bool PLAMIOMusicEditor::hasUnsavedChanges() const
+bool PRUZEAMusicEditor::hasUnsavedChanges() const
 {
     return bpm != savedBpm || std::memcmp(savedGrid, grid, sizeof(grid)) != 0;
 }
 
-void PLAMIOMusicEditor::onTerminate(Storage& storage)
+void PRUZEAMusicEditor::onTerminate(Storage& storage)
 {
     (void)storage;
 }
 
-void PLAMIOMusicEditor::openMainMenu()
+void PRUZEAMusicEditor::openMainMenu()
 {
     mode = Mode::MAIN_MENU;
     menuIndex = 0;
     dirty = true;
 }
 
-void PLAMIOMusicEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
+void PRUZEAMusicEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
 {
     if (direction < 0)
         menuIndex = menuIndex == 0 ? static_cast<uint8_t>(itemCount - 1) : static_cast<uint8_t>(menuIndex - 1);
@@ -509,7 +509,7 @@ void PLAMIOMusicEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
     dirty = true;
 }
 
-void PLAMIOMusicEditor::refreshSlotInfo(Storage& storage)
+void PRUZEAMusicEditor::refreshSlotInfo(Storage& storage)
 {
     for (uint8_t i = 0; i < SLOT_COUNT; ++i)
     {
@@ -518,7 +518,7 @@ void PLAMIOMusicEditor::refreshSlotInfo(Storage& storage)
     }
 }
 
-bool PLAMIOMusicEditor::saveSlot(Storage& storage, uint8_t slot)
+bool PRUZEAMusicEditor::saveSlot(Storage& storage, uint8_t slot)
 {
     char dataName[20];
     char sourceName[20];
@@ -527,21 +527,21 @@ bool PLAMIOMusicEditor::saveSlot(Storage& storage, uint8_t slot)
 
     writeSlot = slot;
     writeLineIndex = 0;
-    const bool dataOk = storage.writeUserFile(getId(), dataName, &PLAMIOMusicEditor::writeDataLine, this);
+    const bool dataOk = storage.writeUserFile(getId(), dataName, &PRUZEAMusicEditor::writeDataLine, this);
     writeLineIndex = 0;
-    const bool sourceOk = storage.writeUserFile(getId(), sourceName, &PLAMIOMusicEditor::writeSourceLine, this);
+    const bool sourceOk = storage.writeUserFile(getId(), sourceName, &PRUZEAMusicEditor::writeSourceLine, this);
     const bool success = dataOk && sourceOk;
     if (success) captureSavedState();
     return success;
 }
 
-bool PLAMIOMusicEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
+bool PRUZEAMusicEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
 {
     char dataName[20];
     makeDataFileName(slot, dataName, sizeof(dataName));
     ReadContext context{this, apply, false, 0, BPM_DEFAULT};
     if (apply) clearAll();
-    const bool readOk = storage.readUserFile(getId(), dataName, &PLAMIOMusicEditor::readSlotLine, &context);
+    const bool readOk = storage.readUserFile(getId(), dataName, &PRUZEAMusicEditor::readSlotLine, &context);
     if (!readOk || !context.valid) return false;
 
     slotBpm[slot] = context.readBpm;
@@ -555,7 +555,7 @@ bool PLAMIOMusicEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
     return true;
 }
 
-bool PLAMIOMusicEditor::readSlotLine(const char* line, void* arg)
+bool PRUZEAMusicEditor::readSlotLine(const char* line, void* arg)
 {
     ReadContext* context = static_cast<ReadContext*>(arg);
     if (std::strncmp(line, "BPM=", 4) == 0)
@@ -585,9 +585,9 @@ bool PLAMIOMusicEditor::readSlotLine(const char* line, void* arg)
     return true;
 }
 
-bool PLAMIOMusicEditor::writeDataLine(std::string& line, void* arg)
+bool PRUZEAMusicEditor::writeDataLine(std::string& line, void* arg)
 {
-    PLAMIOMusicEditor* editor = static_cast<PLAMIOMusicEditor*>(arg);
+    PRUZEAMusicEditor* editor = static_cast<PRUZEAMusicEditor*>(arg);
     char buffer[48];
     if (editor->writeLineIndex == 0)
     {
@@ -609,18 +609,18 @@ bool PLAMIOMusicEditor::writeDataLine(std::string& line, void* arg)
     return false;
 }
 
-bool PLAMIOMusicEditor::writeSourceLine(std::string& line, void* arg)
+bool PRUZEAMusicEditor::writeSourceLine(std::string& line, void* arg)
 {
-    PLAMIOMusicEditor* editor = static_cast<PLAMIOMusicEditor*>(arg);
+    PRUZEAMusicEditor* editor = static_cast<PRUZEAMusicEditor*>(arg);
     char buffer[128];
     uint8_t& index = editor->writeLineIndex;
 
     if (index == 0) { line.assign("#pragma once"); ++index; return true; }
-    if (index == 1) { line.assign("#include \"PLAMIO.h\""); ++index; return true; }
+    if (index == 1) { line.assign("#include \"PRUZEA.h\""); ++index; return true; }
     if (index == 2) { line.assign(""); ++index; return true; }
     if (index == 3)
     {
-        std::snprintf(buffer, sizeof(buffer), "static const PLAMIO::Audio::ToneNote slot%uNotes[] =", editor->writeSlot + 1);
+        std::snprintf(buffer, sizeof(buffer), "static const PRUZEA::Audio::ToneNote slot%uNotes[] =", editor->writeSlot + 1);
         line.assign(buffer); ++index; return true;
     }
     if (index == 4) { line.assign("{"); ++index; return true; }
@@ -634,11 +634,11 @@ bool PLAMIOMusicEditor::writeSourceLine(std::string& line, void* arg)
         {
             if (note.pitch >= 0)
                 std::snprintf(buffer, sizeof(buffer),
-                              "    { PLAMIO::Audio::ToneNote::%s, PLAMIO::Audio::ToneNote::%s },",
+                              "    { PRUZEA::Audio::ToneNote::%s, PRUZEA::Audio::ToneNote::%s },",
                               pitchName(static_cast<uint8_t>(note.pitch)), durationSourceName(note.lengthSteps));
             else
                 std::snprintf(buffer, sizeof(buffer),
-                              "    { PLAMIO::Audio::ToneNote::REST, PLAMIO::Audio::ToneNote::E },");
+                              "    { PRUZEA::Audio::ToneNote::REST, PRUZEA::Audio::ToneNote::E },");
             line.assign(buffer); ++index; return true;
         }
         step = static_cast<uint8_t>(step + (note.pitch >= 0 && note.lengthSteps > 0 ? note.lengthSteps : 1));
@@ -650,7 +650,7 @@ bool PLAMIOMusicEditor::writeSourceLine(std::string& line, void* arg)
     if (footer == 1) { line.assign(""); ++index; return true; }
     if (footer == 2)
     {
-        std::snprintf(buffer, sizeof(buffer), "static const PLAMIO::Audio::Music slot%uMusic =", editor->writeSlot + 1);
+        std::snprintf(buffer, sizeof(buffer), "static const PRUZEA::Audio::Music slot%uMusic =", editor->writeSlot + 1);
         line.assign(buffer); ++index; return true;
     }
     if (footer == 3) { line.assign("{"); ++index; return true; }
@@ -677,17 +677,17 @@ bool PLAMIOMusicEditor::writeSourceLine(std::string& line, void* arg)
     return false;
 }
 
-void PLAMIOMusicEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEAMusicEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     std::snprintf(out, outSize, "slot%u.dat", slot + 1);
 }
 
-void PLAMIOMusicEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEAMusicEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     std::snprintf(out, outSize, "slot%u.h", slot + 1);
 }
 
-void PLAMIOMusicEditor::loadSample()
+void PRUZEAMusicEditor::loadSample()
 {
     clearAll();
     const int8_t pitches[8] = {7, 6, 5, 3, 0, 3, 5, 7};
@@ -700,7 +700,7 @@ void PLAMIOMusicEditor::loadSample()
     bpm = BPM_DEFAULT;
 }
 
-void PLAMIOMusicEditor::clearAll()
+void PRUZEAMusicEditor::clearAll()
 {
     for (uint8_t i = 0; i < STEP_COUNT; ++i)
     {
@@ -709,14 +709,14 @@ void PLAMIOMusicEditor::clearAll()
     }
 }
 
-void PLAMIOMusicEditor::placeNote()
+void PRUZEAMusicEditor::placeNote()
 {
     removeOverlaps(cursorStep, selectedLength);
     grid[cursorStep].pitch = static_cast<int8_t>(cursorPitch);
     grid[cursorStep].lengthSteps = selectedLength;
 }
 
-void PLAMIOMusicEditor::eraseAt(uint8_t step)
+void PRUZEAMusicEditor::eraseAt(uint8_t step)
 {
     const int8_t start = findCoveringNoteStart(step);
     if (start >= 0)
@@ -726,7 +726,7 @@ void PLAMIOMusicEditor::eraseAt(uint8_t step)
     }
 }
 
-void PLAMIOMusicEditor::cycleLength()
+void PRUZEAMusicEditor::cycleLength()
 {
     selectedLength = selectedLength == 1 ? 2 : (selectedLength == 2 ? 4 : 1);
     const int8_t start = findCoveringNoteStart(cursorStep);
@@ -741,7 +741,7 @@ void PLAMIOMusicEditor::cycleLength()
     }
 }
 
-void PLAMIOMusicEditor::removeOverlaps(uint8_t startStep, uint8_t lengthSteps)
+void PRUZEAMusicEditor::removeOverlaps(uint8_t startStep, uint8_t lengthSteps)
 {
     uint8_t endStep = static_cast<uint8_t>(startStep + lengthSteps);
     if (endStep > STEP_COUNT) endStep = STEP_COUNT;
@@ -759,7 +759,7 @@ void PLAMIOMusicEditor::removeOverlaps(uint8_t startStep, uint8_t lengthSteps)
     }
 }
 
-int8_t PLAMIOMusicEditor::findCoveringNoteStart(uint8_t step) const
+int8_t PRUZEAMusicEditor::findCoveringNoteStart(uint8_t step) const
 {
     for (uint8_t s = 0; s < STEP_COUNT; ++s)
     {
@@ -770,7 +770,7 @@ int8_t PLAMIOMusicEditor::findCoveringNoteStart(uint8_t step) const
     return -1;
 }
 
-void PLAMIOMusicEditor::buildPlayback()
+void PRUZEAMusicEditor::buildPlayback()
 {
     uint8_t count = 0;
     uint8_t step = 0;
@@ -797,7 +797,7 @@ void PLAMIOMusicEditor::buildPlayback()
     playbackMusic.gain = 0.7f;
 }
 
-void PLAMIOMusicEditor::startPlayback(Audio& audio)
+void PRUZEAMusicEditor::startPlayback(Audio& audio)
 {
     buildPlayback();
     audio.playMusic(&playbackMusic);
@@ -806,19 +806,19 @@ void PLAMIOMusicEditor::startPlayback(Audio& audio)
     playheadStep = 0;
 }
 
-void PLAMIOMusicEditor::stopPlayback(Audio& audio)
+void PRUZEAMusicEditor::stopPlayback(Audio& audio)
 {
     audio.stopMusic();
     playing = false;
     playheadStep = 0;
 }
 
-uint32_t PLAMIOMusicEditor::stepDurationMsec() const
+uint32_t PRUZEAMusicEditor::stepDurationMsec() const
 {
     return 30000u / bpm;
 }
 
-uint16_t PLAMIOMusicEditor::pitchFrequency(uint8_t pitch)
+uint16_t PRUZEAMusicEditor::pitchFrequency(uint8_t pitch)
 {
     static constexpr uint16_t frequencies[PITCH_COUNT] = {
         Audio::ToneNote::C5, Audio::ToneNote::B4, Audio::ToneNote::A4, Audio::ToneNote::G4,
@@ -827,27 +827,27 @@ uint16_t PLAMIOMusicEditor::pitchFrequency(uint8_t pitch)
     return frequencies[pitch < PITCH_COUNT ? pitch : 0];
 }
 
-Audio::ToneNote::Duration PLAMIOMusicEditor::durationForSteps(uint8_t steps)
+Audio::ToneNote::Duration PRUZEAMusicEditor::durationForSteps(uint8_t steps)
 {
     if (steps >= 4) return Audio::ToneNote::H;
     if (steps >= 2) return Audio::ToneNote::Q;
     return Audio::ToneNote::E;
 }
 
-const char* PLAMIOMusicEditor::pitchName(uint8_t pitch)
+const char* PRUZEAMusicEditor::pitchName(uint8_t pitch)
 {
     static const char* names[PITCH_COUNT] = {"C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"};
     return names[pitch < PITCH_COUNT ? pitch : 0];
 }
 
-const char* PLAMIOMusicEditor::lengthName(uint8_t steps)
+const char* PRUZEAMusicEditor::lengthName(uint8_t steps)
 {
     if (steps == 4) return "1/2";
     if (steps == 2) return "1/4";
     return "1/8";
 }
 
-const char* PLAMIOMusicEditor::durationSourceName(uint8_t steps)
+const char* PRUZEAMusicEditor::durationSourceName(uint8_t steps)
 {
     if (steps >= 4) return "H";
     if (steps >= 2) return "Q";

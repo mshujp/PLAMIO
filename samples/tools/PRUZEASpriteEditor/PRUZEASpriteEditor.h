@@ -1,7 +1,7 @@
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class PLAMIOSpriteEditor : public PLAMIO::Game
+class PRUZEASpriteEditor : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -14,12 +14,12 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio,
-                       PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio,
+                       PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
     TerminateResponse onRequestTerminate() override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     static constexpr uint8_t SPRITE_W = 16;
@@ -44,7 +44,7 @@ private:
 
     struct ReadContext
     {
-        PLAMIOSpriteEditor* editor;
+        PRUZEASpriteEditor* editor;
         bool apply;
         bool valid;
         uint16_t pixelIndex;
@@ -76,33 +76,33 @@ private:
     void flipVertical();
     void rotate90();
 
-    void updateEdit(PLAMIO::Input& input, PLAMIO::Audio& audio);
-    void updateMenu(PLAMIO::Input& input, PLAMIO::Audio& audio,
-                    PLAMIO::Storage& storage);
+    void updateEdit(PRUZEA::Input& input, PRUZEA::Audio& audio);
+    void updateMenu(PRUZEA::Input& input, PRUZEA::Audio& audio,
+                    PRUZEA::Storage& storage);
     void moveMenuSelection(int8_t direction, uint8_t itemCount);
     void openMainMenu();
     void captureSavedState();
     bool hasUnsavedChanges() const;
 
-    void refreshSlotInfo(PLAMIO::Storage& storage);
-    bool saveSlot(PLAMIO::Storage& storage, uint8_t slot);
-    bool loadSlot(PLAMIO::Storage& storage, uint8_t slot, bool apply);
+    void refreshSlotInfo(PRUZEA::Storage& storage);
+    bool saveSlot(PRUZEA::Storage& storage, uint8_t slot);
+    bool loadSlot(PRUZEA::Storage& storage, uint8_t slot, bool apply);
     static bool readSlotLine(const char* line, void* arg);
     static bool writeDataLine(std::string& line, void* arg);
     static bool writeSourceLine(std::string& line, void* arg);
     void makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const;
     void makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const;
 
-    void drawEditor(PLAMIO::Graphics& graphics);
-    void drawPreview(PLAMIO::Graphics& graphics);
-    void drawMainMenu(PLAMIO::Graphics& graphics);
-    void drawSlotMenu(PLAMIO::Graphics& graphics, bool saving);
-    void drawTransformMenu(PLAMIO::Graphics& graphics);
-    void drawConfirmation(PLAMIO::Graphics& graphics, const char* title,
+    void drawEditor(PRUZEA::Graphics& graphics);
+    void drawPreview(PRUZEA::Graphics& graphics);
+    void drawMainMenu(PRUZEA::Graphics& graphics);
+    void drawSlotMenu(PRUZEA::Graphics& graphics, bool saving);
+    void drawTransformMenu(PRUZEA::Graphics& graphics);
+    void drawConfirmation(PRUZEA::Graphics& graphics, const char* title,
                           const char* message, const char* yesText);
-    void drawExitConfirmation(PLAMIO::Graphics& graphics);
-    void drawPalette(PLAMIO::Graphics& graphics);
-    void drawCanvas(PLAMIO::Graphics& graphics);
+    void drawExitConfirmation(PRUZEA::Graphics& graphics);
+    void drawPalette(PRUZEA::Graphics& graphics);
+    void drawCanvas(PRUZEA::Graphics& graphics);
 
-    static PLAMIO::Graphics::Color paletteColor(uint8_t index);
+    static PRUZEA::Graphics::Color paletteColor(uint8_t index);
 };

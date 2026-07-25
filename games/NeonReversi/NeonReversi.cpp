@@ -1,9 +1,9 @@
-﻿#include "NeonReversi.h"
+#include "NeonReversi.h"
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 static Graphics::Color PLAYER_COLOR = Graphics::rgb565(255, 0, 255);
@@ -620,4 +620,4 @@ void NeonReversi::onTerminate(Storage& storage)
     saveHighScore(storage);
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

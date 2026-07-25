@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

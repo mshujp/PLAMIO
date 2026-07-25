@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 bool StorageBase::isValidGameId(const char* gameId)
 {

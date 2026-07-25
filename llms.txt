@@ -1,34 +1,34 @@
-# PLAMIO
+# PRUZEA
 
-> PLAMIO is a lightweight C++ game framework for RP2040 and RP2350, designed for human and AI-assisted game development.
+> PRUZEA is a lightweight C++ game framework for RP2040 and RP2350, designed for human and AI-assisted game development.
 
-PLAMIO uses the Raspberry Pi Pico SDK and CMake. Games are statically discovered from the `games/` directory and interact with the platform only through the public API in `sdk/PLAMIO.h`.
+PRUZEA uses the Raspberry Pi Pico SDK and CMake. Games are statically discovered from the `games/` directory and interact with the platform only through the public API in `sdk/PRUZEA.h`.
 
 ## Start Here
 
 Read these documents in this order before generating or modifying a game:
 
-1. [Public API](sdk/PLAMIO.h): Canonical declarations, lifecycle contracts, and supported game-facing APIs
-2. [AI Guidelines](sdk/PLAMIO_AI_GUIDELINES.md): Mandatory generation, timing, rendering, audio, storage, and file rules
-3. [Game Design Template](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md): Target hardware and game-specific design requirements
+1. [Public API](sdk/PRUZEA.h): Canonical declarations, lifecycle contracts, and supported game-facing APIs
+2. [AI Guidelines](sdk/PRUZEA_AI_GUIDELINES.md): Mandatory generation, timing, rendering, audio, storage, and file rules
+3. [Game Design Template](sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md): Target hardware and game-specific design requirements
 4. [README](README.md): Build requirements, configuration, deployment, supported hardware, and project overview
 
-The files above are the source of truth. Do not invent APIs or rely on remembered behavior from other frameworks or earlier PLAMIO versions.
+The files above are the source of truth. Do not invent APIs or rely on remembered behavior from other frameworks or earlier PRUZEA versions.
 
 ## Public Game API
 
-Game code may use the platform-independent APIs declared in `sdk/PLAMIO.h`, including:
+Game code may use the platform-independent APIs declared in `sdk/PRUZEA.h`, including:
 
-- `PLAMIO::Game`
-- `PLAMIO::Graphics`
-- `PLAMIO::Input`
-- `PLAMIO::Audio`
-- `PLAMIO::Storage`
-- `PLAMIO::Platform`
-- `PLAMIO::Math`
-- `PLAMIO::Collision`
-- `PLAMIO::Tween`
-- `PLAMIO::SaveData`
+- `PRUZEA::Game`
+- `PRUZEA::Graphics`
+- `PRUZEA::Input`
+- `PRUZEA::Audio`
+- `PRUZEA::Storage`
+- `PRUZEA::Platform`
+- `PRUZEA::Math`
+- `PRUZEA::Collision`
+- `PRUZEA::Tween`
+- `PRUZEA::SaveData`
 
 The runtime provides abstracted Graphics, Input, Audio, and Storage objects. Game code must not access GPIO, SPI, I2C, PWM, I2S, SD drivers, display drivers, or other platform-specific implementations directly.
 
@@ -56,9 +56,9 @@ Directories beginning with `_` are ignored by automatic game discovery.
 
 ## Required Game Interface
 
-A game derives from `PLAMIO::Game`.
+A game derives from `PRUZEA::Game`.
 
-Implement the metadata and screen-size functions declared by `PLAMIO::Game`, including:
+Implement the metadata and screen-size functions declared by `PRUZEA::Game`, including:
 
 - `getId()`
 - `getName()`
@@ -132,12 +132,12 @@ Do not override, hide, redefine, or bypass the runtime entry points:
 
 ## Graphics Rules
 
-- Perform all drawing through `PLAMIO::Graphics`.
+- Perform all drawing through `PRUZEA::Graphics`.
 - Respect the logical buffer size and target display size returned by the game.
 - Drawing outside the visible screen is safe because Graphics clips primitives.
 - Use viewport and camera APIs rather than accessing display hardware.
 - For SSD1306 games, use monochrome color constants such as `Graphics::SSD1306_ON` and `Graphics::SSD1306_OFF`.
-- Follow the exact parameter order declared in `sdk/PLAMIO.h`.
+- Follow the exact parameter order declared in `sdk/PRUZEA.h`.
 
 ## Audio Rules
 
@@ -149,7 +149,7 @@ Do not override, hide, redefine, or bypass the runtime entry points:
 
 ## Storage Rules
 
-- Use only the `Storage` and `SaveData` APIs declared in `sdk/PLAMIO.h`.
+- Use only the `Storage` and `SaveData` APIs declared in `sdk/PRUZEA.h`.
 - Do not construct SD-card filesystem paths directly in game code.
 - Use a valid lowercase game ID of at most 16 characters.
 - Storage may be unavailable; handle failures safely.
@@ -160,7 +160,7 @@ Do not override, hide, redefine, or bypass the runtime entry points:
 Header file:
 
 - Begin with `#pragma once`.
-- Include `"PLAMIO.h"`.
+- Include `"PRUZEA.h"`.
 - Declare the complete game class.
 - Do not use `using namespace` in a header.
 - Keep non-inline implementations out of the header.
@@ -168,16 +168,16 @@ Header file:
 Implementation file:
 
 - Include the matching game header.
-- Use `using namespace PLAMIO;`.
-- Do not include `PLAMIO.h` directly when the header already includes it.
+- Use `using namespace PRUZEA;`.
+- Do not include `PRUZEA.h` directly when the header already includes it.
 - Keep tuning and balancing constants centralized near the top of the implementation.
 
 ## Canonical Samples
 
-Use samples as focused references, but always verify APIs against `sdk/PLAMIO.h`.
+Use samples as focused references, but always verify APIs against `sdk/PRUZEA.h`.
 
-- [PLAMIO API sample](samples/PlamioAPIs/): Broad public API demonstration for ILI9341-class targets
-- [PLAMIO API OLED sample](samples/PlamioAPIsSSD1306/): Monochrome SSD1306 API example
+- [PRUZEA API sample](samples/PruzeaAPIs/): Broad public API demonstration for ILI9341-class targets
+- [PRUZEA API OLED sample](samples/PruzeaAPIsSSD1306/): Monochrome SSD1306 API example
 - [Game template](samples/GameTemplate/): Minimal starting structure
 - [Collision Lab](samples/CollisionLab/): Collision handling
 - [SoundTile](samples/SoundTile/): Audio and input
@@ -205,14 +205,14 @@ These are complete games rather than API specifications:
 
 - [SDK](sdk/): Public API and AI-facing design documents
 - [Games](games/): User games discovered and statically registered by CMake
-- [Samples](samples/): Learning examples and tools; included when `PLAMIO_SAMPLES` is enabled
+- [Samples](samples/): Learning examples and tools; included when `PRUZEA_SAMPLES` is enabled
 - [System](system/): Runtime, catalog, UI, utilities, and hardware abstraction implementations
 - [Pico platform](system/platform/pico/): RP2040/RP2350 display, input, audio, storage, battery, and board-profile implementations
 - [Board profiles](system/platform/pico/boards/): Board-specific pins and hardware configuration
 - [Scripts](scripts/): Optional Windows-oriented build and UF2 deployment helpers
 - [Build configuration](CMakeLists.txt): Default target, display, storage, audio, input, font, PSRAM, samples, and board profile
 
-Game code should normally modify only files under `games/`. Framework or public API changes must be discussed with the human developer before editing `sdk/PLAMIO.h` or files under `system/`.
+Game code should normally modify only files under `games/`. Framework or public API changes must be discussed with the human developer before editing `sdk/PRUZEA.h` or files under `system/`.
 
 ## Hardware Configuration
 
@@ -241,16 +241,16 @@ cmake --build build
 Generated firmware:
 
 ```text
-build/system/plamio.uf2
+build/system/pruzea.uf2
 ```
 
 Copy the UF2 file to a board in BOOTSEL mode. VSCode tasks or custom scripts may automate deployment.
 
 ## AI Generation Workflow
 
-1. Read `sdk/PLAMIO.h`.
-2. Read `sdk/PLAMIO_AI_GUIDELINES.md`.
-3. Read the completed `sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md`.
+1. Read `sdk/PRUZEA.h`.
+2. Read `sdk/PRUZEA_AI_GUIDELINES.md`.
+3. Read the completed `sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md`.
 4. Discuss and finalize the game specification with the user.
 5. Generate `<GameName>.h`.
 6. Generate `<GameName>.cpp`.
@@ -260,12 +260,12 @@ Copy the UF2 file to a board in BOOTSEL mode. VSCode tasks or custom scripts may
 
 When requirements conflict, use this priority:
 
-1. `sdk/PLAMIO.h`
-2. `sdk/PLAMIO_AI_GUIDELINES.md`
+1. `sdk/PRUZEA.h`
+2. `sdk/PRUZEA_AI_GUIDELINES.md`
 3. The user's latest explicit instructions and completed game design document
 4. Canonical samples
 5. Existing complete games
 
 ## License
 
-PLAMIO is released under the MIT License. See [LICENSE.txt](LICENSE.txt).
+PRUZEA is released under the MIT License. See [LICENSE.txt](LICENSE.txt).

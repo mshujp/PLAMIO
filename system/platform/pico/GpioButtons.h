@@ -3,7 +3,7 @@
 #include "InputBase.h"
 #include <stdint.h>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 // Shared helper that interprets ButtonMapping values as GPIO numbers.
 // Buttons are active-low and use the MCU's internal pull-up resistors.
@@ -18,4 +18,4 @@ private:
     static bool isPressed(int16_t pin);
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

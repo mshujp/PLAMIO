@@ -1,9 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "StorageBase.h"
 #include "ff.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class StorageSD;
 
@@ -34,7 +34,7 @@ private:
     static constexpr uint16_t FAT_PATH_MAX = 128;
     static constexpr uint32_t AVAILABILITY_CACHE_MSEC = 1000;
 
-    static constexpr char ROOT_DIR[] = "/PLAMIO_Games";
+    static constexpr char ROOT_DIR[] = "/PRUZEA_Games";
 
     uint8_t spiHost;
     int8_t pinMiso;

@@ -2,7 +2,7 @@
 #include "Platform.h"
 #include <climits>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 int8_t InputBase::buttonIndex(Button b)
 {

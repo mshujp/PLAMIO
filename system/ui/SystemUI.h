@@ -1,9 +1,9 @@
 #pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include "GameCatalog.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class SystemUI : public Game
@@ -92,4 +92,4 @@ public:
     void onTerminate(Storage& storage) override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

@@ -1,10 +1,10 @@
-﻿#include "Platform.h"
-#include "PLAMIO.h"
+#include "Platform.h"
+#include "PRUZEA.h"
 
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 uint32_t Platform::getMsec()
 {

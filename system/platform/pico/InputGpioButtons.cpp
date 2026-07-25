@@ -1,7 +1,7 @@
 #include "InputGpioButtons.h"
 #include "GpioButtons.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 InputGpioButtons::InputGpioButtons(const ButtonMapping& _buttonMapping)
     : buttonMapping(_buttonMapping)

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include "GraphicsBase.h"
 #include <string>
 #include <vector>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class GameCatalog
 {
@@ -46,4 +46,4 @@ public:
     Game* getGroupGame(uint16_t groupIndex, uint16_t gameIndex) const;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

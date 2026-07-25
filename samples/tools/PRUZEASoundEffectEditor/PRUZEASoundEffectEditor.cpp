@@ -1,9 +1,9 @@
-#include "PLAMIOSoundEffectEditor.h"
+#include "PRUZEASoundEffectEditor.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -35,15 +35,15 @@ uint16_t clampU16(int32_t value, uint16_t minValue, uint16_t maxValue)
 }
 }
 
-const char* PLAMIOSoundEffectEditor::getId() const { return "plamio_seeditor"; }
-const char* PLAMIOSoundEffectEditor::getName() const { return "PLAMIO Sound Effect Editor"; }
-const char* PLAMIOSoundEffectEditor::getMenuName() const { return "PLAMIO SOUND EFFECT EDITOR"; }
-uint16_t PLAMIOSoundEffectEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOSoundEffectEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
-uint16_t PLAMIOSoundEffectEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOSoundEffectEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+const char* PRUZEASoundEffectEditor::getId() const { return "pruzea_seeditor"; }
+const char* PRUZEASoundEffectEditor::getName() const { return "PRUZEA Sound Effect Editor"; }
+const char* PRUZEASoundEffectEditor::getMenuName() const { return "PRUZEA SOUND EFFECT EDITOR"; }
+uint16_t PRUZEASoundEffectEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEASoundEffectEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+uint16_t PRUZEASoundEffectEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEASoundEffectEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
 
-void PLAMIOSoundEffectEditor::onInit(Storage& storage)
+void PRUZEASoundEffectEditor::onInit(Storage& storage)
 {
     mode = Mode::EDIT;
     selectedStep = 0;
@@ -58,7 +58,7 @@ void PLAMIOSoundEffectEditor::onInit(Storage& storage)
     dirty = true;
 }
 
-Game::GameState PLAMIOSoundEffectEditor::onUpdate(Input& input, Audio& audio,
+Game::GameState PRUZEASoundEffectEditor::onUpdate(Input& input, Audio& audio,
                                              Storage& storage, float deltaSec)
 {
     (void)deltaSec;
@@ -69,7 +69,7 @@ Game::GameState PLAMIOSoundEffectEditor::onUpdate(Input& input, Audio& audio,
     return terminateRequested ? GameState::TERMINATE_REQUEST : GameState::RUNNING;
 }
 
-void PLAMIOSoundEffectEditor::updateEdit(Input& input, Audio& audio)
+void PRUZEASoundEffectEditor::updateEdit(Input& input, Audio& audio)
 {
     if (input.justPressed(Input::SELECT))
     {
@@ -165,7 +165,7 @@ void PLAMIOSoundEffectEditor::updateEdit(Input& input, Audio& audio)
     }
 }
 
-void PLAMIOSoundEffectEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
+void PRUZEASoundEffectEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
 {
     if (mode == Mode::CONFIRM_EXIT)
     {
@@ -327,7 +327,7 @@ void PLAMIOSoundEffectEditor::updateMenu(Input& input, Audio& audio, Storage& st
     dirty = true;
 }
 
-bool PLAMIOSoundEffectEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
+bool PRUZEASoundEffectEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
 {
     if (!requestFullRedraw && !dirty)
         return false;
@@ -357,7 +357,7 @@ bool PLAMIOSoundEffectEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
     return true;
 }
 
-void PLAMIOSoundEffectEditor::drawExitConfirmation(Graphics& graphics)
+void PRUZEASoundEffectEditor::drawExitConfirmation(Graphics& graphics)
 {
     static const char* ITEMS[] = {"SAVE", "DON'T SAVE", "CANCEL"};
     graphics.fillRect(42, 55, 236, 142, COLOR_PANEL);
@@ -373,7 +373,7 @@ void PLAMIOSoundEffectEditor::drawExitConfirmation(Graphics& graphics)
     }
 }
 
-Game::TerminateResponse PLAMIOSoundEffectEditor::onRequestTerminate()
+Game::TerminateResponse PRUZEASoundEffectEditor::onRequestTerminate()
 {
     if (!hasUnsavedChanges()) return TerminateResponse::ACCEPT;
     mode = Mode::CONFIRM_EXIT;
@@ -383,13 +383,13 @@ Game::TerminateResponse PLAMIOSoundEffectEditor::onRequestTerminate()
     return TerminateResponse::REJECT;
 }
 
-void PLAMIOSoundEffectEditor::captureSavedState()
+void PRUZEASoundEffectEditor::captureSavedState()
 {
     savedStepCount = stepCount;
     for (uint8_t i = 0; i < MAX_STEPS; ++i) savedSteps[i] = steps[i];
 }
 
-bool PLAMIOSoundEffectEditor::hasUnsavedChanges() const
+bool PRUZEASoundEffectEditor::hasUnsavedChanges() const
 {
     if (stepCount != savedStepCount) return true;
     for (uint8_t i = 0; i < stepCount; ++i)
@@ -404,12 +404,12 @@ bool PLAMIOSoundEffectEditor::hasUnsavedChanges() const
     return false;
 }
 
-void PLAMIOSoundEffectEditor::onTerminate(Storage& storage)
+void PRUZEASoundEffectEditor::onTerminate(Storage& storage)
 {
     (void)storage;
 }
 
-void PLAMIOSoundEffectEditor::loadPreset()
+void PRUZEASoundEffectEditor::loadPreset()
 {
     stepCount = 2;
     steps[0] = {1200, 1800, 50, 1.0f, 0.7f};
@@ -418,7 +418,7 @@ void PLAMIOSoundEffectEditor::loadPreset()
     selectedField = Field::START_FREQ;
 }
 
-void PLAMIOSoundEffectEditor::clearAll()
+void PRUZEASoundEffectEditor::clearAll()
 {
     stepCount = 1;
     steps[0] = {1000, 1000, 100, 1.0f, 0.0f};
@@ -426,7 +426,7 @@ void PLAMIOSoundEffectEditor::clearAll()
     selectedField = Field::START_FREQ;
 }
 
-void PLAMIOSoundEffectEditor::addStep()
+void PRUZEASoundEffectEditor::addStep()
 {
     if (stepCount >= MAX_STEPS) return;
     const uint8_t insertAt = static_cast<uint8_t>(selectedStep + 1);
@@ -440,7 +440,7 @@ void PLAMIOSoundEffectEditor::addStep()
     selectedStep = insertAt;
 }
 
-void PLAMIOSoundEffectEditor::duplicateStep()
+void PRUZEASoundEffectEditor::duplicateStep()
 {
     if (stepCount >= MAX_STEPS) return;
     const uint8_t insertAt = static_cast<uint8_t>(selectedStep + 1);
@@ -451,7 +451,7 @@ void PLAMIOSoundEffectEditor::duplicateStep()
     selectedStep = insertAt;
 }
 
-void PLAMIOSoundEffectEditor::deleteStep()
+void PRUZEASoundEffectEditor::deleteStep()
 {
     if (stepCount <= 1)
     {
@@ -464,7 +464,7 @@ void PLAMIOSoundEffectEditor::deleteStep()
     if (selectedStep >= stepCount) selectedStep = static_cast<uint8_t>(stepCount - 1);
 }
 
-void PLAMIOSoundEffectEditor::adjustSelectedValue(int8_t direction, bool coarse)
+void PRUZEASoundEffectEditor::adjustSelectedValue(int8_t direction, bool coarse)
 {
     Audio::SoundStep& step = steps[selectedStep];
     switch (selectedField)
@@ -500,21 +500,21 @@ void PLAMIOSoundEffectEditor::adjustSelectedValue(int8_t direction, bool coarse)
     }
 }
 
-void PLAMIOSoundEffectEditor::playPreview(Audio& audio)
+void PRUZEASoundEffectEditor::playPreview(Audio& audio)
 {
     previewSound.steps = steps;
     previewSound.stepCount = stepCount;
     audio.playSE(&previewSound, 1.0f);
 }
 
-void PLAMIOSoundEffectEditor::openMainMenu()
+void PRUZEASoundEffectEditor::openMainMenu()
 {
     mode = Mode::MAIN_MENU;
     menuIndex = 0;
     dirty = true;
 }
 
-void PLAMIOSoundEffectEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
+void PRUZEASoundEffectEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
 {
     if (direction < 0)
         menuIndex = (menuIndex == 0) ? static_cast<uint8_t>(itemCount - 1) : static_cast<uint8_t>(menuIndex - 1);
@@ -523,7 +523,7 @@ void PLAMIOSoundEffectEditor::moveMenuSelection(int8_t direction, uint8_t itemCo
     dirty = true;
 }
 
-void PLAMIOSoundEffectEditor::refreshSlotInfo(Storage& storage)
+void PRUZEASoundEffectEditor::refreshSlotInfo(Storage& storage)
 {
     for (uint8_t i = 0; i < SLOT_COUNT; ++i)
     {
@@ -533,7 +533,7 @@ void PLAMIOSoundEffectEditor::refreshSlotInfo(Storage& storage)
     }
 }
 
-bool PLAMIOSoundEffectEditor::saveSlot(Storage& storage, uint8_t slot)
+bool PRUZEASoundEffectEditor::saveSlot(Storage& storage, uint8_t slot)
 {
     char dataName[16];
     char sourceName[16];
@@ -543,23 +543,23 @@ bool PLAMIOSoundEffectEditor::saveSlot(Storage& storage, uint8_t slot)
     writeSlot = slot;
     writeLineIndex = 0;
     const bool dataOk = storage.writeUserFile(getId(), dataName,
-                                               &PLAMIOSoundEffectEditor::writeDataLine, this);
+                                               &PRUZEASoundEffectEditor::writeDataLine, this);
     writeLineIndex = 0;
     const bool sourceOk = storage.writeUserFile(getId(), sourceName,
-                                                 &PLAMIOSoundEffectEditor::writeSourceLine, this);
+                                                 &PRUZEASoundEffectEditor::writeSourceLine, this);
     const bool success = dataOk && sourceOk;
     if (success) captureSavedState();
     return success;
 }
 
-bool PLAMIOSoundEffectEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
+bool PRUZEASoundEffectEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
 {
     char fileName[16];
     makeDataFileName(slot, fileName, sizeof(fileName));
 
     ReadContext context{this, apply, true, 0, 0};
     const bool opened = storage.readUserFile(getId(), fileName,
-                                              &PLAMIOSoundEffectEditor::readSlotLine, &context);
+                                              &PRUZEASoundEffectEditor::readSlotLine, &context);
     const bool valid = opened && context.valid && context.expectedCount > 0 &&
                        context.stepIndex == context.expectedCount;
     if (valid)
@@ -577,7 +577,7 @@ bool PLAMIOSoundEffectEditor::loadSlot(Storage& storage, uint8_t slot, bool appl
     return valid;
 }
 
-bool PLAMIOSoundEffectEditor::readSlotLine(const char* line, void* arg)
+bool PRUZEASoundEffectEditor::readSlotLine(const char* line, void* arg)
 {
     ReadContext* context = static_cast<ReadContext*>(arg);
     if (std::strncmp(line, "COUNT=", 6) == 0)
@@ -624,9 +624,9 @@ bool PLAMIOSoundEffectEditor::readSlotLine(const char* line, void* arg)
     return false;
 }
 
-bool PLAMIOSoundEffectEditor::writeDataLine(std::string& line, void* arg)
+bool PRUZEASoundEffectEditor::writeDataLine(std::string& line, void* arg)
 {
-    PLAMIOSoundEffectEditor* editor = static_cast<PLAMIOSoundEffectEditor*>(arg);
+    PRUZEASoundEffectEditor* editor = static_cast<PRUZEASoundEffectEditor*>(arg);
     char buffer[80];
 
     if (editor->writeLineIndex == 0)
@@ -652,18 +652,18 @@ bool PLAMIOSoundEffectEditor::writeDataLine(std::string& line, void* arg)
     return false;
 }
 
-bool PLAMIOSoundEffectEditor::writeSourceLine(std::string& line, void* arg)
+bool PRUZEASoundEffectEditor::writeSourceLine(std::string& line, void* arg)
 {
-    PLAMIOSoundEffectEditor* editor = static_cast<PLAMIOSoundEffectEditor*>(arg);
+    PRUZEASoundEffectEditor* editor = static_cast<PRUZEASoundEffectEditor*>(arg);
     char buffer[160];
     const uint8_t cursor = editor->writeLineIndex++;
 
     if (cursor == 0) { line.assign("#pragma once"); return true; }
-    if (cursor == 1) { line.assign("#include \"PLAMIO.h\""); return true; }
+    if (cursor == 1) { line.assign("#include \"PRUZEA.h\""); return true; }
     if (cursor == 2) { line.assign(""); return true; }
     if (cursor == 3)
     {
-        std::snprintf(buffer, sizeof(buffer), "static const PLAMIO::Audio::SoundStep slot%uSteps[] =",
+        std::snprintf(buffer, sizeof(buffer), "static const PRUZEA::Audio::SoundStep slot%uSteps[] =",
                       editor->writeSlot + 1);
         line.assign(buffer); return true;
     }
@@ -685,7 +685,7 @@ bool PLAMIOSoundEffectEditor::writeSourceLine(std::string& line, void* arg)
     case 0: line.assign("};"); return true;
     case 1: line.assign(""); return true;
     case 2:
-        std::snprintf(buffer, sizeof(buffer), "static const PLAMIO::Audio::Sound slot%uSound =",
+        std::snprintf(buffer, sizeof(buffer), "static const PRUZEA::Audio::Sound slot%uSound =",
                       editor->writeSlot + 1);
         line.assign(buffer); return true;
     case 3: line.assign("{"); return true;
@@ -701,17 +701,17 @@ bool PLAMIOSoundEffectEditor::writeSourceLine(std::string& line, void* arg)
     }
 }
 
-void PLAMIOSoundEffectEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEASoundEffectEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     std::snprintf(out, outSize, "slot%u.dat", slot + 1);
 }
 
-void PLAMIOSoundEffectEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEASoundEffectEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     std::snprintf(out, outSize, "slot%u.h", slot + 1);
 }
 
-void PLAMIOSoundEffectEditor::drawEditor(Graphics& graphics)
+void PRUZEASoundEffectEditor::drawEditor(Graphics& graphics)
 {
     graphics.fillScreen(COLOR_BG);
     graphics.fillRect(0, 0, 320, 38, COLOR_PANEL);
@@ -733,7 +733,7 @@ void PLAMIOSoundEffectEditor::drawEditor(Graphics& graphics)
                         Graphics::HorizontalAlign::RIGHT, Graphics::VerticalAlign::TOP);
 }
 
-void PLAMIOSoundEffectEditor::drawFrequencyGraph(Graphics& graphics)
+void PRUZEASoundEffectEditor::drawFrequencyGraph(Graphics& graphics)
 {
     graphics.fillRect(GRAPH_X, GRAPH_Y, GRAPH_W, GRAPH_H, COLOR_PANEL);
     for (uint8_t i = 0; i <= 5; ++i)
@@ -768,7 +768,7 @@ void PLAMIOSoundEffectEditor::drawFrequencyGraph(Graphics& graphics)
     }
 }
 
-void PLAMIOSoundEffectEditor::drawFieldPanel(Graphics& graphics)
+void PRUZEASoundEffectEditor::drawFieldPanel(Graphics& graphics)
 {
     const Audio::SoundStep& step = steps[selectedStep];
     const char* labels[] = {"START FREQ", "END FREQ", "DURATION", "START VOL", "END VOL"};
@@ -793,7 +793,7 @@ void PLAMIOSoundEffectEditor::drawFieldPanel(Graphics& graphics)
     }
 }
 
-void PLAMIOSoundEffectEditor::drawMainMenu(Graphics& graphics)
+void PRUZEASoundEffectEditor::drawMainMenu(Graphics& graphics)
 {
     graphics.fillRoundRect(56, 42, 208, 166, 8, COLOR_PANEL);
     graphics.drawRoundRect(56, 42, 208, 166, 8, 2, COLOR_BAR);
@@ -809,7 +809,7 @@ void PLAMIOSoundEffectEditor::drawMainMenu(Graphics& graphics)
     }
 }
 
-void PLAMIOSoundEffectEditor::drawSlotMenu(Graphics& graphics, bool saving)
+void PRUZEASoundEffectEditor::drawSlotMenu(Graphics& graphics, bool saving)
 {
     graphics.fillRoundRect(52, 50, 216, 145, 8, COLOR_PANEL);
     graphics.drawRoundRect(52, 50, 216, 145, 8, 2, COLOR_BAR);
@@ -831,7 +831,7 @@ void PLAMIOSoundEffectEditor::drawSlotMenu(Graphics& graphics, bool saving)
     }
 }
 
-void PLAMIOSoundEffectEditor::drawConfirmation(Graphics& graphics, const char* title,
+void PRUZEASoundEffectEditor::drawConfirmation(Graphics& graphics, const char* title,
                                          const char* message, const char* yesText)
 {
     graphics.fillRoundRect(35, 69, 250, 105, 8, COLOR_PANEL);
@@ -845,7 +845,7 @@ void PLAMIOSoundEffectEditor::drawConfirmation(Graphics& graphics, const char* t
                         Graphics::HorizontalAlign::RIGHT, Graphics::VerticalAlign::TOP);
 }
 
-const char* PLAMIOSoundEffectEditor::fieldName(Field field)
+const char* PRUZEASoundEffectEditor::fieldName(Field field)
 {
     switch (field)
     {
@@ -858,7 +858,7 @@ const char* PLAMIOSoundEffectEditor::fieldName(Field field)
     }
 }
 
-float PLAMIOSoundEffectEditor::clampVolume(float value)
+float PRUZEASoundEffectEditor::clampVolume(float value)
 {
     if (value < 0.0f) return 0.0f;
     if (value > 1.0f) return 1.0f;

@@ -1,11 +1,11 @@
-﻿#include "PLAMIO.h"
+#include "PRUZEA.h"
 
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 namespace
@@ -416,4 +416,4 @@ bool SaveData::save(Storage& storage, const char* gameId, const char* fileName)
     return ok;
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

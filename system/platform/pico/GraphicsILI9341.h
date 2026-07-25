@@ -3,7 +3,7 @@
 #include "GraphicsBase.h"
 #include <LovyanGFX.hpp>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class LGFX_ILI9341 : public lgfx::LGFX_Device
 {

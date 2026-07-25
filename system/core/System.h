@@ -10,7 +10,7 @@
 #include <atomic>
 #include <stdint.h>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class System
@@ -127,4 +127,4 @@ private:
     void stopAllServices(bool keepDisplayActive);
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

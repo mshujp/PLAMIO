@@ -1,17 +1,17 @@
-#include "PlamioAPIsSSD1306.h"
+#include "PruzeaAPIsSSD1306.h"
 
 #include <cmath>
 #include <cstdio>
 
-using PLAMIO::Audio;
-using PLAMIO::Graphics;
-using PLAMIO::Input;
-namespace Platform = PLAMIO::Platform;
-using PLAMIO::Storage;
+using PRUZEA::Audio;
+using PRUZEA::Graphics;
+using PRUZEA::Input;
+namespace Platform = PRUZEA::Platform;
+using PRUZEA::Storage;
 
 namespace {
-constexpr uint16_t TARGET_W = PLAMIO::Display::SSD1306_SCREEN_W;
-constexpr uint16_t TARGET_H = PLAMIO::Display::SSD1306_SCREEN_H;
+constexpr uint16_t TARGET_W = PRUZEA::Display::SSD1306_SCREEN_W;
+constexpr uint16_t TARGET_H = PRUZEA::Display::SSD1306_SCREEN_H;
 constexpr uint16_t LOGICAL_W = TARGET_W; 
 constexpr uint16_t LOGICAL_H = TARGET_H;
 
@@ -59,16 +59,16 @@ static const uint16_t TEST_SPRITE[8 * 8] = {
 };
 }
 
-const char* PlamioAPIsSSD1306::getId() const { return "plamioapis1306sample"; }
-const char* PlamioAPIsSSD1306::getName() const { return "PLAMIO APIs SSD1306"; }
-const char* PlamioAPIsSSD1306::getMenuName() const { return "01 PLAMIO APIs for SSD1306"; }
+const char* PruzeaAPIsSSD1306::getId() const { return "pruzeaapis1306sample"; }
+const char* PruzeaAPIsSSD1306::getName() const { return "PRUZEA APIs SSD1306"; }
+const char* PruzeaAPIsSSD1306::getMenuName() const { return "01 PRUZEA APIs for SSD1306"; }
 
-uint16_t PlamioAPIsSSD1306::getLogicalScreenWidth() const { return LOGICAL_W; }
-uint16_t PlamioAPIsSSD1306::getLogicalScreenHeight() const { return LOGICAL_H; }
-uint16_t PlamioAPIsSSD1306::getTargetScreenWidth() const { return TARGET_W; }
-uint16_t PlamioAPIsSSD1306::getTargetScreenHeight() const { return TARGET_H; }
+uint16_t PruzeaAPIsSSD1306::getLogicalScreenWidth() const { return LOGICAL_W; }
+uint16_t PruzeaAPIsSSD1306::getLogicalScreenHeight() const { return LOGICAL_H; }
+uint16_t PruzeaAPIsSSD1306::getTargetScreenWidth() const { return TARGET_W; }
+uint16_t PruzeaAPIsSSD1306::getTargetScreenHeight() const { return TARGET_H; }
 
-void PlamioAPIsSSD1306::onInit(Storage& storage) {
+void PruzeaAPIsSSD1306::onInit(Storage& storage) {
     (void)storage;
     mode = Mode::TITLE;
     drawStep = 0;
@@ -78,7 +78,7 @@ void PlamioAPIsSSD1306::onInit(Storage& storage) {
     dirty = true;
 }
 
-PLAMIO::Game::GameState PlamioAPIsSSD1306::onUpdate(
+PRUZEA::Game::GameState PruzeaAPIsSSD1306::onUpdate(
     Input& input, Audio& audio, Storage& storage, float deltaSec) {
     (void)storage;
     (void)deltaSec;
@@ -104,7 +104,7 @@ PLAMIO::Game::GameState PlamioAPIsSSD1306::onUpdate(
     return GameState::RUNNING;
 }
 
-bool PlamioAPIsSSD1306::onDraw(Graphics& graphics, bool requestFullRedraw) {
+bool PruzeaAPIsSSD1306::onDraw(Graphics& graphics, bool requestFullRedraw) {
     if (!requestFullRedraw && !dirty) {
         return false;
     }
@@ -124,11 +124,11 @@ bool PlamioAPIsSSD1306::onDraw(Graphics& graphics, bool requestFullRedraw) {
     return true;
 }
 
-void PlamioAPIsSSD1306::onTerminate(Storage& storage) {
+void PruzeaAPIsSSD1306::onTerminate(Storage& storage) {
     (void)storage;
 }
 
-void PlamioAPIsSSD1306::enterGraphics(Audio& audio) {
+void PruzeaAPIsSSD1306::enterGraphics(Audio& audio) {
     mode = Mode::GRAPHICS;
     drawStep = 0;
     stepStartMsec = Platform::getMsec();
@@ -136,7 +136,7 @@ void PlamioAPIsSSD1306::enterGraphics(Audio& audio) {
     dirty = true;
 }
 
-void PlamioAPIsSSD1306::changeStep(int8_t amount, Audio& audio) {
+void PruzeaAPIsSSD1306::changeStep(int8_t amount, Audio& audio) {
     int16_t next = static_cast<int16_t>(drawStep) + amount;
     while (next < 0) next += STEP_COUNT;
     while (next >= STEP_COUNT) next -= STEP_COUNT;
@@ -149,14 +149,14 @@ void PlamioAPIsSSD1306::changeStep(int8_t amount, Audio& audio) {
     dirty = true;
 }
 
-void PlamioAPIsSSD1306::playTestSE(
+void PruzeaAPIsSSD1306::playTestSE(
     Audio& audio, const Audio::Sound* sound, float gain, uint16_t iconMsec) {
     audio.playSE(sound, gain);
     speakerIconUntilMsec = Platform::getMsec() + iconMsec;
     dirty = true;
 }
 
-void PlamioAPIsSSD1306::updateInputMask(Input& input) {
+void PruzeaAPIsSSD1306::updateInputMask(Input& input) {
     const uint16_t previous = inputMask;
     inputMask = 0;
 
@@ -172,7 +172,7 @@ void PlamioAPIsSSD1306::updateInputMask(Input& input) {
     }
 }
 
-void PlamioAPIsSSD1306::updateTitle(Input& input, Audio& audio) {
+void PruzeaAPIsSSD1306::updateTitle(Input& input, Audio& audio) {
     if (input.justPressed(Input::A)) {
         enterGraphics(audio);
         return;
@@ -187,7 +187,7 @@ void PlamioAPIsSSD1306::updateTitle(Input& input, Audio& audio) {
     }
 }
 
-void PlamioAPIsSSD1306::updateGraphics(Input& input, Audio& audio) {
+void PruzeaAPIsSSD1306::updateGraphics(Input& input, Audio& audio) {
     // Moving graphics and viewport animation require continuous redraw.
     dirty = true;
 
@@ -212,10 +212,10 @@ void PlamioAPIsSSD1306::updateGraphics(Input& input, Audio& audio) {
     }
 }
 
-void PlamioAPIsSSD1306::drawTitle(Graphics& g) {
+void PruzeaAPIsSSD1306::drawTitle(Graphics& g) {
     g.clearScreen();
     g.drawRoundRect(1, 1, 126, 62, 5, ON);
-    g.drawString("PLAMIO", 64, 9, ON, Graphics::SIZE_18,
+    g.drawString("PRUZEA", 64, 9, ON, Graphics::SIZE_18,
                  Graphics::HorizontalAlign::CENTER,
                  Graphics::VerticalAlign::TOP);
     g.drawString("API TEST", 64, 29, ON, Graphics::SIZE_13,
@@ -231,7 +231,7 @@ void PlamioAPIsSSD1306::drawTitle(Graphics& g) {
     drawInputOverlay(g);
 }
 
-void PlamioAPIsSSD1306::drawGraphicsTest(Graphics& g) {
+void PruzeaAPIsSSD1306::drawGraphicsTest(Graphics& g) {
     if (drawStep == 18) {
         drawViewportTest(g);
     } else {
@@ -255,7 +255,7 @@ void PlamioAPIsSSD1306::drawGraphicsTest(Graphics& g) {
     drawInputOverlay(g);
 }
 
-void PlamioAPIsSSD1306::drawMovingShape(
+void PruzeaAPIsSSD1306::drawMovingShape(
     Graphics& g, uint8_t step, int16_t x, int16_t y) {
     switch (step) {
         case 0:
@@ -328,7 +328,7 @@ void PlamioAPIsSSD1306::drawMovingShape(
     }
 }
 
-void PlamioAPIsSSD1306::drawFontTest(Graphics& g) {
+void PruzeaAPIsSSD1306::drawFontTest(Graphics& g) {
     g.drawString("SIZE_10", 3, 14, ON, Graphics::SIZE_10);
     g.drawString("SIZE_13", 3, 25, ON, Graphics::SIZE_13);
     g.drawString("SIZE_18", 3, 39, ON, Graphics::SIZE_18);
@@ -344,7 +344,7 @@ void PlamioAPIsSSD1306::drawFontTest(Graphics& g) {
                  Graphics::VerticalAlign::BOTTOM);
 }
 
-void PlamioAPIsSSD1306::drawAlignmentTest(Graphics& g) {
+void PruzeaAPIsSSD1306::drawAlignmentTest(Graphics& g) {
     const int16_t xs[3] = {20, 64, 108};
     const int16_t ys[3] = {19, 36, 54};
     const Graphics::HorizontalAlign ha[3] = {
@@ -372,7 +372,7 @@ void PlamioAPIsSSD1306::drawAlignmentTest(Graphics& g) {
     }
 }
 
-void PlamioAPIsSSD1306::drawViewportTest(Graphics& g) {
+void PruzeaAPIsSSD1306::drawViewportTest(Graphics& g) {
     const uint32_t elapsed = Platform::getMsec() - stepStartMsec;
     const float angle = static_cast<float>(elapsed) * 0.004f;
     const int16_t vx = static_cast<int16_t>(std::sin(angle) * 24.0f);
@@ -392,14 +392,14 @@ void PlamioAPIsSSD1306::drawViewportTest(Graphics& g) {
     g.drawRoundRect(37, 15, 54, 34, 5, 2, ON);
 }
 
-void PlamioAPIsSSD1306::drawSpriteTest(Graphics& g) {
+void PruzeaAPIsSSD1306::drawSpriteTest(Graphics& g) {
     const int16_t x = getAnimX(Platform::getMsec());
     g.drawSprite(TEST_SPRITE, x - 8, 20, 8, 8, 1, OFF);
     g.drawSprite(TEST_SPRITE, x, 27, 8, 8, 2, OFF);
     g.drawSprite(TEST_SPRITE, x + 18, 35, 8, 8, 3, OFF, true, false);
 }
 
-void PlamioAPIsSSD1306::drawInputOverlay(Graphics& g) {
+void PruzeaAPIsSSD1306::drawInputOverlay(Graphics& g) {
     if ((inputMask & Input::UP) != 0) {
         g.drawLine(0, 0, TARGET_W - 1, 0, ON);
     }
@@ -434,7 +434,7 @@ void PlamioAPIsSSD1306::drawInputOverlay(Graphics& g) {
     }
 }
 
-void PlamioAPIsSSD1306::drawSpeakerIcon(Graphics& g, int16_t x, int16_t y) {
+void PruzeaAPIsSSD1306::drawSpeakerIcon(Graphics& g, int16_t x, int16_t y) {
     g.fillRect(x, y + 3, 3, 4, ON);
     g.fillTriangle(x + 2, y + 3, x + 6, y, x + 6, y + 9, ON);
     g.drawLine(x + 8, y + 2, x + 9, y + 3, ON);
@@ -442,7 +442,7 @@ void PlamioAPIsSSD1306::drawSpeakerIcon(Graphics& g, int16_t x, int16_t y) {
     g.drawLine(x + 9, y + 6, x + 8, y + 7, ON);
 }
 
-int16_t PlamioAPIsSSD1306::getAnimX(uint32_t now) const {
+int16_t PruzeaAPIsSSD1306::getAnimX(uint32_t now) const {
     const uint32_t elapsed = now - stepStartMsec;
     const uint32_t travelMsec = (STEP_MSEC - HOLD_MSEC) / 2;
 
@@ -464,6 +464,6 @@ int16_t PlamioAPIsSSD1306::getAnimX(uint32_t now) const {
         static_cast<int32_t>(travelMsec));
 }
 
-const char* PlamioAPIsSSD1306::getStepName() const {
+const char* PruzeaAPIsSSD1306::getStepName() const {
     return drawStep < STEP_COUNT ? STEP_NAMES[drawStep] : "Graphics";
 }

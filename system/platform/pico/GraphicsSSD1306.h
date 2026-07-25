@@ -3,7 +3,7 @@
 #include "GraphicsBase.h"
 #include <LovyanGFX.hpp>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class LGFX_SSD1306 : public lgfx::LGFX_Device {
 private:
@@ -92,4 +92,4 @@ public:
     void push() override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

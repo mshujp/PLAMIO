@@ -1,14 +1,14 @@
 #pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include <stddef.h>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class InputBase : public Input
 {
 public:
-    // Physical-input identifiers associated with PLAMIO logical buttons.
+    // Physical-input identifiers associated with PRUZEA logical buttons.
     // The meaning of each value is defined by the derived input class.
     // Examples:
     //   InputGpioButtons / InputSnes auxiliary buttons: GPIO number
@@ -96,4 +96,4 @@ public:
     bool repeat(Button b) const override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

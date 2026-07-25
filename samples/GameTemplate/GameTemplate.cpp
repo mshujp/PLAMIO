@@ -1,17 +1,17 @@
-﻿#include "GameTemplate.h"
+#include "GameTemplate.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
-void GameTemplate::onInit(PLAMIO::Storage& storage)
+void GameTemplate::onInit(PRUZEA::Storage& storage)
 {
 }
 
-PLAMIO::Game::GameState GameTemplate::onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec)
+PRUZEA::Game::GameState GameTemplate::onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec)
 {
-    return PLAMIO::Game::GameState::RUNNING;
+    return PRUZEA::Game::GameState::RUNNING;
 }
 
-bool GameTemplate::onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw)
+bool GameTemplate::onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw)
 {
     if (!requestFullRedraw && !dirty) {
     	// Skip drawing when nothing has changed.
@@ -22,6 +22,6 @@ bool GameTemplate::onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw)
     return true;
 }
 
-void GameTemplate::onTerminate(PLAMIO::Storage& storage)
+void GameTemplate::onTerminate(PRUZEA::Storage& storage)
 {
 }

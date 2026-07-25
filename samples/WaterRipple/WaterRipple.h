@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // WaterRipple
 //
-// PLAMIO Graphics API Sample
+// PRUZEA Graphics API Sample
 //
 // Demonstrates:
 //
@@ -11,13 +11,13 @@
 //   * Layered visual effects
 //
 // Learn how to create a simple water ripple effect using
-// the PLAMIO Graphics API.
+// the PRUZEA Graphics API.
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class WaterRipple : public PLAMIO::Game
+class WaterRipple : public PRUZEA::Game
 {
 public:
     const char* getId() const override { return "waterripple"; }
@@ -31,13 +31,13 @@ public:
     uint16_t getTargetScreenHeight() const override { return 240; }
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    GameState onUpdate(PLAMIO::Input& input,
-                       PLAMIO::Audio& audio,
-                       PLAMIO::Storage& storage,
+    void onInit(PRUZEA::Storage& storage) override;
+    GameState onUpdate(PRUZEA::Input& input,
+                       PRUZEA::Audio& audio,
+                       PRUZEA::Storage& storage,
                        float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     struct Ripple

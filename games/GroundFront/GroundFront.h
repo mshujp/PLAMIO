@@ -1,8 +1,8 @@
-﻿// ------------------------------------------------------------
-// PLAMIO Sample Game
+// ------------------------------------------------------------
+// PRUZEA Sample Game
 //
 // This sample demonstrates the basic structure and common
-// features used when developing games with PLAMIO.
+// features used when developing games with PRUZEA.
 //
 // Included features:
 //
@@ -18,14 +18,14 @@
 // - BGM and sound effects
 //
 // Use this project as a reference when creating your own
-// games with PLAMIO.
+// games with PRUZEA.
 // ----------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include <cstdint>
 
-class GroundFront final : public PLAMIO::Game {
+class GroundFront final : public PRUZEA::Game {
 public:
     GroundFront();
 
@@ -38,10 +38,10 @@ public:
     uint16_t getTargetScreenWidth() const override;
     uint16_t getTargetScreenHeight() const override;
 
-    void onInit(PLAMIO::Storage& storage) override;
-    GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     enum InternalMode : uint8_t {
@@ -154,19 +154,19 @@ private:
     const char* savePath_ = "ranking.txt";
 
     void resetRun();
-    void startRun(PLAMIO::Audio& audio);
+    void startRun(PRUZEA::Audio& audio);
     void shiftGameTimers(uint64_t pausedMsec);
-    void updatePlaying(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, uint64_t now);
-    void updatePlayer(PLAMIO::Input& input, PLAMIO::Audio& audio, uint64_t now);
+    void updatePlaying(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, uint64_t now);
+    void updatePlayer(PRUZEA::Input& input, PRUZEA::Audio& audio, uint64_t now);
     void updatePlayerBullets(uint64_t now);
-    void updateEnemies(PLAMIO::Audio& audio, uint64_t now);
-    void updateEnemyBullets(PLAMIO::Audio& audio, uint64_t now);
-    void updateBoss(PLAMIO::Audio& audio, PLAMIO::Storage& storage, uint64_t now);
+    void updateEnemies(PRUZEA::Audio& audio, uint64_t now);
+    void updateEnemyBullets(PRUZEA::Audio& audio, uint64_t now);
+    void updateBoss(PRUZEA::Audio& audio, PRUZEA::Storage& storage, uint64_t now);
     void updateParticles(uint64_t now);
 
     void spawnEnemy(uint64_t now);
-    void spawnBoss(uint64_t now, PLAMIO::Audio& audio);
-    void firePlayerShot(PLAMIO::Audio& audio);
+    void spawnBoss(uint64_t now, PRUZEA::Audio& audio);
+    void firePlayerShot(PRUZEA::Audio& audio);
     void fireEnemyAimed(float x, float y, float speed);
     void fireEnemyFan(float x, float y, uint8_t count, float speed, float spread);
     void fireEnemyRing(float x, float y, uint8_t count, float speed, float angleOffset);
@@ -175,23 +175,23 @@ private:
     void addExplosion(float x, float y, uint8_t count, uint64_t now);
 
     bool hitCircle(float ax, float ay, float ar, float bx, float by, float br) const;
-    void damagePlayer(PLAMIO::Audio& audio, uint64_t now);
-    void finishRun(bool cleared, PLAMIO::Audio& audio, PLAMIO::Storage& storage, uint64_t now);
+    void damagePlayer(PRUZEA::Audio& audio, uint64_t now);
+    void finishRun(bool cleared, PRUZEA::Audio& audio, PRUZEA::Storage& storage, uint64_t now);
 
-    void loadRanking(PLAMIO::Storage& storage);
+    void loadRanking(PRUZEA::Storage& storage);
     void registerScore();
-    void saveRanking(PLAMIO::Storage& storage);
+    void saveRanking(PRUZEA::Storage& storage);
 
-    void drawBackground(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawSidePanels(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawTitle(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawPlayfield(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawPlayer(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawEnemies(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawBoss(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawBullets(PLAMIO::Graphics& graphics);
-    void drawParticles(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawPause(PLAMIO::Graphics& graphics);
-    void drawResult(PLAMIO::Graphics& graphics, uint64_t now);
-    void drawRanking(PLAMIO::Graphics& graphics, uint64_t now);
+    void drawBackground(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawSidePanels(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawTitle(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawPlayfield(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawPlayer(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawEnemies(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawBoss(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawBullets(PRUZEA::Graphics& graphics);
+    void drawParticles(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawPause(PRUZEA::Graphics& graphics);
+    void drawResult(PRUZEA::Graphics& graphics, uint64_t now);
+    void drawRanking(PRUZEA::Graphics& graphics, uint64_t now);
 };

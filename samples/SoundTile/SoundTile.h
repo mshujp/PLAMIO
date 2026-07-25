@@ -1,7 +1,7 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // SoundTiles
 //
-// PLAMIO Audio (Sound Effect) API Sample
+// PRUZEA Audio (Sound Effect) API Sample
 //
 // Demonstrates:
 //
@@ -13,9 +13,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class SoundTile : public PLAMIO::Game
+class SoundTile : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -29,18 +29,18 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
     GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec
     ) override;
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw
     ) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     static constexpr uint8_t COLS = 5;

@@ -1,7 +1,7 @@
-﻿#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include <algorithm>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 float Tween::lerp(float from, float to, float t)
 {

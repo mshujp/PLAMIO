@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 SystemUI::SystemUI(GetSystemInfoHandler infoHandler, void* infoContext)
     : getSystemInfoHandler(infoHandler),
@@ -12,17 +12,17 @@ SystemUI::SystemUI(GetSystemInfoHandler infoHandler, void* infoContext)
 
 const char* SystemUI::getId() const
 {
-    return "plamio_systemui";
+    return "pruzea_systemui";
 }
 
 const char* SystemUI::getName() const
 {
-    return "PLAMIO SystemUI";
+    return "PRUZEA SystemUI";
 }
 
 const char* SystemUI::getMenuName() const
 {
-    return "PLAMIO SystemUI";
+    return "PRUZEA SystemUI";
 }
 
 void SystemUI::setCatalog(GameCatalog* catalog)
@@ -406,7 +406,7 @@ const char* SystemUI::getCurrentMenuTitle() const
 {
     if (catalog == nullptr || !isInsideGroup())
     {
-        return "PLAMIO";
+        return "PRUZEA";
     }
 
     const char* name = catalog->getGroupName(currentGroupIndex);

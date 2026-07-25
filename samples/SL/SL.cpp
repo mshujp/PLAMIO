@@ -1,8 +1,8 @@
-﻿#include "SL.h"
+#include "SL.h"
 #include <cstdlib>
 #include <cmath>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 static const char* const SL_ART[] = {
@@ -129,4 +129,4 @@ bool SL::onDraw(Graphics& graphics, bool requestFullRedraw) {
 void SL::onTerminate(Storage& storage) {
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

@@ -1,13 +1,13 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // SL
 //
 // Inspired by the classic "sl".
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 class SL : public Game {
 private:
@@ -52,4 +52,4 @@ public:
     void onTerminate(Storage& storage) override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

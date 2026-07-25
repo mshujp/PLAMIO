@@ -1,7 +1,7 @@
 #include "CoreRing.h"
 #include "Platform.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

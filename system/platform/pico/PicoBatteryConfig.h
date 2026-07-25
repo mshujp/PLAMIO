@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace PLAMIO::PicoPlatform {
+namespace PRUZEA::PicoPlatform {
 
 struct BatteryConfig
 {
@@ -15,4 +15,4 @@ struct BatteryConfig
     float cutoffVoltage = 0.0f;
 };
 
-} // namespace PLAMIO::PicoPlatform
+} // namespace PRUZEA::PicoPlatform

@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -52,7 +52,7 @@ void SystemUI128x64Mono::drawSplash(Graphics& graphics)
     graphics.fillScreen(COL_BG);
 
     graphics.drawString(
-        "PLAMIO",
+        "PRUZEA",
         SCREEN_W / 2,
         20,
         COL_FG,

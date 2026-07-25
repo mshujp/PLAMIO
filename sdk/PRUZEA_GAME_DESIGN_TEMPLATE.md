@@ -1,4 +1,4 @@
-﻿PLAMIO Game design template
+PRUZEA Game design template
 
 --- ---------------------------------------------------------------------
  # Hardware Specifications

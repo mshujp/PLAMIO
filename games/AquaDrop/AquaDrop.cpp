@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 constexpr uint8_t AquaDrop::STAGE_COLOR_COUNT[AquaDrop::STAGE_COUNT];
 constexpr uint16_t AquaDrop::STAGE_TARGET[AquaDrop::STAGE_COUNT];

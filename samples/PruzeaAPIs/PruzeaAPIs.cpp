@@ -1,16 +1,16 @@
-﻿#include "PlamioAPIs.h"
+#include "PruzeaAPIs.h"
 
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-using PLAMIO::Audio;
-using PLAMIO::Graphics;
-using PLAMIO::Input;
-using PLAMIO::SaveData;
-namespace Platform = PLAMIO::Platform;
-using PLAMIO::Storage;
+using PRUZEA::Audio;
+using PRUZEA::Graphics;
+using PRUZEA::Input;
+using PRUZEA::SaveData;
+namespace Platform = PRUZEA::Platform;
+using PRUZEA::Storage;
 
 namespace {
 constexpr uint16_t SCREEN_W = 320;
@@ -165,15 +165,15 @@ void drawGrid(Graphics& g) {
 }
 }
 
-const char* PlamioAPIs::getId() const { return "plamioapisssample"; }
-const char* PlamioAPIs::getName() const { return "PLAMIO APIs"; }
-const char* PlamioAPIs::getMenuName() const{ return "01 PLAMIO APIs"; }
-uint16_t PlamioAPIs::getLogicalScreenWidth() const { return 320; }
-uint16_t PlamioAPIs::getLogicalScreenHeight() const { return 240; }
-uint16_t PlamioAPIs::getTargetScreenWidth() const { return SCREEN_W; }
-uint16_t PlamioAPIs::getTargetScreenHeight() const { return SCREEN_H; }
+const char* PruzeaAPIs::getId() const { return "pruzeaapisssample"; }
+const char* PruzeaAPIs::getName() const { return "PRUZEA APIs"; }
+const char* PruzeaAPIs::getMenuName() const{ return "01 PRUZEA APIs"; }
+uint16_t PruzeaAPIs::getLogicalScreenWidth() const { return 320; }
+uint16_t PruzeaAPIs::getLogicalScreenHeight() const { return 240; }
+uint16_t PruzeaAPIs::getTargetScreenWidth() const { return SCREEN_W; }
+uint16_t PruzeaAPIs::getTargetScreenHeight() const { return SCREEN_H; }
 
-void PlamioAPIs::onInit(Storage& storage) {
+void PruzeaAPIs::onInit(Storage& storage) {
     (void)storage;
     mode = Mode::TITLE;
     titleIndex = 0;
@@ -200,7 +200,7 @@ void PlamioAPIs::onInit(Storage& storage) {
     saveDataUsedBytes = 0;
 }
 
-PLAMIO::Game::GameState PlamioAPIs::onUpdate(Input& input, Audio& audio, Storage& storage, float deltaSec) {
+PRUZEA::Game::GameState PruzeaAPIs::onUpdate(Input& input, Audio& audio, Storage& storage, float deltaSec) {
     switch (mode) {
         case Mode::TITLE: updateTitle(input, audio, storage); break;
         case Mode::DRAW_TEST: updateDrawTest(input, audio); break;
@@ -211,7 +211,7 @@ PLAMIO::Game::GameState PlamioAPIs::onUpdate(Input& input, Audio& audio, Storage
     return GameState::RUNNING;
 }
 
-bool PlamioAPIs::onDraw(Graphics& graphics, bool requestFullRedraw) {
+bool PruzeaAPIs::onDraw(Graphics& graphics, bool requestFullRedraw) {
     if (!requestFullRedraw && !dirty) {
         return false;
     }
@@ -229,11 +229,11 @@ bool PlamioAPIs::onDraw(Graphics& graphics, bool requestFullRedraw) {
     return drew;
 }
 
-void PlamioAPIs::onTerminate(Storage& storage) {
+void PruzeaAPIs::onTerminate(Storage& storage) {
     (void)storage;
 }
 
-bool PlamioAPIs::writeStorageLine(std::string& line, void* arg) {
+bool PruzeaAPIs::writeStorageLine(std::string& line, void* arg) {
     auto* context = static_cast<StorageContext*>(arg);
     if (context == nullptr || context->self == nullptr || context->wrote) {
         return false;
@@ -245,8 +245,8 @@ bool PlamioAPIs::writeStorageLine(std::string& line, void* arg) {
     return true;
 }
 
-bool PlamioAPIs::readStorageLine(const char* line, void* arg) {
-    auto* self = static_cast<PlamioAPIs*>(arg);
+bool PruzeaAPIs::readStorageLine(const char* line, void* arg) {
+    auto* self = static_cast<PruzeaAPIs*>(arg);
     if (self == nullptr || line == nullptr) {
         return true;
     }
@@ -256,7 +256,7 @@ bool PlamioAPIs::readStorageLine(const char* line, void* arg) {
     return true;
 }
 
-void PlamioAPIs::resetToTitle(Audio& audio) {
+void PruzeaAPIs::resetToTitle(Audio& audio) {
     audio.stopMusic();
     mode = Mode::TITLE;
     modeStartMsec = Platform::getMsec();
@@ -265,7 +265,7 @@ void PlamioAPIs::resetToTitle(Audio& audio) {
     dirty = true;
 }
 
-void PlamioAPIs::enterDrawTest(Audio& audio) {
+void PruzeaAPIs::enterDrawTest(Audio& audio) {
     audio.stopMusic();
     mode = Mode::DRAW_TEST;
     drawStep = 0;
@@ -274,7 +274,7 @@ void PlamioAPIs::enterDrawTest(Audio& audio) {
     audio.playSE(&Audio::SE::NO_8, 0.7f);
 }
 
-void PlamioAPIs::enterInputTest(Audio& audio) {
+void PruzeaAPIs::enterInputTest(Audio& audio) {
     audio.stopMusic();
     mode = Mode::INPUT_TEST;
     modeStartMsec = Platform::getMsec();
@@ -282,7 +282,7 @@ void PlamioAPIs::enterInputTest(Audio& audio) {
     audio.playSE(&Audio::SE::NO_1, 0.7f);
 }
 
-void PlamioAPIs::enterAudioTest(Audio& audio) {
+void PruzeaAPIs::enterAudioTest(Audio& audio) {
     audio.stopMusic();
     mode = Mode::AUDIO_TEST;
     audioRow = AudioRow::SE;
@@ -291,7 +291,7 @@ void PlamioAPIs::enterAudioTest(Audio& audio) {
     audio.playSE(&Audio::SE::NO_1, 0.7f);
 }
 
-void PlamioAPIs::enterStorageTest(Audio& audio, Storage& storage) {
+void PruzeaAPIs::enterStorageTest(Audio& audio, Storage& storage) {
     audio.stopMusic();
     mode = Mode::STORAGE_TEST;
     modeStartMsec = Platform::getMsec();
@@ -302,7 +302,7 @@ void PlamioAPIs::enterStorageTest(Audio& audio, Storage& storage) {
     audio.playSE(allOk ? &Audio::SE::NO_3 : &Audio::SE::NO_12, 0.8f);
 }
 
-void PlamioAPIs::runStorageTest(Storage& storage) {
+void PruzeaAPIs::runStorageTest(Storage& storage) {
     storageWriteValue = (static_cast<uint32_t>(rand()) << 1) ^ Platform::getMsec();
     storageReadValue = 0;
     storageAvailable = storage.isAvailable();
@@ -325,9 +325,9 @@ void PlamioAPIs::runStorageTest(Storage& storage) {
     // Low-level UserFile callback API test.
     StorageContext context = {this, false};
     storageWriteOk = storage.writeUserFile(
-        getId(), "userfile_test.txt", PlamioAPIs::writeStorageLine, &context);
+        getId(), "userfile_test.txt", PruzeaAPIs::writeStorageLine, &context);
     storageReadOk = storage.readUserFile(
-        getId(), "userfile_test.txt", PlamioAPIs::readStorageLine, this);
+        getId(), "userfile_test.txt", PruzeaAPIs::readStorageLine, this);
     storageMatch = storageWriteOk && storageReadOk &&
                    storageWriteValue == storageReadValue;
 
@@ -335,7 +335,7 @@ void PlamioAPIs::runStorageTest(Storage& storage) {
     SaveData saveData;
     const int32_t signedValue = -12345;
     const bool flagValue = true;
-    const char* const textValue = "PLAMIO";
+    const char* const textValue = "PRUZEA";
 
     saveDataSetOk =
         saveData.setUInt32("random", storageWriteValue) &&
@@ -364,7 +364,7 @@ void PlamioAPIs::runStorageTest(Storage& storage) {
     dirty = true;
 }
 
-void PlamioAPIs::nextDrawStep(Audio& audio) {
+void PruzeaAPIs::nextDrawStep(Audio& audio) {
     drawStep++;
     if (drawStep >= DRAW_STEP_COUNT) {
         resetToTitle(audio);
@@ -374,7 +374,7 @@ void PlamioAPIs::nextDrawStep(Audio& audio) {
     audio.playSE(&Audio::SE::NO_1, 0.6f);
 }
 
-void PlamioAPIs::updateTitle(Input& input, Audio& audio, Storage& storage) {
+void PruzeaAPIs::updateTitle(Input& input, Audio& audio, Storage& storage) {
     if (input.justPressed(Input::LEFT) || input.justPressed(Input::RIGHT) ||
         input.justPressed(Input::UP) || input.justPressed(Input::DOWN)) {
         if (input.justPressed(Input::LEFT) && (titleIndex % 2) == 1) titleIndex--;
@@ -394,7 +394,7 @@ void PlamioAPIs::updateTitle(Input& input, Audio& audio, Storage& storage) {
     }
 }
 
-void PlamioAPIs::updateDrawTest(Input& input, Audio& audio) {
+void PruzeaAPIs::updateDrawTest(Input& input, Audio& audio) {
     dirty = true;
 
     if (input.justPressed(Input::B) || input.justPressed(Input::START)) {
@@ -410,7 +410,7 @@ void PlamioAPIs::updateDrawTest(Input& input, Audio& audio) {
     }
 }
 
-void PlamioAPIs::updateInputTest(Input& input, Audio& audio) {
+void PruzeaAPIs::updateInputTest(Input& input, Audio& audio) {
     uint16_t prev = inputMask;
     inputMask = 0;
     if (input.pressed(Input::B)) inputMask |= Input::B;
@@ -441,7 +441,7 @@ void PlamioAPIs::updateInputTest(Input& input, Audio& audio) {
     }
 }
 
-void PlamioAPIs::updateAudioTest(Input& input, Audio& audio) {
+void PruzeaAPIs::updateAudioTest(Input& input, Audio& audio) {
     if (input.justPressed(Input::START)) {
         resetToTitle(audio);
         dirty = true;
@@ -480,7 +480,7 @@ void PlamioAPIs::updateAudioTest(Input& input, Audio& audio) {
     }
 }
 
-void PlamioAPIs::updateStorageTest(Input& input, Audio& audio, Storage& storage) {
+void PruzeaAPIs::updateStorageTest(Input& input, Audio& audio, Storage& storage) {
     if (input.justPressed(Input::A)) {
         runStorageTest(storage);
         const bool allOk = storageMatch && saveDataMatch;
@@ -491,9 +491,9 @@ void PlamioAPIs::updateStorageTest(Input& input, Audio& audio, Storage& storage)
     }
 }
 
-bool PlamioAPIs::drawTitle(Graphics& g) {
+bool PruzeaAPIs::drawTitle(Graphics& g) {
     drawBackground(g);
-    g.drawString("PLAMIO APIs", 160, 28, COL_ACCENT, Graphics::SIZE_32B,
+    g.drawString("PRUZEA APIs", 160, 28, COL_ACCENT, Graphics::SIZE_32B,
                  Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
     g.drawString("Showcases of APIs", 160, 55, COL_DIM, Graphics::SIZE_18,
                  Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
@@ -507,7 +507,7 @@ bool PlamioAPIs::drawTitle(Graphics& g) {
     return true;
 }
 
-bool PlamioAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
+bool PruzeaAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
     const bool staticStep =
         drawStep == 15 ||
         drawStep == 16 ||
@@ -539,7 +539,7 @@ bool PlamioAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
     return true;
 }
 
-bool PlamioAPIs::drawInputTest(Graphics& g) {
+bool PruzeaAPIs::drawInputTest(Graphics& g) {
     drawBackground(g);
     drawHeader(g, "Input");
     g.drawString("Input Button Monitor", 160, 52, COL_TEXT, Graphics::SIZE_22B,
@@ -565,7 +565,7 @@ bool PlamioAPIs::drawInputTest(Graphics& g) {
     return true;
 }
 
-bool PlamioAPIs::drawAudioTest(Graphics& g) {
+bool PruzeaAPIs::drawAudioTest(Graphics& g) {
     drawBackground(g);
     drawHeader(g, "Audio");
 
@@ -584,7 +584,7 @@ bool PlamioAPIs::drawAudioTest(Graphics& g) {
     return true;
 }
 
-bool PlamioAPIs::drawStorageTest(Graphics& g) {
+bool PruzeaAPIs::drawStorageTest(Graphics& g) {
     drawBackground(g);
     drawHeader(g, "Storage");
 
@@ -626,25 +626,25 @@ bool PlamioAPIs::drawStorageTest(Graphics& g) {
     return true;
 }
 
-void PlamioAPIs::drawBackground(Graphics& g) {
+void PruzeaAPIs::drawBackground(Graphics& g) {
     g.fillScreen(COL_BG);
     drawGrid(g);
     g.drawRect(0, 0, SCREEN_W, UI_SAFE_BOTTOM, 1, COL_LINE);
 }
 
-void PlamioAPIs::drawHeader(Graphics& g, const char* label) {
+void PruzeaAPIs::drawHeader(Graphics& g, const char* label) {
     g.fillRect(0, 0, SCREEN_W, 34, COL_PANEL);
     g.drawLine(0, 34, SCREEN_W - 1, 34, COL_LINE);
     g.drawString(label, 10, 17, COL_ACCENT, Graphics::SIZE_18,
                  Graphics::HorizontalAlign::LEFT, Graphics::VerticalAlign::MIDDLE);
 }
 
-void PlamioAPIs::drawCenteredHint(Graphics& g, const char* text, int16_t y) {
+void PruzeaAPIs::drawCenteredHint(Graphics& g, const char* text, int16_t y) {
     g.drawString(text, 160, y, COL_DIM, Graphics::SIZE_18,
                  Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
 }
 
-void PlamioAPIs::drawMovingShape(Graphics& g, uint8_t step, int16_t x, int16_t y) {
+void PruzeaAPIs::drawMovingShape(Graphics& g, uint8_t step, int16_t x, int16_t y) {
     switch (step) {
         case 0:
             g.fillScreen(Graphics::rgb565(8, 20, 34));
@@ -703,7 +703,7 @@ void PlamioAPIs::drawMovingShape(Graphics& g, uint8_t step, int16_t x, int16_t y
     }
 }
 
-void PlamioAPIs::drawFontTest(Graphics& g) {
+void PruzeaAPIs::drawFontTest(Graphics& g) {
     const int16_t x = 22;
     int16_t y = 54;
     g.drawString("SIZE_10", x, y, COL_TEXT, Graphics::SIZE_10); y += 13;
@@ -717,7 +717,7 @@ void PlamioAPIs::drawFontTest(Graphics& g) {
     g.drawString("表示", 184, 146, COL_PURPLE, Graphics::SIZE_32J);
 }
 
-void PlamioAPIs::drawAlignmentTest(Graphics& g) {
+void PruzeaAPIs::drawAlignmentTest(Graphics& g) {
     const int16_t xs[3] = {58, 160, 262};
     const int16_t ys[3] = {70, 118, 166};
     const Graphics::HorizontalAlign has[3] = {Graphics::HorizontalAlign::LEFT, Graphics::HorizontalAlign::CENTER, Graphics::HorizontalAlign::RIGHT};
@@ -736,7 +736,7 @@ void PlamioAPIs::drawAlignmentTest(Graphics& g) {
     }
 }
 
-void PlamioAPIs::drawViewportTest(Graphics& g) {
+void PruzeaAPIs::drawViewportTest(Graphics& g) {
     const uint32_t now = Platform::getMsec();
     const float t = static_cast<float>(now - stepStartMsec) * 0.004f;
     const int16_t vx = static_cast<int16_t>(sinf(t) * 24.0f);
@@ -755,7 +755,7 @@ void PlamioAPIs::drawViewportTest(Graphics& g) {
     drawCenteredHint(g, "Viewport orbit test", 214);
 }
 
-void PlamioAPIs::drawSpriteTest(Graphics& g) {
+void PruzeaAPIs::drawSpriteTest(Graphics& g) {
     const int16_t baseY = 74;
     for (uint8_t scale = 1; scale <= 4; ++scale) {
         int16_t x = 34 + static_cast<int16_t>((scale - 1) * 68);
@@ -767,14 +767,14 @@ void PlamioAPIs::drawSpriteTest(Graphics& g) {
     }
 }
 
-void PlamioAPIs::drawButtonLamp(Graphics& g, int16_t x, int16_t y, int16_t w, int16_t h, const char* label, bool on) {
+void PruzeaAPIs::drawButtonLamp(Graphics& g, int16_t x, int16_t y, int16_t w, int16_t h, const char* label, bool on) {
     g.fillRoundRect(x, y, w, h, 8, on ? COL_ACCENT : COL_PANEL);
     g.drawRoundRect(x, y, w, h, 8, 2, on ? COL_TEXT : COL_LINE);
     g.drawString(label, x + w / 2, y + h / 2, on ? COL_BG : COL_TEXT, Graphics::SIZE_13,
                  Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
 }
 
-int16_t PlamioAPIs::getAnimX(uint32_t now) const {
+int16_t PruzeaAPIs::getAnimX(uint32_t now) const {
     const uint32_t elapsed = now - stepStartMsec;
     const uint32_t travelMsec = (DRAW_STEP_MSEC - DRAW_HOLD_MSEC) / 2;
     if (elapsed < travelMsec) {
@@ -788,17 +788,17 @@ int16_t PlamioAPIs::getAnimX(uint32_t now) const {
     return static_cast<int16_t>(150 - (230L * static_cast<int32_t>(outElapsed)) / static_cast<int32_t>(travelMsec));
 }
 
-const char* PlamioAPIs::getDrawStepName() const {
+const char* PruzeaAPIs::getDrawStepName() const {
     if (drawStep < DRAW_STEP_COUNT) return DRAW_STEP_NAMES[drawStep];
     return "Draw Test";
 }
 
-const char* PlamioAPIs::getSeName() const {
+const char* PruzeaAPIs::getSeName() const {
     if (seIndex < SE_COUNT) return SE_NAMES[seIndex];
     return "NO_1";
 }
 
-const Audio::Music* PlamioAPIs::getSelectedMusic(bool loop) const {
+const Audio::Music* PruzeaAPIs::getSelectedMusic(bool loop) const {
     uint8_t index = musicIndex;
     if (index >= MUSIC_COUNT) index = 0;
     return loop ? &MUSIC_LOOP[index] : &MUSIC_ONCE[index];

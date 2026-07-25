@@ -2,7 +2,7 @@
 
 #include "InputBase.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 // Experimental PlayStation controller input implementation.
 // Compile-tested only; communication with real hardware has not been verified.
@@ -38,4 +38,4 @@ public:
     void end() override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

@@ -93,7 +93,7 @@ function Remove-MatrixDirectory([string]$Path) {
 $matrix = if ($Mode -eq 'Full') { @(Get-FullMatrix) } else { @(Get-QuickMatrix) }
 $results = [Collections.Generic.List[object]]::new()
 New-Item -ItemType Directory -Path $buildRootPath -Force | Out-Null
-Write-Host "PLAMIO build matrix: $Mode ($($matrix.Count) configurations)"
+Write-Host "PRUZEA build matrix: $Mode ($($matrix.Count) configurations)"
 if ($IncludeExperimentalPS) {
     Write-Host 'Experimental PS input is compile-tested but hardware-unverified.'
 } else {
@@ -110,11 +110,11 @@ for ($index = 0; $index -lt $matrix.Count; $index++) {
 
     $configureArgs = @(
         '--fresh', '-S', $projectRoot, '-B', $buildDir, '-G', 'Ninja',
-        "-DPLAMIO_TARGET=$($entry.Target)", "-DPLAMIO_DISPLAY=$($entry.Display)",
-        "-DPLAMIO_INPUT=$($entry.Input)", "-DPLAMIO_AUDIO=$($entry.Audio)",
-        "-DPLAMIO_STORAGE=$($entry.Storage)", "-DPLAMIO_SAMPLES=$(ConvertTo-OnOff $entry.Samples)",
-        "-DPLAMIO_JAPANESE_FONT=$(ConvertTo-OnOff $entry.JapaneseFont)",
-        "-DPLAMIO_PSRAM=$(ConvertTo-OnOff $entry.Psram)", "-DPLAMIO_PIN_CONFIG=$($entry.Board)"
+        "-DPRUZEA_TARGET=$($entry.Target)", "-DPRUZEA_DISPLAY=$($entry.Display)",
+        "-DPRUZEA_INPUT=$($entry.Input)", "-DPRUZEA_AUDIO=$($entry.Audio)",
+        "-DPRUZEA_STORAGE=$($entry.Storage)", "-DPRUZEA_SAMPLES=$(ConvertTo-OnOff $entry.Samples)",
+        "-DPRUZEA_JAPANESE_FONT=$(ConvertTo-OnOff $entry.JapaneseFont)",
+        "-DPRUZEA_PSRAM=$(ConvertTo-OnOff $entry.Psram)", "-DPRUZEA_PIN_CONFIG=$($entry.Board)"
     )
     if (Test-Path -LiteralPath (Join-Path $picotoolDir 'picotoolConfig.cmake')) {
         $configureArgs += "-Dpicotool_DIR=$picotoolDir"
@@ -129,7 +129,7 @@ for ($index = 0; $index -lt $matrix.Count; $index++) {
     $stage = 'Configure'
     if ($configureExitCode -eq 0) {
         $stage = 'Build'
-        $buildArgs = @('--build', $buildDir, '--target', 'plamio')
+        $buildArgs = @('--build', $buildDir, '--target', 'pruzea')
         if ($Jobs -gt 0) { $buildArgs += @('--parallel', $Jobs) }
         $ErrorActionPreference = 'Continue'
         & cmake @buildArgs *> (Join-Path $buildDir 'build.log')

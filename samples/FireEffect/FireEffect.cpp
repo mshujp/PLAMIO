@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

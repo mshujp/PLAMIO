@@ -1,9 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "GraphicsBase.h"
 #include "StorageBase.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class ScreenShot
 {
@@ -32,4 +32,4 @@ public:
     static bool save(GraphicsBase& graphics, StorageBase& storage);
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

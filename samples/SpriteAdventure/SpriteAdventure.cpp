@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cmath>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

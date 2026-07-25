@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // SpriteAdventure
 //
-// PLAMIO Sprite and Camera Sample
+// PRUZEA Sprite and Camera Sample
 //
 // Demonstrates:
 //
@@ -15,9 +15,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class SpriteAdventure : public PLAMIO::Game
+class SpriteAdventure : public PRUZEA::Game
 {
 public:
     const char* getId() const override { return "spriteadventure"; }
@@ -31,16 +31,16 @@ public:
     uint16_t getTargetScreenHeight() const override { return 240; }
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
     GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec) override;
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     enum class Mode : uint8_t
@@ -92,21 +92,21 @@ private:
 
     void resetAdventure();
     void updatePlayer(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
         float deltaSec);
     void updateCamera();
-    void collectGems(PLAMIO::Audio& audio);
+    void collectGems(PRUZEA::Audio& audio);
 
     int16_t worldToScreenX(float worldX) const;
     bool isVisible(float worldX, int16_t width) const;
 
-    void drawTitle(PLAMIO::Graphics& graphics);
-    void drawWorld(PLAMIO::Graphics& graphics);
-    void drawBackground(PLAMIO::Graphics& graphics);
-    void drawGround(PLAMIO::Graphics& graphics);
-    void drawDecorations(PLAMIO::Graphics& graphics);
-    void drawGems(PLAMIO::Graphics& graphics);
-    void drawPlayer(PLAMIO::Graphics& graphics);
-    void drawHud(PLAMIO::Graphics& graphics);
+    void drawTitle(PRUZEA::Graphics& graphics);
+    void drawWorld(PRUZEA::Graphics& graphics);
+    void drawBackground(PRUZEA::Graphics& graphics);
+    void drawGround(PRUZEA::Graphics& graphics);
+    void drawDecorations(PRUZEA::Graphics& graphics);
+    void drawGems(PRUZEA::Graphics& graphics);
+    void drawPlayer(PRUZEA::Graphics& graphics);
+    void drawHud(PRUZEA::Graphics& graphics);
 };

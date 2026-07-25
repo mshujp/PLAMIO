@@ -1,25 +1,25 @@
-﻿# PLAMIO Game Generation Guideline for AI
+# PRUZEA Game Generation Guideline for AI
 
 ## Source of Truth
   The attached files are the only authoritative specification for this task.
   Always follow:
-    1. PLAMIO.h
-    2. PLAMIO_AI_GUIDELINES.md
+    1. PRUZEA.h
+    2. PRUZEA_AI_GUIDELINES.md
     3. The user's game design document
   Do NOT use:
     - online documentation
     - GitHub repositories
     - cached knowledge
-    - previous PLAMIO versions
+    - previous PRUZEA versions
     - remembered APIs
     - assumptions based on similar frameworks
   If any conflict exists, the attached files always take priority.
-  Never generate code using APIs that are not declared in the attached PLAMIO.h.
+  Never generate code using APIs that are not declared in the attached PRUZEA.h.
   When uncertain, prefer using fewer APIs rather than inventing new ones.
   Do not attempt to improve or redesign the framework.
-  Do not infer missing APIs.If a feature is not provided by PLAMIO, implement it inside the Game class.
+  Do not infer missing APIs.If a feature is not provided by PRUZEA, implement it inside the Game class.
 
-## PLAMIO Design Philosophy
+## PRUZEA Design Philosophy
   - Game Exit: Transition to [GameState::TERMINATED] only when a strict system termination request or a final exit command occurs.
   - Keep controls simple and intuitive.
   - Prioritize clarity over data density. Prefer fewer words over smaller text.
@@ -49,7 +49,7 @@
   - Feedback: Give players clear visual feedback for important events (e.g., taking damage, scoring).
   - Lifecycle rule:
       Do not call init(), update(), draw(), or terminate() from inside the game.
-      These are called only by the PLAMIO system.
+      These are called only by the PRUZEA system.
       If you need to reset gameplay, create a private resetGame() function.
 
 ## Recommendations (Optional but Preferred)
@@ -153,7 +153,7 @@
   ```
 
 ## Japanese font guideline:
-  - To reduce binary size, PLAMIO provides only one native Japanese font size. Japanese text is scaled internally for other sizes.
+  - To reduce binary size, PRUZEA provides only one native Japanese font size. Japanese text is scaled internally for other sizes.
     Prefer short Japanese strings and avoid dense paragraphs on 320x240 screens.
     Japanese fonts are NOT available for every English font size.
   - Do not create names like SIZE_18J or SIZE_25J.
@@ -186,7 +186,7 @@
     - Simultaneous SE playback is not supported.
 
 ## Storage Rules
-  - PLAMIO storage has two separate roles:
+  - PRUZEA storage has two separate roles:
     UserFile:
       Writable per-game persistent storage.
       Similar to a console memory card or application registry.
@@ -210,7 +210,7 @@
   - Never use frame count for gameplay timing
 
 ## Preferred C/C++ Functions
-  Use these common C/C++ functions in PLAMIO games.
+  Use these common C/C++ functions in PRUZEA games.
   Do not invent helper functions when these are enough.
   - Math:
     sinf(), cosf(), fabsf(), sqrtf(), atan2f()
@@ -244,7 +244,7 @@
   clearly named constants at the top of the file. Do not hardcode these variables inside the gameplay logic.
 
 ## Random Number Generation
-  - The PLAMIO system initializes the pseudo-random number generator　before any game starts.
+  - The PRUZEA system initializes the pseudo-random number generator　before any game starts.
   - Games should use std::rand() (or rand()) directly.
   - Games must NOT call std::srand().
 
@@ -267,24 +267,24 @@
 
 ## File & Include Rules
   ### Header File (<ClassName>.h): 
-    - Must explicitly #include "PLAMIO.h" at the very beginning of the file to inherit the 'Game' base class and system APIs.
-    - Verify the namespace: Accurately identify whether the class belongs directly under PLAMIO or within a nested namespace. (e.g., PLAMIO::Graphics is a class, NOT a namespace. Do NOT assume nested structures like PLAMIO::Graphics::Graphics).
+    - Must explicitly #include "PRUZEA.h" at the very beginning of the file to inherit the 'Game' base class and system APIs.
+    - Verify the namespace: Accurately identify whether the class belongs directly under PRUZEA or within a nested namespace. (e.g., PRUZEA::Graphics is a class, NOT a namespace. Do NOT assume nested structures like PRUZEA::Graphics::Graphics).
     - Prohibit using namespace: Never use using namespace statements in header files. It pollutes the global namespace of any file that includes this header, causing unpredictable definition conflicts.
     - When you use constexpr, provide the initializer at the point of declaration in the header.
   ### Implementation File (<ClassName>.cpp): 
     - Must #include its corresponding header (e.g., #include "Game1.h").
-    - Mandatory You must explicitly declare "using namespace PLAMIO;" at the top of the .cpp file to avoid repetitive prefixing and keep the code clean.
-    - Do NOT #include "PLAMIO.h" directly here (it is already included via the header).
+    - Mandatory You must explicitly declare "using namespace PRUZEA;" at the top of the .cpp file to avoid repetitive prefixing and keep the code clean.
+    - Do NOT #include "PRUZEA.h" directly here (it is already included via the header).
     - You CAN freely include standard C++ libraries (e.g., <cstdlib>, <cmath>) if required for game logic.
-    - Verify the namespace: Ensure you absolutely avoid namespace/class name duplication or misidentification errors. Since using namespace PLAMIO; is declared, simply use Graphics&, Input&, or Audio& as function arguments. Never write incorrect nested types like PLAMIO::Graphics::Graphics&.
+    - Verify the namespace: Ensure you absolutely avoid namespace/class name duplication or misidentification errors. Since using namespace PRUZEA; is declared, simply use Graphics&, Input&, or Audio& as function arguments. Never write incorrect nested types like PRUZEA::Graphics::Graphics&.
 
 ## Rules for Overriding Virtual Functions
-  - When overriding functions (such as `onInit`, `onUpdate`, `onDraw`, etc.) in a derived class, you **MUST** double-check the base class definition in the provided header file (`PLAMIO.h`) character by character immediately before generating the code.
+  - When overriding functions (such as `onInit`, `onUpdate`, `onDraw`, etc.) in a derived class, you **MUST** double-check the base class definition in the provided header file (`PRUZEA.h`) character by character immediately before generating the code.
   - It is **strictly forbidden** to guess or assume function signatures based on common practices of general game frameworks (e.g., assuming a `void Draw()` function). 
   - You **MUST** ensure that the return type, argument types, and `const` qualifiers match the base class perfectly.
 
 ## Strict Code Generation Rules
-  PLAMIO V1.x uses static linking. You must generate exactly two separate files:
+  PRUZEA V1.x uses static linking. You must generate exactly two separate files:
   - Header File:  <ClassName>.h
     - Contains the complete class declaration, including member variables and method declarations.
     - Do not place method implementations in the header, except compiler-required constexpr or inline definitions.
@@ -299,7 +299,7 @@
   - Standard headers such as <cmath>, <cstdlib>, and <cstdint> may be used.
   - Strict Memory Rule: Avoid dynamic memory allocation. Prefer fixed-size arrays over STL containers (e.g., std::vector).
 
-The PLAMIO runtime provides:
+The PRUZEA runtime provides:
   - Random seed initialization
   - Fixed frame rate
   - Input initialization
@@ -321,9 +321,9 @@ The PLAMIO runtime provides:
 
 ```h
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class Sample : public PLAMIO::Game
+class Sample : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -336,10 +336,10 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    Game::GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& g, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    Game::GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& g, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
 };

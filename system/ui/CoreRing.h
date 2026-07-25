@@ -2,7 +2,7 @@
 
 #include "GraphicsBase.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class CoreRing
@@ -48,4 +48,4 @@ private:
     static Graphics::Color getSubColor();
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

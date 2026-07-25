@@ -2,7 +2,7 @@
 
 #include "StorageBase.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class StorageStub : public StorageBase
 {

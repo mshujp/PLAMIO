@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 const char* CollisionLab::getId() const { return "collisionlab"; }
 const char* CollisionLab::getName() const { return "Collision Lab"; }

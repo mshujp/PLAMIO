@@ -2,7 +2,7 @@
 #include "hardware/clocks.h"
 #include <algorithm>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 AudioPWM::AudioPWM(const Config& config)
     : pin(config.pwmPin)

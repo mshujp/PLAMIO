@@ -1,4 +1,4 @@
-﻿#include "SignalLost.h"
+#include "SignalLost.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -8,8 +8,8 @@
 namespace {
 
 static const char SAMPLE_PNS[] = R"PNS(
-# PLAMIO Novel Script sample
-# Embedded in Flash for PLAMIO 1.0.
+# PRUZEA Novel Script sample
+# Embedded in Flash for PRUZEA 1.0.
 
 LABEL start
 
@@ -304,22 +304,22 @@ ENDTEXT
 END
 )PNS";
 
-constexpr PLAMIO::Graphics::Color COLOR_BACKGROUND =
-    PLAMIO::Graphics::rgb565(6, 12, 20);
-constexpr PLAMIO::Graphics::Color COLOR_PANEL =
-    PLAMIO::Graphics::rgb565(12, 25, 38);
-constexpr PLAMIO::Graphics::Color COLOR_PANEL_ALT =
-    PLAMIO::Graphics::rgb565(18, 37, 52);
-constexpr PLAMIO::Graphics::Color COLOR_ACCENT =
-    PLAMIO::Graphics::rgb565(74, 220, 210);
-constexpr PLAMIO::Graphics::Color COLOR_TEXT =
-    PLAMIO::Graphics::rgb565(220, 232, 238);
-constexpr PLAMIO::Graphics::Color COLOR_MUTED =
-    PLAMIO::Graphics::rgb565(104, 134, 148);
-constexpr PLAMIO::Graphics::Color COLOR_SELECTED =
-    PLAMIO::Graphics::rgb565(255, 194, 74);
-constexpr PLAMIO::Graphics::Color COLOR_ERROR =
-    PLAMIO::Graphics::rgb565(255, 92, 92);
+constexpr PRUZEA::Graphics::Color COLOR_BACKGROUND =
+    PRUZEA::Graphics::rgb565(6, 12, 20);
+constexpr PRUZEA::Graphics::Color COLOR_PANEL =
+    PRUZEA::Graphics::rgb565(12, 25, 38);
+constexpr PRUZEA::Graphics::Color COLOR_PANEL_ALT =
+    PRUZEA::Graphics::rgb565(18, 37, 52);
+constexpr PRUZEA::Graphics::Color COLOR_ACCENT =
+    PRUZEA::Graphics::rgb565(74, 220, 210);
+constexpr PRUZEA::Graphics::Color COLOR_TEXT =
+    PRUZEA::Graphics::rgb565(220, 232, 238);
+constexpr PRUZEA::Graphics::Color COLOR_MUTED =
+    PRUZEA::Graphics::rgb565(104, 134, 148);
+constexpr PRUZEA::Graphics::Color COLOR_SELECTED =
+    PRUZEA::Graphics::rgb565(255, 194, 74);
+constexpr PRUZEA::Graphics::Color COLOR_ERROR =
+    PRUZEA::Graphics::rgb565(255, 92, 92);
 
 constexpr int16_t SCREEN_WIDTH = 320;
 constexpr int16_t SCREEN_HEIGHT = 240;
@@ -327,7 +327,7 @@ constexpr int16_t SAFE_BOTTOM = 224;
 
 } // namespace
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 // ============================================================
 // MemoryLineReader
@@ -425,26 +425,26 @@ const char* SignalLost::getMenuName() const{
 }
 
 uint16_t SignalLost::getLogicalScreenWidth() const {
-    return PLAMIO::Display::ILI9341_SCREEN_W;
+    return PRUZEA::Display::ILI9341_SCREEN_W;
 }
 
 uint16_t SignalLost::getLogicalScreenHeight() const {
-    return PLAMIO::Display::ILI9341_SCREEN_H;
+    return PRUZEA::Display::ILI9341_SCREEN_H;
 }
 
 uint16_t SignalLost::getTargetScreenWidth() const {
-    return PLAMIO::Display::ILI9341_SCREEN_W;
+    return PRUZEA::Display::ILI9341_SCREEN_W;
 }
 
 uint16_t SignalLost::getTargetScreenHeight() const {
-    return PLAMIO::Display::ILI9341_SCREEN_H;
+    return PRUZEA::Display::ILI9341_SCREEN_H;
 }
 
 // ============================================================
 // Initialization
 // ============================================================
 
-void SignalLost::onInit(PLAMIO::Storage& storage) {
+void SignalLost::onInit(PRUZEA::Storage& storage) {
     (void)storage;
 
     reader_.attach(SAMPLE_PNS);
@@ -648,10 +648,10 @@ bool SignalLost::jumpToLabel(const char* labelName) {
 // Main update
 // ============================================================
 
-PLAMIO::Game::GameState SignalLost::onUpdate(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio,
-    PLAMIO::Storage& storage,
+PRUZEA::Game::GameState SignalLost::onUpdate(
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio,
+    PRUZEA::Storage& storage,
     float deltaSec
 ) {
     (void)storage;
@@ -686,8 +686,8 @@ PLAMIO::Game::GameState SignalLost::onUpdate(
         break;
 
     case Mode::ERROR:
-        if (input.justPressed(PLAMIO::Input::A) ||
-            input.justPressed(PLAMIO::Input::START)) {
+        if (input.justPressed(PRUZEA::Input::A) ||
+            input.justPressed(PRUZEA::Input::START)) {
             mode_ = Mode::TITLE;
             screenDirty_ = true;
             audio.playSE(&Audio::SE::NO_2, 0.7f);
@@ -1009,7 +1009,7 @@ bool SignalLost::executeWaitCommand(char* arguments) {
     uint32_t durationMsec =
         static_cast<uint32_t>(seconds * 1000.0f);
 
-    waitEndMsec_ = PLAMIO::Platform::getMsec() + durationMsec;
+    waitEndMsec_ = PRUZEA::Platform::getMsec() + durationMsec;
     modeBeforeWait_ = Mode::EXECUTING;
     mode_ = Mode::WAITING_TIME;
     return true;
@@ -1771,21 +1771,21 @@ const char* SignalLost::getErrorName() const {
 // ============================================================
 
 void SignalLost::updateTitle(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio
 ) {
-    if (input.justPressed(PLAMIO::Input::START) ||
-        input.justPressed(PLAMIO::Input::A)) {
+    if (input.justPressed(PRUZEA::Input::START) ||
+        input.justPressed(PRUZEA::Input::A)) {
         audio.playSE(&Audio::SE::NO_1, 0.75f);
         resetForNewGame();
     }
 }
 
 void SignalLost::updateText(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio
 ) {
-    if (!input.justPressed(PLAMIO::Input::A)) {
+    if (!input.justPressed(PRUZEA::Input::A)) {
         return;
     }
 
@@ -1796,13 +1796,13 @@ void SignalLost::updateText(
 }
 
 void SignalLost::updateChoices(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio
 ) {
     bool moved = false;
 
-    if (input.justPressed(PLAMIO::Input::UP) ||
-        input.repeat(PLAMIO::Input::UP)) {
+    if (input.justPressed(PRUZEA::Input::UP) ||
+        input.repeat(PRUZEA::Input::UP)) {
         if (selectedChoice_ == 0) {
             selectedChoice_ = choiceCount_ - 1;
         } else {
@@ -1811,8 +1811,8 @@ void SignalLost::updateChoices(
         moved = true;
     }
 
-    if (input.justPressed(PLAMIO::Input::DOWN) ||
-        input.repeat(PLAMIO::Input::DOWN)) {
+    if (input.justPressed(PRUZEA::Input::DOWN) ||
+        input.repeat(PRUZEA::Input::DOWN)) {
         selectedChoice_ =
             static_cast<uint8_t>(
                 (selectedChoice_ + 1) % choiceCount_
@@ -1825,7 +1825,7 @@ void SignalLost::updateChoices(
         screenDirty_ = true;
     }
 
-    if (!input.justPressed(PLAMIO::Input::A)) {
+    if (!input.justPressed(PRUZEA::Input::A)) {
         return;
     }
 
@@ -1852,7 +1852,7 @@ void SignalLost::updateChoices(
 }
 
 void SignalLost::updateTimedWait() {
-    uint32_t now = PLAMIO::Platform::getMsec();
+    uint32_t now = PRUZEA::Platform::getMsec();
 
     if (static_cast<int32_t>(now - waitEndMsec_) < 0) {
         return;
@@ -1867,10 +1867,10 @@ void SignalLost::updateTimedWait() {
 }
 
 void SignalLost::updateKeyWait(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio
 ) {
-    if (!input.justPressed(PLAMIO::Input::A)) {
+    if (!input.justPressed(PRUZEA::Input::A)) {
         return;
     }
 
@@ -1884,11 +1884,11 @@ void SignalLost::updateKeyWait(
 }
 
 void SignalLost::updateFinished(
-    PLAMIO::Input& input,
-    PLAMIO::Audio& audio
+    PRUZEA::Input& input,
+    PRUZEA::Audio& audio
 ) {
-    if (!input.justPressed(PLAMIO::Input::A) &&
-        !input.justPressed(PLAMIO::Input::START)) {
+    if (!input.justPressed(PRUZEA::Input::A) &&
+        !input.justPressed(PRUZEA::Input::START)) {
         return;
     }
 
@@ -1902,7 +1902,7 @@ void SignalLost::updateFinished(
 // ============================================================
 
 bool SignalLost::onDraw(
-    PLAMIO::Graphics& graphics,
+    PRUZEA::Graphics& graphics,
     bool requestFullRedraw
 ) {
     if (!requestFullRedraw && !dirty) {
@@ -1935,7 +1935,7 @@ bool SignalLost::onDraw(
 }
 
 void SignalLost::drawTitle(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     graphics.fillScreen(COLOR_BACKGROUND);
 
@@ -1959,13 +1959,13 @@ void SignalLost::drawTitle(
     );
 
     graphics.drawString(
-        "PLAMIO NOVEL",
+        "PRUZEA NOVEL",
         SCREEN_WIDTH / 2,
         44,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_18,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_18,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawString(
@@ -1973,9 +1973,9 @@ void SignalLost::drawTitle(
         SCREEN_WIDTH / 2,
         82,
         COLOR_TEXT,
-        PLAMIO::Graphics::SIZE_32B,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_32B,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawLine(
@@ -1991,9 +1991,9 @@ void SignalLost::drawTitle(
         SCREEN_WIDTH / 2,
         128,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_13,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_13,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawString(
@@ -2001,9 +2001,9 @@ void SignalLost::drawTitle(
         SCREEN_WIDTH / 2,
         170,
         COLOR_SELECTED,
-        PLAMIO::Graphics::SIZE_22B,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_22B,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawString(
@@ -2011,14 +2011,14 @@ void SignalLost::drawTitle(
         SCREEN_WIDTH / 2,
         218,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_10,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::BOTTOM
+        PRUZEA::Graphics::SIZE_10,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::BOTTOM
     );
 }
 
 void SignalLost::drawNovel(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     graphics.fillScreen(COLOR_BACKGROUND);
 
@@ -2033,7 +2033,7 @@ void SignalLost::drawNovel(
 }
 
 void SignalLost::drawFinished(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     graphics.fillScreen(COLOR_BACKGROUND);
 
@@ -2061,9 +2061,9 @@ void SignalLost::drawFinished(
         SCREEN_WIDTH / 2,
         70,
         COLOR_TEXT,
-        PLAMIO::Graphics::SIZE_25B,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_25B,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawString(
@@ -2073,9 +2073,9 @@ void SignalLost::drawFinished(
         SCREEN_WIDTH / 2,
         108,
         COLOR_ACCENT,
-        PLAMIO::Graphics::SIZE_18,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_18,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     graphics.drawString(
@@ -2083,14 +2083,14 @@ void SignalLost::drawFinished(
         SCREEN_WIDTH / 2,
         156,
         COLOR_SELECTED,
-        PLAMIO::Graphics::SIZE_18,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_18,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 }
 
 void SignalLost::drawError(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     graphics.fillScreen(COLOR_BACKGROUND);
 
@@ -2118,7 +2118,7 @@ void SignalLost::drawError(
         28,
         32,
         COLOR_ERROR,
-        PLAMIO::Graphics::SIZE_25B
+        PRUZEA::Graphics::SIZE_25B
     );
 
     graphics.drawString(
@@ -2126,7 +2126,7 @@ void SignalLost::drawError(
         28,
         70,
         COLOR_TEXT,
-        PLAMIO::Graphics::SIZE_18
+        PRUZEA::Graphics::SIZE_18
     );
 
     char lineText[48];
@@ -2142,7 +2142,7 @@ void SignalLost::drawError(
         28,
         98,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_18
+        PRUZEA::Graphics::SIZE_18
     );
 
     drawWrappedText(
@@ -2153,7 +2153,7 @@ void SignalLost::drawError(
         260,
         3,
         COLOR_TEXT,
-        PLAMIO::Graphics::SIZE_18
+        PRUZEA::Graphics::SIZE_18
     );
 
     graphics.drawString(
@@ -2161,14 +2161,14 @@ void SignalLost::drawError(
         280,
         216,
         COLOR_SELECTED,
-        PLAMIO::Graphics::SIZE_13,
-        PLAMIO::Graphics::HorizontalAlign::RIGHT,
-        PLAMIO::Graphics::VerticalAlign::BOTTOM
+        PRUZEA::Graphics::SIZE_13,
+        PRUZEA::Graphics::HorizontalAlign::RIGHT,
+        PRUZEA::Graphics::VerticalAlign::BOTTOM
     );
 }
 
 void SignalLost::drawHeader(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     graphics.fillRoundRect(
         10,
@@ -2186,9 +2186,9 @@ void SignalLost::drawHeader(
         20,
         27,
         COLOR_ACCENT,
-        PLAMIO::Graphics::SIZE_18,
-        PLAMIO::Graphics::HorizontalAlign::LEFT,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_18,
+        PRUZEA::Graphics::HorizontalAlign::LEFT,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 
     char lineText[32];
@@ -2204,14 +2204,14 @@ void SignalLost::drawHeader(
         298,
         27,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_13,
-        PLAMIO::Graphics::HorizontalAlign::RIGHT,
-        PLAMIO::Graphics::VerticalAlign::MIDDLE
+        PRUZEA::Graphics::SIZE_13,
+        PRUZEA::Graphics::HorizontalAlign::RIGHT,
+        PRUZEA::Graphics::VerticalAlign::MIDDLE
     );
 }
 
 void SignalLost::drawTextWindow(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     const int16_t panelY =
         mode_ == Mode::SHOWING_CHOICES ? 54 : 58;
@@ -2253,9 +2253,9 @@ void SignalLost::drawTextWindow(
             30,
             panelY + 4,
             COLOR_BACKGROUND,
-            PLAMIO::Graphics::SIZE_18,
-            PLAMIO::Graphics::HorizontalAlign::LEFT,
-            PLAMIO::Graphics::VerticalAlign::MIDDLE
+            PRUZEA::Graphics::SIZE_18,
+            PRUZEA::Graphics::HorizontalAlign::LEFT,
+            PRUZEA::Graphics::VerticalAlign::MIDDLE
         );
     }
 
@@ -2267,12 +2267,12 @@ void SignalLost::drawTextWindow(
         272,
         mode_ == Mode::SHOWING_CHOICES ? 3 : 6,
         COLOR_TEXT,
-        PLAMIO::Graphics::SIZE_18
+        PRUZEA::Graphics::SIZE_18
     );
 }
 
 void SignalLost::drawChoices(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     const int16_t startY = 154;
     const int16_t itemHeight = 26;
@@ -2307,9 +2307,9 @@ void SignalLost::drawChoices(
             28,
             y + 11,
             selected ? COLOR_SELECTED : COLOR_MUTED,
-            PLAMIO::Graphics::SIZE_18,
-            PLAMIO::Graphics::HorizontalAlign::LEFT,
-            PLAMIO::Graphics::VerticalAlign::MIDDLE
+            PRUZEA::Graphics::SIZE_18,
+            PRUZEA::Graphics::HorizontalAlign::LEFT,
+            PRUZEA::Graphics::VerticalAlign::MIDDLE
         );
 
         graphics.drawString(
@@ -2317,15 +2317,15 @@ void SignalLost::drawChoices(
             48,
             y + 11,
             selected ? COLOR_TEXT : COLOR_MUTED,
-            PLAMIO::Graphics::SIZE_18,
-            PLAMIO::Graphics::HorizontalAlign::LEFT,
-            PLAMIO::Graphics::VerticalAlign::MIDDLE
+            PRUZEA::Graphics::SIZE_18,
+            PRUZEA::Graphics::HorizontalAlign::LEFT,
+            PRUZEA::Graphics::VerticalAlign::MIDDLE
         );
     }
 }
 
 void SignalLost::drawFooter(
-    PLAMIO::Graphics& graphics
+    PRUZEA::Graphics& graphics
 ) {
     const char* footer = "";
 
@@ -2357,21 +2357,21 @@ void SignalLost::drawFooter(
         160,
         SAFE_BOTTOM,
         COLOR_MUTED,
-        PLAMIO::Graphics::SIZE_13,
-        PLAMIO::Graphics::HorizontalAlign::CENTER,
-        PLAMIO::Graphics::VerticalAlign::BOTTOM
+        PRUZEA::Graphics::SIZE_13,
+        PRUZEA::Graphics::HorizontalAlign::CENTER,
+        PRUZEA::Graphics::VerticalAlign::BOTTOM
     );
 }
 
 void SignalLost::drawWrappedText(
-    PLAMIO::Graphics& graphics,
+    PRUZEA::Graphics& graphics,
     const char* text,
     int16_t x,
     int16_t y,
     uint16_t maxWidth,
     uint8_t maxLines,
-    PLAMIO::Graphics::Color color,
-    PLAMIO::Graphics::Font font
+    PRUZEA::Graphics::Color color,
+    PRUZEA::Graphics::Font font
 ) {
     if (text == nullptr || text[0] == '\0') {
         return;
@@ -2467,7 +2467,7 @@ void SignalLost::drawWrappedText(
 }
 
 void SignalLost::onTerminate(
-    PLAMIO::Storage& storage
+    PRUZEA::Storage& storage
 ) {
     (void)storage;
 }

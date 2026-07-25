@@ -1,7 +1,7 @@
-﻿#include "GraphicsBase.h"
+#include "GraphicsBase.h"
 #include <algorithm>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 bool GraphicsBase::setLogicalScreenSize(uint16_t _logicalScreenW, uint16_t _logicalScreenH)
 {

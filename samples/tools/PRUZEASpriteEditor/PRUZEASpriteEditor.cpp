@@ -1,9 +1,9 @@
-﻿#include "PLAMIOSpriteEditor.h"
+#include "PRUZEASpriteEditor.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -32,15 +32,15 @@ constexpr const char* TRANSFORM_ITEMS[] = {
 constexpr uint8_t TRANSFORM_COUNT = sizeof(TRANSFORM_ITEMS) / sizeof(TRANSFORM_ITEMS[0]);
 }
 
-const char* PLAMIOSpriteEditor::getId() const { return "plamio_spriteeditor"; }
-const char* PLAMIOSpriteEditor::getName() const { return "PLAMIO Sprite Editor"; }
-const char* PLAMIOSpriteEditor::getMenuName() const { return "PLAMIO SPRITE EDITOR"; }
-uint16_t PLAMIOSpriteEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOSpriteEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
-uint16_t PLAMIOSpriteEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
-uint16_t PLAMIOSpriteEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+const char* PRUZEASpriteEditor::getId() const { return "pruzea_spriteeditor"; }
+const char* PRUZEASpriteEditor::getName() const { return "PRUZEA Sprite Editor"; }
+const char* PRUZEASpriteEditor::getMenuName() const { return "PRUZEA SPRITE EDITOR"; }
+uint16_t PRUZEASpriteEditor::getLogicalScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEASpriteEditor::getLogicalScreenHeight() const { return Display::ILI9341_SCREEN_H; }
+uint16_t PRUZEASpriteEditor::getTargetScreenWidth() const { return Display::ILI9341_SCREEN_W; }
+uint16_t PRUZEASpriteEditor::getTargetScreenHeight() const { return Display::ILI9341_SCREEN_H; }
 
-void PLAMIOSpriteEditor::onInit(Storage& storage)
+void PRUZEASpriteEditor::onInit(Storage& storage)
 {
     cursorX = 0;
     cursorY = 0;
@@ -56,7 +56,7 @@ void PLAMIOSpriteEditor::onInit(Storage& storage)
     dirty = true;
 }
 
-Game::GameState PLAMIOSpriteEditor::onUpdate(Input& input, Audio& audio,
+Game::GameState PRUZEASpriteEditor::onUpdate(Input& input, Audio& audio,
                                         Storage& storage, float deltaSec)
 {
     (void)deltaSec;
@@ -67,7 +67,7 @@ Game::GameState PLAMIOSpriteEditor::onUpdate(Input& input, Audio& audio,
     return terminateRequested ? GameState::TERMINATE_REQUEST : GameState::RUNNING;
 }
 
-void PLAMIOSpriteEditor::updateEdit(Input& input, Audio& audio)
+void PRUZEASpriteEditor::updateEdit(Input& input, Audio& audio)
 {
     if (input.justPressed(Input::SELECT))
     {
@@ -116,7 +116,7 @@ void PLAMIOSpriteEditor::updateEdit(Input& input, Audio& audio)
     }
 }
 
-void PLAMIOSpriteEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
+void PRUZEASpriteEditor::updateMenu(Input& input, Audio& audio, Storage& storage)
 {
     if (mode == Mode::CONFIRM_EXIT)
     {
@@ -278,7 +278,7 @@ void PLAMIOSpriteEditor::updateMenu(Input& input, Audio& audio, Storage& storage
     dirty = true;
 }
 
-bool PLAMIOSpriteEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
+bool PRUZEASpriteEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
 {
     if (!requestFullRedraw && !dirty) return false;
 
@@ -297,7 +297,7 @@ bool PLAMIOSpriteEditor::onDraw(Graphics& graphics, bool requestFullRedraw)
     return true;
 }
 
-void PLAMIOSpriteEditor::drawExitConfirmation(Graphics& graphics)
+void PRUZEASpriteEditor::drawExitConfirmation(Graphics& graphics)
 {
     static const char* ITEMS[] = {"SAVE", "DON'T SAVE", "CANCEL"};
     graphics.fillRect(42, 55, 236, 142, COLOR_PANEL);
@@ -313,7 +313,7 @@ void PLAMIOSpriteEditor::drawExitConfirmation(Graphics& graphics)
     }
 }
 
-Game::TerminateResponse PLAMIOSpriteEditor::onRequestTerminate()
+Game::TerminateResponse PRUZEASpriteEditor::onRequestTerminate()
 {
     if (!hasUnsavedChanges()) return TerminateResponse::ACCEPT;
     mode = Mode::CONFIRM_EXIT;
@@ -323,19 +323,19 @@ Game::TerminateResponse PLAMIOSpriteEditor::onRequestTerminate()
     return TerminateResponse::REJECT;
 }
 
-void PLAMIOSpriteEditor::captureSavedState()
+void PRUZEASpriteEditor::captureSavedState()
 {
     std::memcpy(savedPixels, pixels, sizeof(pixels));
 }
 
-bool PLAMIOSpriteEditor::hasUnsavedChanges() const
+bool PRUZEASpriteEditor::hasUnsavedChanges() const
 {
     return std::memcmp(savedPixels, pixels, sizeof(pixels)) != 0;
 }
 
-void PLAMIOSpriteEditor::onTerminate(Storage& storage) { (void)storage; }
+void PRUZEASpriteEditor::onTerminate(Storage& storage) { (void)storage; }
 
-void PLAMIOSpriteEditor::loadSample()
+void PRUZEASpriteEditor::loadSample()
 {
     clearAll();
     static const uint8_t sample[16][16] = {
@@ -362,31 +362,31 @@ void PLAMIOSpriteEditor::loadSample()
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::clearAll()
+void PRUZEASpriteEditor::clearAll()
 {
     memset(pixels, 0, sizeof(pixels));
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::paintPixel()
+void PRUZEASpriteEditor::paintPixel()
 {
     pixels[cursorY * SPRITE_W + cursorX] = selectedColor;
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::erasePixel()
+void PRUZEASpriteEditor::erasePixel()
 {
     pixels[cursorY * SPRITE_W + cursorX] = 0;
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::pickColor()
+void PRUZEASpriteEditor::pickColor()
 {
     const uint8_t value = pixels[cursorY * SPRITE_W + cursorX];
     if (value != 0) selectedColor = value;
 }
 
-void PLAMIOSpriteEditor::cycleColor(int8_t direction)
+void PRUZEASpriteEditor::cycleColor(int8_t direction)
 {
     int16_t value = static_cast<int16_t>(selectedColor) + direction;
     if (value < 1) value = PALETTE_SIZE - 1;
@@ -394,13 +394,13 @@ void PLAMIOSpriteEditor::cycleColor(int8_t direction)
     selectedColor = static_cast<uint8_t>(value);
 }
 
-void PLAMIOSpriteEditor::rebuildRenderPixels()
+void PRUZEASpriteEditor::rebuildRenderPixels()
 {
     for (uint16_t i = 0; i < PIXEL_COUNT; ++i)
         renderPixels[i] = static_cast<uint16_t>(paletteColor(pixels[i]));
 }
 
-void PLAMIOSpriteEditor::flipHorizontal()
+void PRUZEASpriteEditor::flipHorizontal()
 {
     for (uint8_t y = 0; y < SPRITE_H; ++y)
         for (uint8_t x = 0; x < SPRITE_W / 2; ++x)
@@ -412,7 +412,7 @@ void PLAMIOSpriteEditor::flipHorizontal()
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::flipVertical()
+void PRUZEASpriteEditor::flipVertical()
 {
     for (uint8_t y = 0; y < SPRITE_H / 2; ++y)
         for (uint8_t x = 0; x < SPRITE_W; ++x)
@@ -424,7 +424,7 @@ void PLAMIOSpriteEditor::flipVertical()
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::rotate90()
+void PRUZEASpriteEditor::rotate90()
 {
     uint8_t temp[PIXEL_COUNT];
     memcpy(temp, pixels, sizeof(temp));
@@ -434,14 +434,14 @@ void PLAMIOSpriteEditor::rotate90()
     rebuildRenderPixels();
 }
 
-void PLAMIOSpriteEditor::openMainMenu()
+void PRUZEASpriteEditor::openMainMenu()
 {
     mode = Mode::MAIN_MENU;
     menuIndex = 0;
     dirty = true;
 }
 
-void PLAMIOSpriteEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
+void PRUZEASpriteEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
 {
     int16_t next = static_cast<int16_t>(menuIndex) + direction;
     if (next < 0) next = itemCount - 1;
@@ -450,22 +450,22 @@ void PLAMIOSpriteEditor::moveMenuSelection(int8_t direction, uint8_t itemCount)
     dirty = true;
 }
 
-void PLAMIOSpriteEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEASpriteEditor::makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     snprintf(out, outSize, "slot%u.dat", static_cast<unsigned>(slot + 1));
 }
-void PLAMIOSpriteEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
+void PRUZEASpriteEditor::makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const
 {
     snprintf(out, outSize, "slot%u.h", static_cast<unsigned>(slot + 1));
 }
 
-void PLAMIOSpriteEditor::refreshSlotInfo(Storage& storage)
+void PRUZEASpriteEditor::refreshSlotInfo(Storage& storage)
 {
     for (uint8_t i = 0; i < SLOT_COUNT; ++i)
         slotExists[i] = loadSlot(storage, i, false);
 }
 
-bool PLAMIOSpriteEditor::saveSlot(Storage& storage, uint8_t slot)
+bool PRUZEASpriteEditor::saveSlot(Storage& storage, uint8_t slot)
 {
     writeSlot = slot;
     writeLineIndex = 0;
@@ -473,20 +473,20 @@ bool PLAMIOSpriteEditor::saveSlot(Storage& storage, uint8_t slot)
     char sourceName[16];
     makeDataFileName(slot, dataName, sizeof(dataName));
     makeSourceFileName(slot, sourceName, sizeof(sourceName));
-    const bool dataOk = storage.writeUserFile(getId(), dataName, &PLAMIOSpriteEditor::writeDataLine, this);
+    const bool dataOk = storage.writeUserFile(getId(), dataName, &PRUZEASpriteEditor::writeDataLine, this);
     writeLineIndex = 0;
-    const bool sourceOk = storage.writeUserFile(getId(), sourceName, &PLAMIOSpriteEditor::writeSourceLine, this);
+    const bool sourceOk = storage.writeUserFile(getId(), sourceName, &PRUZEASpriteEditor::writeSourceLine, this);
     const bool success = dataOk && sourceOk;
     if (success) captureSavedState();
     return success;
 }
 
-bool PLAMIOSpriteEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
+bool PRUZEASpriteEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
 {
     char fileName[16];
     makeDataFileName(slot, fileName, sizeof(fileName));
     ReadContext context{this, apply, true, 0};
-    const bool opened = storage.readUserFile(getId(), fileName, &PLAMIOSpriteEditor::readSlotLine, &context);
+    const bool opened = storage.readUserFile(getId(), fileName, &PRUZEASpriteEditor::readSlotLine, &context);
     if (opened && context.valid && context.pixelIndex == PIXEL_COUNT && apply)
     {
         rebuildRenderPixels();
@@ -496,7 +496,7 @@ bool PLAMIOSpriteEditor::loadSlot(Storage& storage, uint8_t slot, bool apply)
     return opened && context.valid && context.pixelIndex == PIXEL_COUNT;
 }
 
-bool PLAMIOSpriteEditor::readSlotLine(const char* line, void* arg)
+bool PRUZEASpriteEditor::readSlotLine(const char* line, void* arg)
 {
     ReadContext* context = static_cast<ReadContext*>(arg);
     if (!context || !line) return false;
@@ -533,9 +533,9 @@ bool PLAMIOSpriteEditor::readSlotLine(const char* line, void* arg)
     return true;
 }
 
-bool PLAMIOSpriteEditor::writeDataLine(std::string& line, void* arg)
+bool PRUZEASpriteEditor::writeDataLine(std::string& line, void* arg)
 {
-    PLAMIOSpriteEditor* editor = static_cast<PLAMIOSpriteEditor*>(arg);
+    PRUZEASpriteEditor* editor = static_cast<PRUZEASpriteEditor*>(arg);
     if (!editor) return false;
     char buffer[96];
     if (editor->writeLineIndex == 0)
@@ -559,14 +559,14 @@ bool PLAMIOSpriteEditor::writeDataLine(std::string& line, void* arg)
     return true;
 }
 
-bool PLAMIOSpriteEditor::writeSourceLine(std::string& line, void* arg)
+bool PRUZEASpriteEditor::writeSourceLine(std::string& line, void* arg)
 {
-    PLAMIOSpriteEditor* editor = static_cast<PLAMIOSpriteEditor*>(arg);
+    PRUZEASpriteEditor* editor = static_cast<PRUZEASpriteEditor*>(arg);
     if (!editor) return false;
     char buffer[192];
     const uint16_t lineIndex = editor->writeLineIndex++;
     if (lineIndex == 0) { line.assign("#pragma once"); return true; }
-    if (lineIndex == 1) { line.assign("#include \"PLAMIO.h\""); return true; }
+    if (lineIndex == 1) { line.assign("#include \"PRUZEA.h\""); return true; }
     if (lineIndex == 2) { line.assign(""); return true; }
     if (lineIndex == 3)
     {
@@ -592,13 +592,13 @@ bool PLAMIOSpriteEditor::writeSourceLine(std::string& line, void* arg)
     if (lineIndex == 22) { line.assign(""); return true; }
     if (lineIndex == 23)
     {
-        snprintf(buffer, sizeof(buffer), "// graphics.drawSprite(slot%uSprite, x, y, 16, 16, 1, PLAMIO::Graphics::BLACK, flipX, flipY);", static_cast<unsigned>(editor->writeSlot + 1));
+        snprintf(buffer, sizeof(buffer), "// graphics.drawSprite(slot%uSprite, x, y, 16, 16, 1, PRUZEA::Graphics::BLACK, flipX, flipY);", static_cast<unsigned>(editor->writeSlot + 1));
         line.assign(buffer); return true;
     }
     return false;
 }
 
-void PLAMIOSpriteEditor::drawEditor(Graphics& graphics)
+void PRUZEASpriteEditor::drawEditor(Graphics& graphics)
 {
     graphics.fillScreen(COLOR_BG);
     graphics.drawString("SPRITE EDITOR", 10, 8, Graphics::WHITE, Graphics::SIZE_22B);
@@ -619,7 +619,7 @@ void PLAMIOSpriteEditor::drawEditor(Graphics& graphics)
     graphics.drawString("SELECT MENU", 183, 166, COLOR_ACCENT, Graphics::SIZE_13);
 }
 
-void PLAMIOSpriteEditor::drawCanvas(Graphics& graphics)
+void PRUZEASpriteEditor::drawCanvas(Graphics& graphics)
 {
     graphics.fillRect(CANVAS_X, CANVAS_Y, CANVAS_SIZE, CANVAS_SIZE, COLOR_PANEL);
     for (uint8_t y = 0; y < SPRITE_H; ++y)
@@ -641,7 +641,7 @@ void PLAMIOSpriteEditor::drawCanvas(Graphics& graphics)
                           CELL + 1, CELL + 1, 2, COLOR_CURSOR);
 }
 
-void PLAMIOSpriteEditor::drawPalette(Graphics& graphics)
+void PRUZEASpriteEditor::drawPalette(Graphics& graphics)
 {
     const int16_t y = 207;
     for (uint8_t i = 0; i < PALETTE_SIZE; ++i)
@@ -653,7 +653,7 @@ void PLAMIOSpriteEditor::drawPalette(Graphics& graphics)
     }
 }
 
-void PLAMIOSpriteEditor::drawPreview(Graphics& graphics)
+void PRUZEASpriteEditor::drawPreview(Graphics& graphics)
 {
     graphics.fillRect(176, 34, 138, 167, COLOR_PANEL);
     graphics.drawString("PREVIEW", 245, 43, Graphics::WHITE, Graphics::SIZE_22B,
@@ -665,7 +665,7 @@ void PLAMIOSpriteEditor::drawPreview(Graphics& graphics)
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
 }
 
-void PLAMIOSpriteEditor::drawMainMenu(Graphics& graphics)
+void PRUZEASpriteEditor::drawMainMenu(Graphics& graphics)
 {
     graphics.fillRoundRect(72, 34, 176, 169, 8, COLOR_PANEL);
     graphics.drawRoundRect(72, 34, 176, 169, 8, 3, COLOR_CURSOR);
@@ -682,7 +682,7 @@ void PLAMIOSpriteEditor::drawMainMenu(Graphics& graphics)
     }
 }
 
-void PLAMIOSpriteEditor::drawSlotMenu(Graphics& graphics, bool saving)
+void PRUZEASpriteEditor::drawSlotMenu(Graphics& graphics, bool saving)
 {
     graphics.fillRoundRect(72, 48, 176, 132, 8, COLOR_PANEL);
     graphics.drawRoundRect(72, 48, 176, 132, 8, 3, COLOR_CURSOR);
@@ -701,7 +701,7 @@ void PLAMIOSpriteEditor::drawSlotMenu(Graphics& graphics, bool saving)
     }
 }
 
-void PLAMIOSpriteEditor::drawTransformMenu(Graphics& graphics)
+void PRUZEASpriteEditor::drawTransformMenu(Graphics& graphics)
 {
     graphics.fillRoundRect(72, 53, 176, 121, 8, COLOR_PANEL);
     graphics.drawRoundRect(72, 53, 176, 121, 8, 3, COLOR_CURSOR);
@@ -718,7 +718,7 @@ void PLAMIOSpriteEditor::drawTransformMenu(Graphics& graphics)
     }
 }
 
-void PLAMIOSpriteEditor::drawConfirmation(Graphics& graphics, const char* title,
+void PRUZEASpriteEditor::drawConfirmation(Graphics& graphics, const char* title,
                                     const char* message, const char* yesText)
 {
     graphics.fillRoundRect(40, 66, 240, 104, 8, COLOR_PANEL);
@@ -733,7 +733,7 @@ void PLAMIOSpriteEditor::drawConfirmation(Graphics& graphics, const char* title,
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
 }
 
-Graphics::Color PLAMIOSpriteEditor::paletteColor(uint8_t index)
+Graphics::Color PRUZEASpriteEditor::paletteColor(uint8_t index)
 {
     static constexpr Graphics::Color palette[PALETTE_SIZE] = {
         Graphics::BLACK,

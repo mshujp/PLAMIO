@@ -1,9 +1,9 @@
-﻿#include "WireframeTunnel.h"
+#include "WireframeTunnel.h"
 
 #include <cmath>
 #include <cstdlib>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

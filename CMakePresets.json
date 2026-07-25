@@ -8,7 +8,7 @@
   "configurePresets": [
     {
       "name": "default",
-      "displayName": "PLAMIO default",
+      "displayName": "PRUZEA default",
       "description": "Public Raspberry Pi Pico configuration",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
@@ -22,14 +22,14 @@
       "name": "default-build",
       "configurePreset": "default",
       "targets": [
-        "plamio"
+        "pruzea"
       ]
     },
     {
       "name": "default-deploy",
       "configurePreset": "default",
       "targets": [
-        "deploy_plamio_uf2"
+        "deploy_pruzea_uf2"
       ]
     }
   ]

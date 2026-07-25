@@ -1,8 +1,8 @@
-﻿// CyberBeat.h
+// CyberBeat.h
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 // =========================================================================
@@ -76,7 +76,7 @@ public:
                   m_lastMissTime(0), m_juiceTime(0), m_judgeText(""), m_judgeTextTime(0) {}
     virtual ~CyberBeat() override = default;
 
-    // ## PLAMIO System Lifecycle API
+    // ## PRUZEA System Lifecycle API
     virtual const char* getId() const override { return "cyberbeat"; }
     virtual const char* getName() const override { return "CYBER BEAT"; }
     virtual const char* getMenuName() const override { return "CYBER BEAT"; }
@@ -92,4 +92,4 @@ public:
     void onTerminate(Storage& storage) override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

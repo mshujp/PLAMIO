@@ -1,77 +1,77 @@
 #include "System.h"
-#include "PLAMIOConfig.h"
+#include "PRUZEAConfig.h"
 #include "PicoBatteryConfig.h"
 
-#if PLAMIO_INPUT_GPIO_BUTTONS
+#if PRUZEA_INPUT_GPIO_BUTTONS
 #include "InputGpioButtons.h"
-#elif PLAMIO_INPUT_SNES
+#elif PRUZEA_INPUT_SNES
 #include "InputSnes.h"
-#elif PLAMIO_INPUT_PS
+#elif PRUZEA_INPUT_PS
 #include "InputPS.h"
 #endif
 
-#if PLAMIO_AUDIO_I2S
+#if PRUZEA_AUDIO_I2S
 #include "AudioI2S.h"
-#elif PLAMIO_AUDIO_PWM
+#elif PRUZEA_AUDIO_PWM
 #include "AudioPWM.h"
-#elif PLAMIO_AUDIO_NONE
+#elif PRUZEA_AUDIO_NONE
 #include "AudioStub.h"
 #endif
 
-#if PLAMIO_DISPLAY_ILI9341
+#if PRUZEA_DISPLAY_ILI9341
 #include "GraphicsILI9341.h"
 #include "SystemUI320x240.h"
 #include "SystemUI128x64Mono.h"
-#elif PLAMIO_DISPLAY_SSD1306
+#elif PRUZEA_DISPLAY_SSD1306
 #include "GraphicsSSD1306.h"
 #include "SystemUI128x64Mono.h"
 #endif
 
-#if PLAMIO_STORAGE_SD
+#if PRUZEA_STORAGE_SD
 #include "StorageSD.h"
-#elif PLAMIO_STORAGE_NONE
+#elif PRUZEA_STORAGE_NONE
 #include "StorageStub.h"
 #endif
 
-#include PLAMIO_BOARD_CONFIG_HEADER
+#include PRUZEA_BOARD_CONFIG_HEADER
 
 #include <hardware/adc.h>
 #include <pico/multicore.h>
 #include <pico/stdlib.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
 
-#if PLAMIO_DISPLAY_ILI9341
+#if PRUZEA_DISPLAY_ILI9341
 GraphicsILI9341 graphicsImpl(GRAPHICS_CONFIG);
 SystemUI320x240 systemUIImpl;
 //SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SSD1306_OFF);
-#elif PLAMIO_DISPLAY_SSD1306
+#elif PRUZEA_DISPLAY_SSD1306
 GraphicsSSD1306 graphicsImpl(GRAPHICS_CONFIG);
 SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SSD1306_OFF);
 #endif
 
-#if PLAMIO_INPUT_GPIO_BUTTONS
+#if PRUZEA_INPUT_GPIO_BUTTONS
 InputGpioButtons inputImpl(BUTTON_MAPPING);
-#elif PLAMIO_INPUT_SNES
+#elif PRUZEA_INPUT_SNES
 InputSnes inputImpl(INPUT_CONFIG);
-#elif PLAMIO_INPUT_PS
+#elif PRUZEA_INPUT_PS
 InputPS inputImpl(INPUT_CONFIG);
 #endif
 
-#if PLAMIO_STORAGE_SD
+#if PRUZEA_STORAGE_SD
 StorageSD storageImpl(STORAGE_CONFIG);
-#elif PLAMIO_STORAGE_NONE
+#elif PRUZEA_STORAGE_NONE
 StorageStub storageImpl;
 #endif
 
-#if PLAMIO_AUDIO_I2S
+#if PRUZEA_AUDIO_I2S
 AudioI2S audioImpl(AUDIO_CONFIG);
-#elif PLAMIO_AUDIO_PWM
+#elif PRUZEA_AUDIO_PWM
 AudioPWM audioImpl(AUDIO_CONFIG);
-#elif PLAMIO_AUDIO_NONE
+#elif PRUZEA_AUDIO_NONE
 AudioStub audioImpl;
 #endif
 
@@ -88,7 +88,7 @@ void initPlatformHardware()
         gpio_set_dir(batteryPin, GPIO_IN);
     }
 
-#if PLAMIO_DISPLAY_ILI9341
+#if PRUZEA_DISPLAY_ILI9341
     if (GRAPHICS_CONFIG.backlightPin >= 0)
     {
         gpio_init(static_cast<uint>(GRAPHICS_CONFIG.backlightPin));

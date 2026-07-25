@@ -1,14 +1,14 @@
-﻿#include "System.h"
+#include "System.h"
 
 #include "CoreRing.h"
-#include "PLAMIOGeneratedGames.h"
+#include "PRUZEAGeneratedGames.h"
 #include "Platform.h"
 #include "ScreenShot.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -575,7 +575,7 @@ void System::getSystemInfoHandler(SystemUI::SystemInfo& info, void* context)
     System* system = static_cast<System*>(context);
     if (system == nullptr) return;
 
-    snprintf(info.version, sizeof(info.version), "%s", PLAMIO_VERSION);
+    snprintf(info.version, sizeof(info.version), "%s", PRUZEA_VERSION);
     snprintf(info.display, sizeof(info.display), "%s", system->graphicsAvailable ? system->graphics.getName() : "---");
     snprintf(info.input, sizeof(info.input), "%s", system->inputAvailable ? system->input.getName() : "---");
     snprintf(info.audio, sizeof(info.audio), "%s", system->audioAvailable.load() ? system->audio.getName() : "---");

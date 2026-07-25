@@ -1,79 +1,79 @@
-file(GLOB PLAMIO_GAME_DIRS CONFIGURE_DEPENDS
+file(GLOB PRUZEA_GAME_DIRS CONFIGURE_DEPENDS
     LIST_DIRECTORIES true
     "${CMAKE_SOURCE_DIR}/games/*"
 )
 
-if (PLAMIO_SAMPLES)
-    file(GLOB PLAMIO_SAMPLE_DIRS CONFIGURE_DEPENDS
+if (PRUZEA_SAMPLES)
+    file(GLOB PRUZEA_SAMPLE_DIRS CONFIGURE_DEPENDS
         LIST_DIRECTORIES true
         "${CMAKE_SOURCE_DIR}/samples/*"
         "${CMAKE_SOURCE_DIR}/samples/tools/*"
     )
-    list(APPEND PLAMIO_GAME_DIRS ${PLAMIO_SAMPLE_DIRS})
+    list(APPEND PRUZEA_GAME_DIRS ${PRUZEA_SAMPLE_DIRS})
 endif()
 
-list(SORT PLAMIO_GAME_DIRS)
+list(SORT PRUZEA_GAME_DIRS)
 
-set(PLAMIO_GAME_SOURCES)
-set(PLAMIO_GAME_INCLUDE_DIRS)
-set(PLAMIO_GENERATED_GAME_INCLUDES)
-set(PLAMIO_GENERATED_GAME_INSTANCES)
-set(PLAMIO_GENERATED_GAME_REGISTRATIONS)
+set(PRUZEA_GAME_SOURCES)
+set(PRUZEA_GAME_INCLUDE_DIRS)
+set(PRUZEA_GENERATED_GAME_INCLUDES)
+set(PRUZEA_GENERATED_GAME_INSTANCES)
+set(PRUZEA_GENERATED_GAME_REGISTRATIONS)
 
-foreach(PLAMIO_GAME_DIR IN LISTS PLAMIO_GAME_DIRS)
-    if (NOT IS_DIRECTORY "${PLAMIO_GAME_DIR}")
+foreach(PRUZEA_GAME_DIR IN LISTS PRUZEA_GAME_DIRS)
+    if (NOT IS_DIRECTORY "${PRUZEA_GAME_DIR}")
         continue()
     endif()
 
-    get_filename_component(PLAMIO_GAME_NAME "${PLAMIO_GAME_DIR}" NAME)
-    if (PLAMIO_GAME_NAME MATCHES "^_")
+    get_filename_component(PRUZEA_GAME_NAME "${PRUZEA_GAME_DIR}" NAME)
+    if (PRUZEA_GAME_NAME MATCHES "^_")
         continue()
     endif()
 
-    set(PLAMIO_GAME_HEADER "${PLAMIO_GAME_DIR}/${PLAMIO_GAME_NAME}.h")
-    set(PLAMIO_GAME_SOURCE "${PLAMIO_GAME_DIR}/${PLAMIO_GAME_NAME}.cpp")
-    if (NOT EXISTS "${PLAMIO_GAME_HEADER}" OR NOT EXISTS "${PLAMIO_GAME_SOURCE}")
+    set(PRUZEA_GAME_HEADER "${PRUZEA_GAME_DIR}/${PRUZEA_GAME_NAME}.h")
+    set(PRUZEA_GAME_SOURCE "${PRUZEA_GAME_DIR}/${PRUZEA_GAME_NAME}.cpp")
+    if (NOT EXISTS "${PRUZEA_GAME_HEADER}" OR NOT EXISTS "${PRUZEA_GAME_SOURCE}")
         continue()
     endif()
 
-    list(APPEND PLAMIO_GAME_SOURCES "${PLAMIO_GAME_SOURCE}")
-    list(APPEND PLAMIO_GAME_INCLUDE_DIRS "${PLAMIO_GAME_DIR}")
-    string(APPEND PLAMIO_GENERATED_GAME_INCLUDES "#include \"${PLAMIO_GAME_NAME}.h\"\n")
-    string(APPEND PLAMIO_GENERATED_GAME_INSTANCES "static ${PLAMIO_GAME_NAME} plamioGame_${PLAMIO_GAME_NAME};\n")
-    string(APPEND PLAMIO_GENERATED_GAME_REGISTRATIONS "    catalog.addGame(&plamioGame_${PLAMIO_GAME_NAME}, graphics);\n")
+    list(APPEND PRUZEA_GAME_SOURCES "${PRUZEA_GAME_SOURCE}")
+    list(APPEND PRUZEA_GAME_INCLUDE_DIRS "${PRUZEA_GAME_DIR}")
+    string(APPEND PRUZEA_GENERATED_GAME_INCLUDES "#include \"${PRUZEA_GAME_NAME}.h\"\n")
+    string(APPEND PRUZEA_GENERATED_GAME_INSTANCES "static ${PRUZEA_GAME_NAME} pruzeaGame_${PRUZEA_GAME_NAME};\n")
+    string(APPEND PRUZEA_GENERATED_GAME_REGISTRATIONS "    catalog.addGame(&pruzeaGame_${PRUZEA_GAME_NAME}, graphics);\n")
 endforeach()
 
-set(PLAMIO_GENERATED_GAMES_H "${CMAKE_BINARY_DIR}/generated/PLAMIOGeneratedGames.h")
-set(PLAMIO_GENERATED_GAMES_CPP "${CMAKE_BINARY_DIR}/generated/PLAMIOGeneratedGames.cpp")
+set(PRUZEA_GENERATED_GAMES_H "${CMAKE_BINARY_DIR}/generated/PRUZEAGeneratedGames.h")
+set(PRUZEA_GENERATED_GAMES_CPP "${CMAKE_BINARY_DIR}/generated/PRUZEAGeneratedGames.cpp")
 file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/generated")
-file(WRITE "${PLAMIO_GENERATED_GAMES_H}"
+file(WRITE "${PRUZEA_GENERATED_GAMES_H}"
 "#pragma once
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class GameCatalog;
 class GraphicsBase;
 
 void registerGeneratedGames(GameCatalog& catalog, GraphicsBase& graphics);
 
-} // namespace PLAMIO
+} // namespace PRUZEA
 ")
-file(WRITE "${PLAMIO_GENERATED_GAMES_CPP}"
-"#include \"PLAMIOGeneratedGames.h\"
+file(WRITE "${PRUZEA_GENERATED_GAMES_CPP}"
+"#include \"PRUZEAGeneratedGames.h\"
 #include \"GameCatalog.h\"
 #include \"GraphicsBase.h\"
-${PLAMIO_GENERATED_GAME_INCLUDES}
-namespace PLAMIO {
+${PRUZEA_GENERATED_GAME_INCLUDES}
+namespace PRUZEA {
 
-${PLAMIO_GENERATED_GAME_INSTANCES}
+${PRUZEA_GENERATED_GAME_INSTANCES}
 void registerGeneratedGames(GameCatalog& catalog, GraphicsBase& graphics)
 {
-${PLAMIO_GENERATED_GAME_REGISTRATIONS}}
+${PRUZEA_GENERATED_GAME_REGISTRATIONS}}
 
-} // namespace PLAMIO
+} // namespace PRUZEA
 ")
 
-add_executable(plamio
+add_executable(pruzea
     platform/pico/main.cpp
     platform/pico/Platform.cpp
     hardware/InputBase.cpp
@@ -89,11 +89,11 @@ add_executable(plamio
     util/SaveData.cpp
     util/Collision.cpp
     util/ScreenShot.cpp
-    ${PLAMIO_GENERATED_GAMES_CPP}
-    ${PLAMIO_GAME_SOURCES}
+    ${PRUZEA_GENERATED_GAMES_CPP}
+    ${PRUZEA_GAME_SOURCES}
 )
 
-target_include_directories(plamio PRIVATE
+target_include_directories(pruzea PRIVATE
     ${CMAKE_SOURCE_DIR}/sdk
     ${CMAKE_BINARY_DIR}/generated
     ${CMAKE_CURRENT_LIST_DIR}
@@ -103,54 +103,54 @@ target_include_directories(plamio PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/hardware
     ${CMAKE_CURRENT_LIST_DIR}/platform/pico
     ${CMAKE_CURRENT_LIST_DIR}/platform/pico/boards
-    ${PLAMIO_GAME_INCLUDE_DIRS}
+    ${PRUZEA_GAME_INCLUDE_DIRS}
 )
 
-if (PLAMIO_DISPLAY STREQUAL "ILI9341")
-    target_sources(plamio PRIVATE
+if (PRUZEA_DISPLAY STREQUAL "ILI9341")
+    target_sources(pruzea PRIVATE
         platform/pico/GraphicsILI9341.cpp
         ui/SystemUI320x240.cpp
         ui/SystemUI128x64Mono.cpp
     )
-elseif (PLAMIO_DISPLAY STREQUAL "SSD1306")
-    target_sources(plamio PRIVATE
+elseif (PRUZEA_DISPLAY STREQUAL "SSD1306")
+    target_sources(pruzea PRIVATE
         platform/pico/GraphicsSSD1306.cpp
         ui/SystemUI128x64Mono.cpp
     )
 endif()
 
-if (PLAMIO_STORAGE STREQUAL "SD")
-    target_sources(plamio PRIVATE platform/pico/StorageSD.cpp)
-elseif (PLAMIO_STORAGE STREQUAL "NONE")
-    target_sources(plamio PRIVATE hardware/StorageStub.cpp)
+if (PRUZEA_STORAGE STREQUAL "SD")
+    target_sources(pruzea PRIVATE platform/pico/StorageSD.cpp)
+elseif (PRUZEA_STORAGE STREQUAL "NONE")
+    target_sources(pruzea PRIVATE hardware/StorageStub.cpp)
 endif()
 
-if (PLAMIO_AUDIO STREQUAL "I2S")
-    target_sources(plamio PRIVATE platform/pico/AudioI2S.cpp)
-elseif (PLAMIO_AUDIO STREQUAL "PWM")
-    target_sources(plamio PRIVATE platform/pico/AudioPWM.cpp)
-elseif (PLAMIO_AUDIO STREQUAL "NONE")
-    target_sources(plamio PRIVATE hardware/AudioStub.cpp)
+if (PRUZEA_AUDIO STREQUAL "I2S")
+    target_sources(pruzea PRIVATE platform/pico/AudioI2S.cpp)
+elseif (PRUZEA_AUDIO STREQUAL "PWM")
+    target_sources(pruzea PRIVATE platform/pico/AudioPWM.cpp)
+elseif (PRUZEA_AUDIO STREQUAL "NONE")
+    target_sources(pruzea PRIVATE hardware/AudioStub.cpp)
 endif()
 
-if (PLAMIO_INPUT STREQUAL "SNES")
-    target_sources(plamio PRIVATE
+if (PRUZEA_INPUT STREQUAL "SNES")
+    target_sources(pruzea PRIVATE
         platform/pico/GpioButtons.cpp
         platform/pico/InputSnes.cpp
     )
-elseif (PLAMIO_INPUT STREQUAL "GPIO_BUTTONS")
-    target_sources(plamio PRIVATE
+elseif (PRUZEA_INPUT STREQUAL "GPIO_BUTTONS")
+    target_sources(pruzea PRIVATE
         platform/pico/GpioButtons.cpp
         platform/pico/InputGpioButtons.cpp
     )
-elseif (PLAMIO_INPUT STREQUAL "PS")
-    target_sources(plamio PRIVATE
+elseif (PRUZEA_INPUT STREQUAL "PS")
+    target_sources(pruzea PRIVATE
         platform/pico/GpioButtons.cpp
         platform/pico/InputPS.cpp
     )
 endif()
 
-target_link_libraries(plamio
+target_link_libraries(pruzea
     pico_stdlib
     pico_multicore
     hardware_gpio
@@ -163,22 +163,22 @@ target_link_libraries(plamio
     LovyanGFX
 )
 
-if (PLAMIO_AUDIO STREQUAL "I2S")
-    target_link_libraries(plamio pico_audio_i2s)
+if (PRUZEA_AUDIO STREQUAL "I2S")
+    target_link_libraries(pruzea pico_audio_i2s)
 endif()
 
-if (PLAMIO_STORAGE STREQUAL "SD")
-    target_link_libraries(plamio no-OS-FatFS-SD-SDIO-SPI-RPi-Pico)
+if (PRUZEA_STORAGE STREQUAL "SD")
+    target_link_libraries(pruzea no-OS-FatFS-SD-SDIO-SPI-RPi-Pico)
 endif()
 
-pico_enable_stdio_usb(plamio 1)
-pico_enable_stdio_uart(plamio 0)
+pico_enable_stdio_usb(pruzea 1)
+pico_enable_stdio_uart(pruzea 0)
 
-pico_add_extra_outputs(plamio)
+pico_add_extra_outputs(pruzea)
 
-add_custom_command(TARGET plamio POST_BUILD
+add_custom_command(TARGET pruzea POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE_DIR:plamio>/plamio.uf2
-        ${CMAKE_BINARY_DIR}/plamio.uf2
-    COMMENT "Copying plamio.uf2 to build directory"
+        $<TARGET_FILE_DIR:pruzea>/pruzea.uf2
+        ${CMAKE_BINARY_DIR}/pruzea.uf2
+    COMMENT "Copying pruzea.uf2 to build directory"
 )

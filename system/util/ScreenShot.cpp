@@ -1,10 +1,10 @@
-﻿#include "ScreenShot.h"
+#include "ScreenShot.h"
 
 #include <new>
 #include <stdio.h>
 #include <cstring>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

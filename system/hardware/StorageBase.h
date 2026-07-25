@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class StorageBaseFile : public Storage::File {
 protected:

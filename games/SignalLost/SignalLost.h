@@ -1,11 +1,11 @@
-﻿#pragma once
+#pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
 #include <stddef.h>
 #include <stdint.h>
 
-class SignalLost final : public PLAMIO::Game {
+class SignalLost final : public PRUZEA::Game {
 public:
     const char* getId() const override;
     const char* getName() const override;
@@ -16,21 +16,21 @@ public:
     uint16_t getTargetScreenWidth() const override;
     uint16_t getTargetScreenHeight() const override;
 
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
 
-    PLAMIO::Game::GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+    PRUZEA::Game::GameState onUpdate(
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec
     ) override;
 
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw
     ) override;
 
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     // ============================================================
@@ -331,59 +331,59 @@ private:
     // ============================================================
 
     void updateTitle(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio
     );
 
     void updateText(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio
     );
 
     void updateChoices(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio
     );
 
     void updateTimedWait();
     void updateKeyWait(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio
     );
 
     void updateFinished(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio
     );
 
     // ============================================================
     // Drawing
     // ============================================================
 
-    void drawTitle(PLAMIO::Graphics& graphics);
-    void drawNovel(PLAMIO::Graphics& graphics);
-    void drawFinished(PLAMIO::Graphics& graphics);
-    void drawError(PLAMIO::Graphics& graphics);
+    void drawTitle(PRUZEA::Graphics& graphics);
+    void drawNovel(PRUZEA::Graphics& graphics);
+    void drawFinished(PRUZEA::Graphics& graphics);
+    void drawError(PRUZEA::Graphics& graphics);
 
-    void drawHeader(PLAMIO::Graphics& graphics);
-    void drawTextWindow(PLAMIO::Graphics& graphics);
-    void drawChoices(PLAMIO::Graphics& graphics);
-    void drawFooter(PLAMIO::Graphics& graphics);
+    void drawHeader(PRUZEA::Graphics& graphics);
+    void drawTextWindow(PRUZEA::Graphics& graphics);
+    void drawChoices(PRUZEA::Graphics& graphics);
+    void drawFooter(PRUZEA::Graphics& graphics);
 
     void drawWrappedText(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         const char* text,
         int16_t x,
         int16_t y,
         uint16_t maxWidth,
         uint8_t maxLines,
-        PLAMIO::Graphics::Color color,
-        PLAMIO::Graphics::Font font
+        PRUZEA::Graphics::Color color,
+        PRUZEA::Graphics::Font font
     );
 
     // ============================================================
     // Game state conversion
     // ============================================================
 
-    PLAMIO::Game::GameState getPublicGameState() const;
+    PRUZEA::Game::GameState getPublicGameState() const;
 };

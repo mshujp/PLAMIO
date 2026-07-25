@@ -1,8 +1,8 @@
 // VectorFlite.h
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class VectorFlite : public Game {
@@ -80,4 +80,4 @@ private:
     void updateHoming(float deltaSec);
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

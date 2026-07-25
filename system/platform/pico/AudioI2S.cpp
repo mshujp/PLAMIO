@@ -1,7 +1,7 @@
 #include "AudioI2S.h"
 #include <algorithm>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 AudioI2S::AudioI2S(const Config& audioConfig)
 {

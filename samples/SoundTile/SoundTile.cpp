@@ -1,7 +1,7 @@
-﻿#include "SoundTile.h"
+#include "SoundTile.h"
 #include <cstdio>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

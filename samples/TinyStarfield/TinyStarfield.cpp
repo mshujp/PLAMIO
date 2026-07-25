@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 void TinyStarfield::onInit(Storage& storage)
 {

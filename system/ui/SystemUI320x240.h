@@ -1,8 +1,8 @@
-﻿#pragma once
+#pragma once
 
 #include "SystemUI.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class SystemUI320x240 : public SystemUI
@@ -33,4 +33,4 @@ public:
     void drawLowBttery(Graphics& graphics) override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

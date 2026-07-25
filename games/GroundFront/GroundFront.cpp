@@ -1,10 +1,10 @@
-﻿#include "GroundFront.h"
+#include "GroundFront.h"
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace {
 constexpr int16_t SCREEN_W = 320;

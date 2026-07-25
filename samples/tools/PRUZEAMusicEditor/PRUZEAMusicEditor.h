@@ -1,7 +1,7 @@
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class PLAMIOMusicEditor : public PLAMIO::Game
+class PRUZEAMusicEditor : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -14,12 +14,12 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio,
-                       PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio,
+                       PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
     TerminateResponse onRequestTerminate() override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     static constexpr uint8_t STEP_COUNT = 16;
@@ -51,7 +51,7 @@ private:
 
     struct ReadContext
     {
-        PLAMIOMusicEditor* editor;
+        PRUZEAMusicEditor* editor;
         bool apply;
         bool valid;
         uint8_t noteIndex;
@@ -61,8 +61,8 @@ private:
     GridNote grid[STEP_COUNT];
     GridNote savedGrid[STEP_COUNT]{};
     uint16_t savedBpm = BPM_DEFAULT;
-    PLAMIO::Audio::ToneNote playbackNotes[MAX_PLAYBACK_NOTES];
-    PLAMIO::Audio::Music playbackMusic{};
+    PRUZEA::Audio::ToneNote playbackNotes[MAX_PLAYBACK_NOTES];
+    PRUZEA::Audio::Music playbackMusic{};
 
     Mode mode = Mode::EDIT;
     uint8_t cursorStep = 0;
@@ -91,35 +91,35 @@ private:
     int8_t findCoveringNoteStart(uint8_t step) const;
 
     void buildPlayback();
-    void startPlayback(PLAMIO::Audio& audio);
-    void stopPlayback(PLAMIO::Audio& audio);
+    void startPlayback(PRUZEA::Audio& audio);
+    void stopPlayback(PRUZEA::Audio& audio);
     uint32_t stepDurationMsec() const;
 
-    void updateEdit(PLAMIO::Input& input, PLAMIO::Audio& audio);
-    void updateMenu(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage);
+    void updateEdit(PRUZEA::Input& input, PRUZEA::Audio& audio);
+    void updateMenu(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage);
     void openMainMenu();
     void captureSavedState();
     bool hasUnsavedChanges() const;
     void moveMenuSelection(int8_t direction, uint8_t itemCount);
 
-    void refreshSlotInfo(PLAMIO::Storage& storage);
-    bool saveSlot(PLAMIO::Storage& storage, uint8_t slot);
-    bool loadSlot(PLAMIO::Storage& storage, uint8_t slot, bool apply);
+    void refreshSlotInfo(PRUZEA::Storage& storage);
+    bool saveSlot(PRUZEA::Storage& storage, uint8_t slot);
+    bool loadSlot(PRUZEA::Storage& storage, uint8_t slot, bool apply);
     static bool readSlotLine(const char* line, void* arg);
     static bool writeDataLine(std::string& line, void* arg);
     static bool writeSourceLine(std::string& line, void* arg);
     void makeDataFileName(uint8_t slot, char* out, uint8_t outSize) const;
     void makeSourceFileName(uint8_t slot, char* out, uint8_t outSize) const;
 
-    void drawEditor(PLAMIO::Graphics& graphics);
-    void drawMainMenu(PLAMIO::Graphics& graphics);
-    void drawSlotMenu(PLAMIO::Graphics& graphics, bool saving);
-    void drawConfirmation(PLAMIO::Graphics& graphics, const char* title,
+    void drawEditor(PRUZEA::Graphics& graphics);
+    void drawMainMenu(PRUZEA::Graphics& graphics);
+    void drawSlotMenu(PRUZEA::Graphics& graphics, bool saving);
+    void drawConfirmation(PRUZEA::Graphics& graphics, const char* title,
                           const char* message, const char* yesText);
-    void drawExitConfirmation(PLAMIO::Graphics& graphics);
+    void drawExitConfirmation(PRUZEA::Graphics& graphics);
 
     static uint16_t pitchFrequency(uint8_t pitch);
-    static PLAMIO::Audio::ToneNote::Duration durationForSteps(uint8_t steps);
+    static PRUZEA::Audio::ToneNote::Duration durationForSteps(uint8_t steps);
     static const char* pitchName(uint8_t pitch);
     static const char* lengthName(uint8_t steps);
     static const char* durationSourceName(uint8_t steps);

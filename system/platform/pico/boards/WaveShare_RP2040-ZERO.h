@@ -1,11 +1,11 @@
-﻿#pragma once
+#pragma once
 
 #include "InputBase.h"
 
 //== Graphics ================================================
-#if PLAMIO_DISPLAY_ILI9341
+#if PRUZEA_DISPLAY_ILI9341
 /// ILI9341 SPI LCD
-constexpr PLAMIO::GraphicsILI9341::Config GRAPHICS_CONFIG { 
+constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
     // ===== SPI =====
     .spiHost = 1,
     .spiWriteFreq = 62500000,
@@ -19,15 +19,15 @@ constexpr PLAMIO::GraphicsILI9341::Config GRAPHICS_CONFIG {
     .backlightPin = -1,
 
     // ===== Display =====
-    .lcdRotate = 1 ,  // 0: Normal  3: Inverted   
+    .lcdRotate = 1 ,  // 0: Normal  3: Inverted
 
     // ===== Buffer =====
-    .maxBufferWidth  = PLAMIO::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2040,
-    .maxBufferHeight = PLAMIO::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2040
+    .maxBufferWidth  = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2040,
+    .maxBufferHeight = PRUZEA::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2040
 };
-#elif PLAMIO_DISPLAY_SSD1306
+#elif PRUZEA_DISPLAY_SSD1306
 /// SSD1306 OLED
-constexpr PLAMIO::GraphicsSSD1306::Config GRAPHICS_CONFIG {
+constexpr PRUZEA::GraphicsSSD1306::Config GRAPHICS_CONFIG {
     // ===== I2C =====
     .i2cPort = 0,      // 0 or 1
     .i2cAddr = 0x3C,
@@ -45,7 +45,7 @@ constexpr PLAMIO::GraphicsSSD1306::Config GRAPHICS_CONFIG {
 
 //== Input ==================================================
 /// Button-GPIO Mapping
-constexpr PLAMIO::InputBase::ButtonMapping BUTTON_MAPPING {
+constexpr PRUZEA::InputBase::ButtonMapping BUTTON_MAPPING {
     .UP        = 9,
     .DOWN      = 10,
     .LEFT      = 11,
@@ -62,9 +62,9 @@ constexpr PLAMIO::InputBase::ButtonMapping BUTTON_MAPPING {
     .MUTE      = -1
 };
 
-#if PLAMIO_INPUT_SNES
+#if PRUZEA_INPUT_SNES
 /// SNES controller
-constexpr PLAMIO::InputSnes::Config INPUT_CONFIG {
+constexpr PRUZEA::InputSnes::Config INPUT_CONFIG {
     // ===== GPIO Pins =====
     .gpioCLK = -1,
     .gpioLAT = -1,
@@ -73,9 +73,9 @@ constexpr PLAMIO::InputSnes::Config INPUT_CONFIG {
     // ===== Extra Buttons =====
     .buttonMapping = BUTTON_MAPPING
 };
-#elif PLAMIO_INPUT_PS
+#elif PRUZEA_INPUT_PS
 /// PlayStation 2 controller (experimental; hardware-unverified)
-constexpr PLAMIO::InputPS::Config INPUT_CONFIG {
+constexpr PRUZEA::InputPS::Config INPUT_CONFIG {
     // ===== GPIO Pins =====
     .clockPin = -1,
     .commandPin = -1,
@@ -89,27 +89,27 @@ constexpr PLAMIO::InputPS::Config INPUT_CONFIG {
 
 
 //== Audio ====================================================
-#if PLAMIO_AUDIO_PWM
+#if PRUZEA_AUDIO_PWM
 /// PWM
-constexpr PLAMIO::AudioPWM::Config AUDIO_CONFIG {
+constexpr PRUZEA::AudioPWM::Config AUDIO_CONFIG {
     // ===== GPIO Pins =====
-    .pwmPin = 29 
+    .pwmPin = 29
 };
-#elif PLAMIO_AUDIO_I2S
+#elif PRUZEA_AUDIO_I2S
 /// I2S
-constexpr PLAMIO::AudioI2S::Config AUDIO_CONFIG {
+constexpr PRUZEA::AudioI2S::Config AUDIO_CONFIG {
     // ===== I2S Pins =====
     .bclkPin = -1,
     // The LRCK pin must be assigned to the BCLK + 1 pin.
-    .dataPin = -1 
+    .dataPin = -1
 };
 #endif
 
 
 //== Storage ==================================================
-#if PLAMIO_STORAGE_SD
+#if PRUZEA_STORAGE_SD
 // SD
-constexpr PLAMIO::StorageSD::Config STORAGE_CONFIG {
+constexpr PRUZEA::StorageSD::Config STORAGE_CONFIG {
     // ===== SPI =====
     .spiHost = 0,
 
@@ -126,7 +126,7 @@ constexpr PLAMIO::StorageSD::Config STORAGE_CONFIG {
 
 
 //== Battery =================================================
-constexpr PLAMIO::PicoPlatform::BatteryConfig BATTERY_CONFIG {
+constexpr PRUZEA::PicoPlatform::BatteryConfig BATTERY_CONFIG {
     // ===== ADC =====
     .adcPin = -1,
     .adcChannel = 2,

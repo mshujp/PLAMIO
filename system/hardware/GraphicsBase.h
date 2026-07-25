@@ -1,8 +1,8 @@
 #pragma once
 
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class GraphicsBase : public Graphics
 {

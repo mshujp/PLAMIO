@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // ParticleLab
 //
-// PLAMIO Graphics API Sample
+// PRUZEA Graphics API Sample
 //
 // Demonstrates:
 //
@@ -16,9 +16,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class ParticleLab : public PLAMIO::Game
+class ParticleLab : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -32,11 +32,11 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio,
-                       PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio,
+                       PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     enum class Mode : uint8_t
@@ -66,7 +66,7 @@ private:
         float maxLife;
         float size;
         float phase;
-        PLAMIO::Graphics::Color color;
+        PRUZEA::Graphics::Color color;
         bool active;
     };
 
@@ -87,7 +87,7 @@ private:
     Particle* acquireParticle();
     uint8_t activeParticleCount() const;
 
-    void selectEffect(int8_t direction, PLAMIO::Audio& audio);
+    void selectEffect(int8_t direction, PRUZEA::Audio& audio);
     void emitSelected();
     void updateParticles(float deltaSec);
 
@@ -101,7 +101,7 @@ private:
     void updateFountain(Particle& particle, float deltaSec);
     void updateSnow(Particle& particle, float deltaSec);
 
-    void drawTitle(PLAMIO::Graphics& graphics);
-    void drawLab(PLAMIO::Graphics& graphics);
-    void drawParticle(PLAMIO::Graphics& graphics, const Particle& particle);
+    void drawTitle(PRUZEA::Graphics& graphics);
+    void drawLab(PRUZEA::Graphics& graphics);
+    void drawParticle(PRUZEA::Graphics& graphics, const Particle& particle);
 };

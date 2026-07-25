@@ -2,7 +2,7 @@
 
 #include <atomic>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 // Cross-platform lock for very short critical sections shared between
@@ -51,4 +51,4 @@ private:
     SpinLock& lock;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

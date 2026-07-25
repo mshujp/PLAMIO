@@ -4,7 +4,7 @@
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class AudioPWM : public AudioBase {
     static constexpr uint16_t SAMPLE_RATE = 22050;
@@ -33,4 +33,4 @@ public:
     void end() override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

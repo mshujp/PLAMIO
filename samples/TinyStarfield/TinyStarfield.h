@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // TinyStarfield
 //
-// PLAMIO Graphics API Sample (SSD1306)
+// PRUZEA Graphics API Sample (SSD1306)
 //
 // Demonstrates:
 //
@@ -14,9 +14,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class TinyStarfield : public PLAMIO::Game
+class TinyStarfield : public PRUZEA::Game
 {
 public:
     const char* getId() const override { return "tinystarfield"; }
@@ -24,22 +24,22 @@ public:
     const char* getMenuName() const override { return "08 Tiny Starfield"; }
     const char* getMenuGroup() const override { return "SAMPLES"; }
 
-    uint16_t getLogicalScreenWidth() const override { return PLAMIO::Display::SSD1306_SCREEN_W; }
-    uint16_t getLogicalScreenHeight() const override { return PLAMIO::Display::SSD1306_SCREEN_H; }
-    uint16_t getTargetScreenWidth() const override { return PLAMIO::Display::ILI9341_SCREEN_W; }
-    uint16_t getTargetScreenHeight() const override { return PLAMIO::Display::ILI9341_SCREEN_H; }
+    uint16_t getLogicalScreenWidth() const override { return PRUZEA::Display::SSD1306_SCREEN_W; }
+    uint16_t getLogicalScreenHeight() const override { return PRUZEA::Display::SSD1306_SCREEN_H; }
+    uint16_t getTargetScreenWidth() const override { return PRUZEA::Display::ILI9341_SCREEN_W; }
+    uint16_t getTargetScreenHeight() const override { return PRUZEA::Display::ILI9341_SCREEN_H; }
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
     GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec) override;
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     struct Star
@@ -50,8 +50,8 @@ private:
         float previousZ;
     };
 
-    static constexpr int16_t SCREEN_W = PLAMIO::Display::SSD1306_SCREEN_W;
-    static constexpr int16_t SCREEN_H = PLAMIO::Display::SSD1306_SCREEN_H;
+    static constexpr int16_t SCREEN_W = PRUZEA::Display::SSD1306_SCREEN_W;
+    static constexpr int16_t SCREEN_H = PRUZEA::Display::SSD1306_SCREEN_H;
     static constexpr int16_t CENTER_X = SCREEN_W / 2;
     static constexpr int16_t CENTER_Y = SCREEN_H / 2;
 
@@ -70,7 +70,7 @@ private:
     void resetStar(Star& star, bool randomDepth);
     void resetAllStars();
     void updateStars(float deltaSec);
-    void drawStar(PLAMIO::Graphics& graphics, const Star& star) const;
+    void drawStar(PRUZEA::Graphics& graphics, const Star& star) const;
 
     bool project(
         float x,

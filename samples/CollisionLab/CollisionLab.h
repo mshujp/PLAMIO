@@ -1,10 +1,10 @@
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
 // -----------------------------------------------------------------------------
 // CollisionLab
 //
-// PLAMIO Sample
+// PRUZEA Sample
 //
 // Demonstrates:
 //
@@ -16,7 +16,7 @@
 // Learn the Collision API by playing a small game.
 // -----------------------------------------------------------------------------
 
-class CollisionLab : public PLAMIO::Game
+class CollisionLab : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -30,11 +30,11 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    Game::GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio,
-                             PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    Game::GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio,
+                             PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     enum Mode : uint8_t
@@ -81,12 +81,12 @@ private:
     char message[32] = {};
 
     void resetRun();
-    void beginTest(uint8_t bit, const char* text, PLAMIO::Audio& audio);
-    void updateCollisionTests(PLAMIO::Audio& audio);
+    void beginTest(uint8_t bit, const char* text, PRUZEA::Audio& audio);
+    void updateCollisionTests(PRUZEA::Audio& audio);
     void startShake();
-    void drawBackground(PLAMIO::Graphics& g);
-    void drawStations(PLAMIO::Graphics& g);
-    void drawHud(PLAMIO::Graphics& g);
-    void drawTitle(PLAMIO::Graphics& g);
-    void drawComplete(PLAMIO::Graphics& g);
+    void drawBackground(PRUZEA::Graphics& g);
+    void drawStations(PRUZEA::Graphics& g);
+    void drawHud(PRUZEA::Graphics& g);
+    void drawTitle(PRUZEA::Graphics& g);
+    void drawComplete(PRUZEA::Graphics& g);
 };

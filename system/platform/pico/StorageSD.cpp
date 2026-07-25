@@ -1,11 +1,11 @@
-﻿#include "StorageSD.h"
+#include "StorageSD.h"
 #include "hw_config.h"
 
 #include <cstring>
 #include <cstdio>
 #include <pico/time.h>
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 namespace {
     spi_t       g_spi    = {};
@@ -14,7 +14,7 @@ namespace {
     FATFS       g_fatFs;
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA
 
 extern "C" size_t sd_get_num()
 {
@@ -23,10 +23,10 @@ extern "C" size_t sd_get_num()
 
 extern "C" sd_card_t* sd_get_by_num(size_t num)
 {
-    return (num == 0) ? &PLAMIO::g_sdCard : nullptr;
+    return (num == 0) ? &PRUZEA::g_sdCard : nullptr;
 }
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 StorageSDFile::~StorageSDFile()
 {
@@ -144,15 +144,15 @@ bool StorageSD::makeFatPath(const char* path, char* outBuffer, size_t bufferSize
         return false;
     }
 
-    // Already a FatFs volume path, e.g. "0:/PLAMIO_Games".
+    // Already a FatFs volume path, e.g. "0:/PRUZEA_Games".
     if (path[0] >= '0' && path[0] <= '9' && path[1] == ':')
     {
         const int written = snprintf(outBuffer, bufferSize, "%s", path);
         return written >= 0 && written < static_cast<int>(bufferSize);
     }
 
-    // PLAMIO public paths are written as "/PLAMIO_Games/...".
-    // FatFs paths are internally converted to "0:/PLAMIO_Games/...".
+    // PRUZEA public paths are written as "/PRUZEA_Games/...".
+    // FatFs paths are internally converted to "0:/PRUZEA_Games/...".
     const int written = snprintf(outBuffer, bufferSize, "%s%s", kVolumePath, path);
     return written >= 0 && written < static_cast<int>(bufferSize);
 }
@@ -293,7 +293,7 @@ bool StorageSD::ensureDirectory(const char* path)
     }
 
     // Create each intermediate directory.
-    // Example: 0:/PLAMIO_Games/foo/bar
+    // Example: 0:/PRUZEA_Games/foo/bar
     for (size_t i = start + 1; i < len; ++i)
     {
         if (fatPath[i] == '/')
@@ -498,4 +498,4 @@ bool StorageSD::fileExists(const char* path)
     return exists;
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

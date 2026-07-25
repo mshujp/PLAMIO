@@ -1,7 +1,7 @@
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class AquaDrop : public PLAMIO::Game
+class AquaDrop : public PRUZEA::Game
 {
 public:
     const char* getId() const override;
@@ -14,10 +14,10 @@ public:
     uint16_t getTargetScreenHeight() const override;
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
-    Game::GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
+    Game::GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     enum Mode : uint8_t
@@ -93,7 +93,7 @@ private:
     uint32_t shakeStartMsec = 0;
     uint16_t shakeDurationMsec = 0;
 
-    PLAMIO::SaveData saveData;
+    PRUZEA::SaveData saveData;
 
     void resetToTitle();
     void startNewGame();
@@ -117,18 +117,18 @@ private:
     bool isBoardOverflowed() const;
 
     void enterMode(Mode newMode);
-    void finishStage(PLAMIO::Audio& audio, PLAMIO::Storage& storage);
-    void finishGameOver(PLAMIO::Storage& storage);
+    void finishStage(PRUZEA::Audio& audio, PRUZEA::Storage& storage);
+    void finishGameOver(PRUZEA::Storage& storage);
     void updateHighScore();
-    void saveIfNeeded(PLAMIO::Storage& storage);
+    void saveIfNeeded(PRUZEA::Storage& storage);
 
-    void drawBackground(PLAMIO::Graphics& graphics) const;
-    void drawTitle(PLAMIO::Graphics& graphics, uint32_t now) const;
-    void drawGame(PLAMIO::Graphics& graphics, uint32_t now) const;
-    void drawBoard(PLAMIO::Graphics& graphics, uint32_t now) const;
-    void drawBubble(PLAMIO::Graphics& graphics, int16_t cx, int16_t cy, uint8_t colorIndex, bool flashing) const;
-    void drawCurrentPair(PLAMIO::Graphics& graphics) const;
-    void drawSidePanel(PLAMIO::Graphics& graphics, uint32_t now) const;
-    void drawOverlay(PLAMIO::Graphics& graphics, uint32_t now) const;
-    PLAMIO::Graphics::Color bubbleColor(uint8_t colorIndex) const;
+    void drawBackground(PRUZEA::Graphics& graphics) const;
+    void drawTitle(PRUZEA::Graphics& graphics, uint32_t now) const;
+    void drawGame(PRUZEA::Graphics& graphics, uint32_t now) const;
+    void drawBoard(PRUZEA::Graphics& graphics, uint32_t now) const;
+    void drawBubble(PRUZEA::Graphics& graphics, int16_t cx, int16_t cy, uint8_t colorIndex, bool flashing) const;
+    void drawCurrentPair(PRUZEA::Graphics& graphics) const;
+    void drawSidePanel(PRUZEA::Graphics& graphics, uint32_t now) const;
+    void drawOverlay(PRUZEA::Graphics& graphics, uint32_t now) const;
+    PRUZEA::Graphics::Color bubbleColor(uint8_t colorIndex) const;
 };

@@ -1,12 +1,12 @@
-﻿// ============================================================================
-// PLAMIO
+// ============================================================================
+// PRUZEA
 // AI-Friendly Game Framework
 //
-// PLAMIO is a lightweight game framework designed for AI-assisted game development.
+// PRUZEA is a lightweight game framework designed for AI-assisted game development.
 //
 // This header defines the public API available to games.
-// The runtime implementation is provided by the PLAMIO system.
-// 
+// The runtime implementation is provided by the PRUZEA system.
+//
 // Execution model
 //   System (30 FPS)
 //       ├─ Input update
@@ -21,15 +21,15 @@
 #include <stdint.h>
 #include <string>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
-constexpr char PLAMIO_VERSION[] = "1.0"; 
+constexpr char PRUZEA_VERSION[] = "1.0";
 
 namespace Platform {
     // =========================================================================
     // [PROVIDED BY SYSTEM]
-    // These APIs are already implemented by the PLAMIO runtime.
+    // These APIs are already implemented by the PRUZEA runtime.
     // These declarations define existing APIs.
     // Do NOT implement or redefine them. Use them directly from your game code.
     // =========================================================================
@@ -40,7 +40,7 @@ namespace Platform {
 namespace Math {
     // =========================================================================
     // [PROVIDED BY SYSTEM]
-    // These APIs are already implemented by the PLAMIO runtime.
+    // These APIs are already implemented by the PRUZEA runtime.
     // These declarations define existing APIs.
     // Do NOT implement or redefine them. Use them directly from your game code.
     // =========================================================================
@@ -58,13 +58,13 @@ namespace Math {
     float sin(float radians);
     float cos(float radians);
     void rotate(float x, float y, float radians, float& outX, float& outY);
-    void normalize(float& x, float& y); // Normalize the vector. If the vector is zero, it is left unchanged. 
+    void normalize(float& x, float& y); // Normalize the vector. If the vector is zero, it is left unchanged.
     float angle(float x, float y); /// Returns the absolute angle of vector (x, y), in radians. Equivalent to atan2f(y, x). Return range: -PI to PI.
 }
 namespace Collision {
     // =========================================================================
     // [PROVIDED BY SYSTEM]
-    // These APIs are already implemented by the PLAMIO runtime.
+    // These APIs are already implemented by the PRUZEA runtime.
     // These declarations define existing APIs.
     // Do NOT implement or redefine them.
     // Use them directly from your game code.
@@ -225,7 +225,7 @@ public:
 
     virtual void clearScreen() = 0;
     virtual void fillScreen(Color color) = 0;
-    virtual void drawPixel(int16_t x, int16_t y, Color color) = 0; 
+    virtual void drawPixel(int16_t x, int16_t y, Color color) = 0;
     virtual void drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, Color color)= 0;
     virtual void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Color color) = 0;
     virtual void fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Color color) = 0;
@@ -409,7 +409,7 @@ public:
         };
         Duration duration;
         bool tie;  // If true, continue into the next note without retriggering the tone.
-        
+
         constexpr ToneNote() : frequency(REST), duration(Q), tie(false) {}
         constexpr ToneNote(uint16_t _frequency, Duration _duration, bool _tie = false) : frequency(_frequency), duration(_duration), tie(_tie) {}
     };
@@ -434,7 +434,7 @@ protected:
 
 // --- =================================================================
 // # Storage
-// PLAMIO provides three storage APIs:
+// PRUZEA provides three storage APIs:
 // 1. SaveData
 //    Key-value persistent storage for ordinary game save data.
 //    No file paths or file-system operations are required.
@@ -481,7 +481,7 @@ public:
     virtual bool readUserFile(const char* gameId, const char* fileName, UserFileLineReaderHandler reader, void* arg) = 0;
     // ### Write UserFile
     //   - The callback uses std::string to prevent buffer overflows.
-    //   - Inside this callback, ALWAYS use direct assignment (e.g., line = "value";) 
+    //   - Inside this callback, ALWAYS use direct assignment (e.g., line = "value";)
     //      or std::string::assign(). Never use string concatenation ('+') to prevent dynamic memory allocation.
     //   - A single write operation may produce at most 256 lines.
     //   - The callback is called once for each output line.
@@ -517,7 +517,7 @@ protected:
 // --- =================================================================
 // # SaveData: Storage helper
 // [PROVIDED BY SYSTEM]
-//   These APIs are already implemented by the PLAMIO runtime.
+//   These APIs are already implemented by the PRUZEA runtime.
 //   These declarations define existing APIs. Do NOT implement or redefine them.
 //   Use them directly from your game code.
 //
@@ -554,14 +554,14 @@ private:
     struct Entry {
         uint16_t keyOffset;
         uint16_t valueOffset;
-    }; 
+    };
     Entry entries[MAX_ENTRIES];
     char buffer[BUFFER_SIZE];
     uint8_t entryCount = 0;
     uint16_t usedBytes = 0;
     bool dirty = false;
     uint8_t saveCursor = 0;
-    
+
     int16_t findEntry(const char* key) const;
     bool appendString(const char* text, uint16_t& offset);
     static bool writeLineHandler(std::string& line, void* arg);
@@ -569,11 +569,11 @@ private:
 
 // --- =================================================================
 // # Game
-//   Derive your game class from this class to run it on PLAMIO.
+//   Derive your game class from this class to run it on PRUZEA.
 //   - Target update rate: 30 FPS
 //   - deltaSec is provided every frame.
 //   [!IMPORTANT] Never call init(), update(), draw(), or terminate() directly.
-//   The PLAMIO runtime calls them automatically.
+//   The PRUZEA runtime calls them automatically.
 //   [!IMPORTANT] Override all pure virtual functions.
 // =====================================================================
 class Game {
@@ -600,7 +600,7 @@ private:
     //     MODE_PAUSED,
     //     MODE_GAME_OVER
     // };
-    // Real-time games are encouraged to implement MODE_PAUSED and toggle it with the START button. 
+    // Real-time games are encouraged to implement MODE_PAUSED and toggle it with the START button.
     // When entering the pause state, you MUST explicitly call `audio.stopMusic()`.
     // When resuming the game to `MODE_RUNNING` or `MODE_PLAYING`, you MUST call `audio.playMusic()` exactly once to restart the BGM.
 
@@ -710,7 +710,7 @@ public:
 
     // ## System entry points
     // [!IMPORTANT]
-    // The following functions are called by the PLAMIO runtime.
+    // The following functions are called by the PRUZEA runtime.
     // Do not modify, hide, or redefine them.
     // Implement the corresponding on*() functions instead.
     void init(Storage& storage)
@@ -747,5 +747,5 @@ public:
     }
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA
 

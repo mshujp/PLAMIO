@@ -1,4 +1,4 @@
-﻿#include "Software3D.h"
+#include "Software3D.h"
 #include <cstdlib>
 
 // Tuning parameters
@@ -12,7 +12,7 @@ namespace {
 
 void Software3D::resetGame() {
     // Initial tilt angles
-    angleX = 0.3f; 
+    angleX = 0.3f;
     angleY = 0.4f;
     autoRotate = false;
 
@@ -41,23 +41,23 @@ void Software3D::resetGame() {
     faceIndices[5][0] = 1; faceIndices[5][1] = 5; faceIndices[5][2] = 6; faceIndices[5][3] = 2;
 
     // Assign colorful themes to each face
-    faceColors[0] = PLAMIO::Graphics::Color::RED;
-    faceColors[1] = PLAMIO::Graphics::Color::GREEN;
-    faceColors[2] = PLAMIO::Graphics::Color::BLUE;
-    faceColors[3] = PLAMIO::Graphics::Color::YELLOW;
-    faceColors[4] = PLAMIO::Graphics::Color::CYAN;
-    faceColors[5] = PLAMIO::Graphics::Color::MAGENTA;
+    faceColors[0] = PRUZEA::Graphics::Color::RED;
+    faceColors[1] = PRUZEA::Graphics::Color::GREEN;
+    faceColors[2] = PRUZEA::Graphics::Color::BLUE;
+    faceColors[3] = PRUZEA::Graphics::Color::YELLOW;
+    faceColors[4] = PRUZEA::Graphics::Color::CYAN;
+    faceColors[5] = PRUZEA::Graphics::Color::MAGENTA;
 }
 
-void Software3D::onInit(PLAMIO::Storage& storage) {
+void Software3D::onInit(PRUZEA::Storage& storage) {
     currentMode = MODE_TITLE;
-    lastBlinkTime = PLAMIO::Platform::getMsec();
+    lastBlinkTime = PRUZEA::Platform::getMsec();
     showPressStart = true;
     resetGame();
 }
 
-PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec) {
-    uint32_t currentTime = PLAMIO::Platform::getMsec();
+PRUZEA::Game::GameState Software3D::onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec) {
+    uint32_t currentTime = PRUZEA::Platform::getMsec();
 
     switch (currentMode) {
         case MODE_TITLE:
@@ -69,8 +69,8 @@ PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio
             }
 
             // Start playing when START button is pressed
-            if (input.justPressed(PLAMIO::Input::START)) {
-                audio.playSE(&PLAMIO::Audio::SE::NO_1, 1.0f); // Confirmation sound
+            if (input.justPressed(PRUZEA::Input::START)) {
+                audio.playSE(&PRUZEA::Audio::SE::NO_1, 1.0f); // Confirmation sound
                 currentMode = MODE_PLAYING;
                 dirty = true;
             }
@@ -79,11 +79,11 @@ PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio
         case MODE_PLAYING:
             bool isRotating = false;
             // Virtual delta time assuming 30fps target
-            float dt = 1.0f / 30.0f; 
+            float dt = 1.0f / 30.0f;
 
-            if (input.justPressed(PLAMIO::Input::A)) {
+            if (input.justPressed(PRUZEA::Input::A)) {
                 autoRotate = !autoRotate;
-                audio.playSE(&PLAMIO::Audio::SE::NO_1, 0.7f);
+                audio.playSE(&PRUZEA::Audio::SE::NO_1, 0.7f);
                 dirty = true;
             }
 
@@ -94,19 +94,19 @@ PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio
             }
 
             // Handle D-pad inputs for rotation
-            if (input.pressed(PLAMIO::Input::UP)) {
+            if (input.pressed(PRUZEA::Input::UP)) {
                 angleX -= ROTATE_SPEED * dt;
                 isRotating = true;
             }
-            if (input.pressed(PLAMIO::Input::DOWN)) {
+            if (input.pressed(PRUZEA::Input::DOWN)) {
                 angleX += ROTATE_SPEED * dt;
                 isRotating = true;
             }
-            if (input.pressed(PLAMIO::Input::LEFT)) {
+            if (input.pressed(PRUZEA::Input::LEFT)) {
                 angleY -= ROTATE_SPEED * dt;
                 isRotating = true;
             }
-            if (input.pressed(PLAMIO::Input::RIGHT)) {
+            if (input.pressed(PRUZEA::Input::RIGHT)) {
                 angleY += ROTATE_SPEED * dt;
                 isRotating = true;
             }
@@ -115,18 +115,18 @@ PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio
             if (isRotating) {
                 dirty = true;
                 const bool manualRotation =
-                    input.pressed(PLAMIO::Input::UP) ||
-                    input.pressed(PLAMIO::Input::DOWN) ||
-                    input.pressed(PLAMIO::Input::LEFT) ||
-                    input.pressed(PLAMIO::Input::RIGHT);
+                    input.pressed(PRUZEA::Input::UP) ||
+                    input.pressed(PRUZEA::Input::DOWN) ||
+                    input.pressed(PRUZEA::Input::LEFT) ||
+                    input.pressed(PRUZEA::Input::RIGHT);
                 if (manualRotation && rand() % 8 == 0) {
-                    audio.playSE(&PLAMIO::Audio::SE::NO_5, 0.4f);
+                    audio.playSE(&PRUZEA::Audio::SE::NO_5, 0.4f);
                 }
             }
 
             // Return to title when SELECT is pressed
-            if (input.justPressed(PLAMIO::Input::SELECT)) {
-                audio.playSE(&PLAMIO::Audio::SE::NO_2, 1.0f); // Cancel sound
+            if (input.justPressed(PRUZEA::Input::SELECT)) {
+                audio.playSE(&PRUZEA::Audio::SE::NO_2, 1.0f); // Cancel sound
                 currentMode = MODE_TITLE;
                 resetGame();
                 dirty = true;
@@ -134,34 +134,34 @@ PLAMIO::Game::GameState Software3D::onUpdate(PLAMIO::Input& input, PLAMIO::Audio
             break;
     }
 
-    return PLAMIO::Game::GameState::RUNNING;
+    return PRUZEA::Game::GameState::RUNNING;
 }
 
-bool Software3D::onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) {
+bool Software3D::onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) {
     // Skip rendering if no update is required
     if (!requestFullRedraw && !dirty) {
         return false;
     }
 
     // Clear screen with a retro arcade dark-gray color
-    graphics.fillScreen(PLAMIO::Graphics::Color::DARKGRAY);
+    graphics.fillScreen(PRUZEA::Graphics::Color::DARKGRAY);
 
     // Common UI Header
-    graphics.drawString("3D CUBE SOFTWARE RENDERER", 160, 15, 
-                        PLAMIO::Graphics::Color::WHITE, PLAMIO::Graphics::SIZE_13, 
-                        PLAMIO::Graphics::HorizontalAlign::CENTER, PLAMIO::Graphics::VerticalAlign::MIDDLE);
+    graphics.drawString("3D CUBE SOFTWARE RENDERER", 160, 15,
+                        PRUZEA::Graphics::Color::WHITE, PRUZEA::Graphics::SIZE_13,
+                        PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
 
     if (currentMode == MODE_TITLE) {
         // Render Title Screen
-        graphics.drawString("PRESS START", 160, 120, 
-                            showPressStart ? PLAMIO::Graphics::Color::YELLOW : PLAMIO::Graphics::Color::DARKGRAY, 
-                            PLAMIO::Graphics::SIZE_25B, 
-                            PLAMIO::Graphics::HorizontalAlign::CENTER, PLAMIO::Graphics::VerticalAlign::MIDDLE);
-        
-        graphics.drawString("D-PAD: ROTATE   A: AUTO ROTATE", 160, 180, 
-                            PLAMIO::Graphics::Color::LIGHTGRAY, PLAMIO::Graphics::SIZE_13, 
-                            PLAMIO::Graphics::HorizontalAlign::CENTER, PLAMIO::Graphics::VerticalAlign::MIDDLE);
-    } 
+        graphics.drawString("PRESS START", 160, 120,
+                            showPressStart ? PRUZEA::Graphics::Color::YELLOW : PRUZEA::Graphics::Color::DARKGRAY,
+                            PRUZEA::Graphics::SIZE_25B,
+                            PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
+
+        graphics.drawString("D-PAD: ROTATE   A: AUTO ROTATE", 160, 180,
+                            PRUZEA::Graphics::Color::LIGHTGRAY, PRUZEA::Graphics::SIZE_13,
+                            PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
+    }
     else if (currentMode == MODE_PLAYING) {
         // --- Start of 3D Pipeline ---
         Vector3D transformedVertices[VERTEX_COUNT];
@@ -176,7 +176,7 @@ bool Software3D::onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) {
             // Y-axis rotation
             float x1 = localVertices[i].x * cosY - localVertices[i].z * sinY;
             float z1 = localVertices[i].x * sinY + localVertices[i].z * cosY;
-            
+
             // X-axis rotation
             float y2 = localVertices[i].y * cosX - z1 * sinX;
             float z2 = localVertices[i].y * sinX + z1 * cosX;
@@ -222,24 +222,24 @@ bool Software3D::onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) {
                                       projectedPoints[idx3].x, projectedPoints[idx3].y, faceColors[i]);
 
                 // Draw black outlines to distinguish edges clearly (classic retro gaming style)
-                graphics.drawLine(projectedPoints[idx0].x, projectedPoints[idx0].y, projectedPoints[idx1].x, projectedPoints[idx1].y, PLAMIO::Graphics::Color::BLACK);
-                graphics.drawLine(projectedPoints[idx1].x, projectedPoints[idx1].y, projectedPoints[idx2].x, projectedPoints[idx2].y, PLAMIO::Graphics::Color::BLACK);
-                graphics.drawLine(projectedPoints[idx2].x, projectedPoints[idx2].y, projectedPoints[idx3].x, projectedPoints[idx3].y, PLAMIO::Graphics::Color::BLACK);
-                graphics.drawLine(projectedPoints[idx3].x, projectedPoints[idx3].y, projectedPoints[idx0].x, projectedPoints[idx0].y, PLAMIO::Graphics::Color::BLACK);
+                graphics.drawLine(projectedPoints[idx0].x, projectedPoints[idx0].y, projectedPoints[idx1].x, projectedPoints[idx1].y, PRUZEA::Graphics::Color::BLACK);
+                graphics.drawLine(projectedPoints[idx1].x, projectedPoints[idx1].y, projectedPoints[idx2].x, projectedPoints[idx2].y, PRUZEA::Graphics::Color::BLACK);
+                graphics.drawLine(projectedPoints[idx2].x, projectedPoints[idx2].y, projectedPoints[idx3].x, projectedPoints[idx3].y, PRUZEA::Graphics::Color::BLACK);
+                graphics.drawLine(projectedPoints[idx3].x, projectedPoints[idx3].y, projectedPoints[idx0].x, projectedPoints[idx0].y, PRUZEA::Graphics::Color::BLACK);
             }
         }
 
         // Navigation guide (Placed to avoid overlaying the system OSD area at Y:225-240)
         graphics.drawString(autoRotate ? "A: AUTO ON   SELECT: MENU"
                                        : "A: AUTO OFF  SELECT: MENU",
-                            160, 215, 
-                            PLAMIO::Graphics::Color::LIGHTGRAY, PLAMIO::Graphics::SIZE_13, 
-                            PLAMIO::Graphics::HorizontalAlign::CENTER, PLAMIO::Graphics::VerticalAlign::MIDDLE);
+                            160, 215,
+                            PRUZEA::Graphics::Color::LIGHTGRAY, PRUZEA::Graphics::SIZE_13,
+                            PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
     }
 
     dirty = false; // Reset the dirty flag
     return true;
 }
 
-void Software3D::onTerminate(PLAMIO::Storage& storage) {
+void Software3D::onTerminate(PRUZEA::Storage& storage) {
 }

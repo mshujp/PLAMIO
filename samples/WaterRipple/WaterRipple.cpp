@@ -1,6 +1,6 @@
 #include "WaterRipple.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

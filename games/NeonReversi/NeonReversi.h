@@ -1,7 +1,7 @@
-﻿#pragma once
-#include "PLAMIO.h"
+#pragma once
+#include "PRUZEA.h"
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 class NeonReversi : public Game
@@ -116,4 +116,4 @@ public:
     void onTerminate(Storage& storage) override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA

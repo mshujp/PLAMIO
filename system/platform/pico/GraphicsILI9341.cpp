@@ -1,10 +1,10 @@
-﻿#include "GraphicsILI9341.h"
-#include "PLAMIOConfig.h"
+#include "GraphicsILI9341.h"
+#include "PRUZEAConfig.h"
 #include <algorithm>
 
 #include "pico/stdlib.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 GraphicsILI9341::GraphicsILI9341(const Config& config)
     : lcd(config.spiHost, config.spiWriteFreq, config.clkPin, config.dataPin, config.dcPin, config.csPin, config.resetPin),
@@ -184,7 +184,7 @@ void GraphicsILI9341::setFont(const char* str, Font font)
         case Font::SIZE_32B: targetFont = &fonts::FreeSansBold12pt7b; scaleS = 1.10; break;
         case Font::SIZE_42:  targetFont = &fonts::DejaVu40; break;
         case Font::SIZE_42B: targetFont = &fonts::FreeSansBold18pt7b; break;
-#if PLAMIO_ENABLE_JAPANESE_FONT
+#if PRUZEA_ENABLE_JAPANESE_FONT
         case Font::SIZE_16J: targetFont = &fonts::efontJA_16; break;
         case Font::SIZE_20J: targetFont = &fonts::efontJA_16; scaleS = 1.25; break;
         case Font::SIZE_32J: targetFont = &fonts::efontJA_16; scaleS = 2; break;

@@ -1,7 +1,7 @@
-﻿// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Software3D
 //
-// PLAMIO Graphics API Sample
+// PRUZEA Graphics API Sample
 //
 // Demonstrates:
 //
@@ -11,14 +11,14 @@
 //   * Triangle rasterization
 //
 // Learn how to build a simple software 3D renderer using
-// the PLAMIO Graphics API.
+// the PRUZEA Graphics API.
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include <cmath>
 
-class Software3D : public PLAMIO::Game {
+class Software3D : public PRUZEA::Game {
 private:
     // Internal game states
     enum InternalMode {
@@ -46,7 +46,7 @@ private:
     // Vertex indices for each face (defined counter-clockwise for normal calculation)
     uint8_t faceIndices[FACE_COUNT][4];
     // Colors assigned to each face
-    PLAMIO::Graphics::Color faceColors[FACE_COUNT];
+    PRUZEA::Graphics::Color faceColors[FACE_COUNT];
 
     // Rotation angles in radians
     float angleX = 0.0f;
@@ -61,11 +61,11 @@ private:
     void resetGame();
 
 protected:
-    // PLAMIO Lifecycle methods
-    void onInit(PLAMIO::Storage& storage) override;
-    PLAMIO::Game::GameState onUpdate(PLAMIO::Input& input, PLAMIO::Audio& audio, PLAMIO::Storage& storage, float deltaSec) override;
-    bool onDraw(PLAMIO::Graphics& graphics, bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    // PRUZEA Lifecycle methods
+    void onInit(PRUZEA::Storage& storage) override;
+    PRUZEA::Game::GameState onUpdate(PRUZEA::Input& input, PRUZEA::Audio& audio, PRUZEA::Storage& storage, float deltaSec) override;
+    bool onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 public:
     // System Metadata
@@ -74,8 +74,8 @@ public:
     const char* getMenuName() const override { return "10 Software 3D"; }
     const char* getMenuGroup() const override { return "SAMPLES"; }
 
-    uint16_t getLogicalScreenWidth() const override { return PLAMIO::Display::ILI9341_SCREEN_W; }
-    uint16_t getLogicalScreenHeight() const override { return PLAMIO::Display::ILI9341_SCREEN_H; }
-    uint16_t getTargetScreenWidth() const override { return PLAMIO::Display::ILI9341_SCREEN_W; }
-    uint16_t getTargetScreenHeight() const override { return PLAMIO::Display::ILI9341_SCREEN_H; }
+    uint16_t getLogicalScreenWidth() const override { return PRUZEA::Display::ILI9341_SCREEN_W; }
+    uint16_t getLogicalScreenHeight() const override { return PRUZEA::Display::ILI9341_SCREEN_H; }
+    uint16_t getTargetScreenWidth() const override { return PRUZEA::Display::ILI9341_SCREEN_W; }
+    uint16_t getTargetScreenHeight() const override { return PRUZEA::Display::ILI9341_SCREEN_H; }
 };

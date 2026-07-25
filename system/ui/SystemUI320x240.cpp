@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {
@@ -66,7 +66,7 @@ namespace
     {
         g.fillRect(0, 0, SCREEN_W, 42, Graphics::rgb565(8, 16, 30));
         g.fillRect(0, 40, SCREEN_W, 2, COL_ACCENT);
-        drawTextShadow(g, "PLAMIO", 14, 13, COL_TEXT, Graphics::Font::SIZE_18);
+        drawTextShadow(g, "PRUZEA", 14, 13, COL_TEXT, Graphics::Font::SIZE_18);
     }
 
     void drawPageDots(Graphics& g, uint16_t currentPage, uint16_t pageCount)
@@ -143,7 +143,7 @@ void SystemUI320x240::drawSplash(Graphics& graphics)
     CoreRing::drawCoreRing(graphics, 300, 20, 34);
     CoreRing::drawCoreRing(graphics, 290, 120, 12);
 
-    drawTextCenterShadow(graphics, "PLAMIO", 160, 120, COL_TEXT, Graphics::Font::SIZE_42B);
+    drawTextCenterShadow(graphics, "PRUZEA", 160, 120, COL_TEXT, Graphics::Font::SIZE_42B);
 
     graphics.fillRect(90, 144, 144, 4, Graphics::rgb565(32, 54, 82));
 
@@ -199,7 +199,7 @@ void SystemUI320x240::drawInfo(Graphics& graphics)
     graphics.fillRect(24, 24, 272, 190, COL_PANEL_DARK);
     graphics.drawRect(24, 24, 272, 189, 2, COL_ACCENT);
 
-    drawTextCenterShadow(graphics, "PLAMIO", 160, 50, COL_TEXT, Graphics::Font::SIZE_25B);
+    drawTextCenterShadow(graphics, "PRUZEA", 160, 50, COL_TEXT, Graphics::Font::SIZE_25B);
 
     drawTextRightShadow(graphics, "Version", 150, 76, COL_MUTED, Graphics::Font::SIZE_13);
     drawTextShadow(graphics, info.version, 170, 76, COL_TEXT, Graphics::Font::SIZE_13);
@@ -245,7 +245,7 @@ void SystemUI320x240::drawShutdownConfirm(Graphics& graphics)
 
     drawTextCenterShadow(
         graphics,
-        "Exit PLAMIO safely?",
+        "Exit PRUZEA safely?",
         SCREEN_W / 2,
         112,
         COL_MUTED,

@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // WireframeTunnel
 //
-// PLAMIO Graphics API Sample
+// PRUZEA Graphics API Sample
 //
 // Demonstrates:
 //
@@ -14,9 +14,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class WireframeTunnel : public PLAMIO::Game
+class WireframeTunnel : public PRUZEA::Game
 {
 public:
     const char* getId() const override { return "wireframetunnel"; }
@@ -30,16 +30,16 @@ public:
     uint16_t getTargetScreenHeight() const override { return 240; }
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
     GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec) override;
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     struct Ring
@@ -82,16 +82,16 @@ private:
 
     void resetTunnel();
     void updateRings(float deltaSec);
-    void updateView(PLAMIO::Input& input, float deltaSec);
+    void updateView(PRUZEA::Input& input, float deltaSec);
 
     Point2D project(float x, float y, float z) const;
-    PLAMIO::Graphics::Color depthColor(float z) const;
+    PRUZEA::Graphics::Color depthColor(float z) const;
 
-    void drawTunnel(PLAMIO::Graphics& graphics);
+    void drawTunnel(PRUZEA::Graphics& graphics);
     void drawRing(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         const Ring& ring);
     void drawConnections(
-        PLAMIO::Graphics& graphics);
-    void drawHud(PLAMIO::Graphics& graphics);
+        PRUZEA::Graphics& graphics);
+    void drawHud(PRUZEA::Graphics& graphics);
 };

@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstring>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 // --- ユーティリティ・定数定義（ゲームバランス調整用の定数群） ---
@@ -543,4 +543,4 @@ void VectorFlite::onTerminate(Storage& storage)
     // 特になし（セーブはリアルタイムで行っています）
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

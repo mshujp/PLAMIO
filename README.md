@@ -1,4 +1,4 @@
-﻿# PLAMIO
+# PRUZEA
 
 > **AI-Friendly Game Framework**
 
@@ -46,7 +46,7 @@ A lightweight game framework designed for AI-assisted game development.
 
 # Philosophy
 
-PLAMIO is designed so that both humans and AI can write games using the
+PRUZEA is designed so that both humans and AI can write games using the
 same simple API.
 
 Games implement only a small set of interfaces while the runtime manages
@@ -60,7 +60,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 
 | Sample | Description |
 |--------|-------------|
-| [01 PLAMIO APIs](samples/PlamioAPIs/) | Learn the basic APIs |
+| [01 PRUZEA APIs](samples/PruzeaAPIs/) | Learn the basic APIs |
 | [02 Collision Lab](samples/CollisionLab/) | Collision detection |
 | [03 SoundTile](samples/SoundTile/) | Audio and input |
 | [04](samples/ParticleLab/) [05](samples/FireEffect/) [06](samples/WaterRipple/) Graphics Effects | Animation techniques |
@@ -97,7 +97,7 @@ Each sample introduces one or more new concepts while building on previous examp
 - [no-OS-FatFS-SD-SDIO-SPI-RPi-Pico](https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico) (required for SD storage)  
 
 ``` text
-PLAMIO/
+PRUZEA/
 ├── games/
 ├── system/
 └── lib/
@@ -113,14 +113,14 @@ PLAMIO/
 
 ## Hardware Configuration
 
-PLAMIO uses hardware profiles to describe the complete hardware configuration of a board.
+PRUZEA uses hardware profiles to describe the complete hardware configuration of a board.
 
 Select the hardware profile in the `###### ENVIRONMENT START ######` section of [`CMakeLists.txt`](CMakeLists.txt).
 
 ```cmake
-set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico.h")
-#set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico2.h")
-#set(PLAMIO_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WaveShare_RP2040-ZERO.h")
+set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico.h")
+#set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/RaspberryPi_Pico2.h")
+#set(PRUZEA_PIN_CONFIG_DEFAULT "system/platform/pico/boards/WaveShare_RP2040-ZERO.h")
 ```
 
 Hardware profiles are stored in:
@@ -151,9 +151,9 @@ Available options include:
 For example:
 
 ```cmake
-set(PLAMIO_TARGET_DEFAULT "RP2040")
-set(PLAMIO_DISPLAY_DEFAULT "ILI9341")
-set(PLAMIO_AUDIO_DEFAULT "PWM")
+set(PRUZEA_TARGET_DEFAULT "RP2040")
+set(PRUZEA_DISPLAY_DEFAULT "ILI9341")
+set(PRUZEA_AUDIO_DEFAULT "PWM")
 ```
 
 These values define the project's default configuration and can be overridden from the command line using CMake options.
@@ -175,7 +175,7 @@ cmake --build build
 After building, the generated firmware can be found at:
 
 ```text
-build/system/plamio.uf2
+build/system/pruzea.uf2
 ```
 
 Copy the UF2 file to a board in BOOTSEL mode to install the firmware.
@@ -186,32 +186,32 @@ VSCode tasks or custom scripts can also be used to automate the deployment proce
 
 # Creating a Game
 
-To create a game, simply create **one class** that inherits from the `PLAMIO::Game` class.
+To create a game, simply create **one class** that inherits from the `PRUZEA::Game` class.
 
-The PLAMIO system automatically manages the game loop, rendering, input, audio, and storage.
+The PRUZEA system automatically manages the game loop, rendering, input, audio, and storage.
 
 Your game only needs to implement its own game logic.
 
 ## Core API
 
-PLAMIO provides the following hardware abstraction interfaces to every game.
+PRUZEA provides the following hardware abstraction interfaces to every game.
 
 Game code does not need to access platform-specific hardware or drivers directly.
 
 | Class | Purpose |
 |------|---------|
-| `PLAMIO::Graphics` | Drawing API for text, shapes, images, and sprites. |
-| `PLAMIO::Input` | Controller input, button state, repeat, and hold detection. |
-| `PLAMIO::Audio` | Play sound effects and music. |
-| `PLAMIO::Storage` | Read and write save data and configuration files. |
+| `PRUZEA::Graphics` | Drawing API for text, shapes, images, and sprites. |
+| `PRUZEA::Input` | Controller input, button state, repeat, and hold detection. |
+| `PRUZEA::Audio` | Play sound effects and music. |
+| `PRUZEA::Storage` | Read and write save data and configuration files. |
 
 For the complete API reference, see:
 
-- [`sdk/PLAMIO.h`](sdk/PLAMIO.h)
+- [`sdk/PRUZEA.h`](sdk/PRUZEA.h)
 
-## `PLAMIO::Game` class
+## `PRUZEA::Game` class
 
-Your game class should inherit from the `PLAMIO::Game` class.
+Your game class should inherit from the `PRUZEA::Game` class.
 
 Most games implement their game logic in:
 
@@ -222,9 +222,9 @@ Most games implement their game logic in:
 
 Other required virtual functions provide game metadata, such as the game name and ID.
 
-For the complete `PLAMIO::Game` class reference, see:
+For the complete `PRUZEA::Game` class reference, see:
 
-- [`sdk/PLAMIO.h`](sdk/PLAMIO.h)
+- [`sdk/PRUZEA.h`](sdk/PRUZEA.h)
 
 ## Project Structure
 
@@ -243,17 +243,17 @@ After adding a new game, reconfigure CMake and build the project.
 
 ## AI Workflow
 
-PLAMIO is designed for AI-assisted game development.
+PRUZEA is designed for AI-assisted game development.
 
 Provide only the SDK files listed below.
 Do not provide platform-specific source files.
 
-1. Edit [`sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md`](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md) to describe your game.
+1. Edit [`sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md`](sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md) to describe your game.
 2. Upload the following SDK files to your AI chat:
 
-  - [sdk/PLAMIO.h](sdk/PLAMIO.h)
-  - [sdk/PLAMIO_AI_GUIDELINES.md](sdk/PLAMIO_AI_GUIDELINES.md)
-  - [sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md](sdk/PLAMIO_GAME_DESIGN_TEMPLATE.md)
+  - [sdk/PRUZEA.h](sdk/PRUZEA.h)
+  - [sdk/PRUZEA_AI_GUIDELINES.md](sdk/PRUZEA_AI_GUIDELINES.md)
+  - [sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md](sdk/PRUZEA_GAME_DESIGN_TEMPLATE.md)
 
     If your AI does not support file uploads, copy and paste the file contents into the chat instead.
 
@@ -265,17 +265,17 @@ Do not provide platform-specific source files.
 
 ## Recommended AI
 
-PLAMIO is designed to work with modern AI coding assistants.
+PRUZEA is designed to work with modern AI coding assistants.
 
 Based on current development experience:
 
 | AI | Recommendation | Notes |
 |----|---------------|-------|
-| **ChatGPT** | **Highly Recommended** | Best overall experience with PLAMIO |
+| **ChatGPT** | **Highly Recommended** | Best overall experience with PRUZEA |
 | **Claude** | **Recommended** | Strong at understanding the SDK and generating well-structured game code |
 | **Gemini** | **Recommended** | Works well for most tasks |
 | **Copilot** | **Best for code completion** | Less suitable for full game generation |
-| **Google Search AI Mode** | **Not Recommended** | Does not currently support file uploads, making it difficult to provide the PLAMIO SDK. |
+| **Google Search AI Mode** | **Not Recommended** | Does not currently support file uploads, making it difficult to provide the PRUZEA SDK. |
 
 ------------------------------------------------------------------------
 
@@ -324,11 +324,11 @@ This configuration has been verified on both RP2040 and RP2350 and is recommende
 ### SD Card
 
 > [!IMPORTANT]
-> PLAMIO supports **SDHC** and **SDXC** memory cards.
+> PRUZEA supports **SDHC** and **SDXC** memory cards.
 > Standard **SD cards (2GB and smaller)** are **not supported**.
 
 > [!WARNING]
-> Although PLAMIO provides a software shutdown option, embedded systems can still lose power unexpectedly (for example, due to battery removal or depletion).
+> Although PRUZEA provides a software shutdown option, embedded systems can still lose power unexpectedly (for example, due to battery removal or depletion).
 > Do **not** store important or irreplaceable data on the SD card.
 
 ## PWM Audio
@@ -341,7 +341,7 @@ If adjustable volume is required, use an external amplifier or a potentiometer.
 # Project Layout
 
 ``` text
-PLAMIO/
+PRUZEA/
 ├── sdk/
 ├── games/
 ├── system/
@@ -355,7 +355,7 @@ PLAMIO/
 
 ## Supported Hardware
 
-The following hardware configurations have been verified with PLAMIO.
+The following hardware configurations have been verified with PRUZEA.
 
 | Target | Display | Input | Audio | Storage | Status |
 |--------|---------|-------|-------|---------|--------|

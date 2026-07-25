@@ -1,7 +1,7 @@
-﻿#include "PLAMIO.h"
+#include "PRUZEA.h"
 #include <cmath>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 namespace Math
 {
@@ -130,4 +130,4 @@ float angle(float x, float y)
 }
 
 } // namespace Math
-} // namespace PLAMIO
+} // namespace PRUZEA

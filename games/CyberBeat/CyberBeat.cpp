@@ -1,10 +1,10 @@
-﻿// CyberBeat.cpp
+// CyberBeat.cpp
 #include "CyberBeat.h"
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
 
-namespace PLAMIO
+namespace PRUZEA
 {
 
 // =========================================================================
@@ -379,4 +379,4 @@ void CyberBeat::onTerminate(Storage& storage)
     }
 }
 
-} // namespace PLAMIO
+} // namespace PRUZEA

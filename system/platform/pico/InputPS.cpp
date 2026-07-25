@@ -3,7 +3,7 @@
 #include "Platform.h"
 #include "pico/stdlib.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 namespace
 {

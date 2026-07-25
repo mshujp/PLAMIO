@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------------
 // FireEffect
 //
-// PLAMIO Graphics API Sample
+// PRUZEA Graphics API Sample
 //
 // Demonstrates:
 //
@@ -13,9 +13,9 @@
 // -----------------------------------------------------------------------------
 
 #pragma once
-#include "PLAMIO.h"
+#include "PRUZEA.h"
 
-class FireEffect : public PLAMIO::Game
+class FireEffect : public PRUZEA::Game
 {
 public:
     const char* getId() const override { return "fireeffect"; }
@@ -29,16 +29,16 @@ public:
     uint16_t getTargetScreenHeight() const override { return 240; }
 
 protected:
-    void onInit(PLAMIO::Storage& storage) override;
+    void onInit(PRUZEA::Storage& storage) override;
     GameState onUpdate(
-        PLAMIO::Input& input,
-        PLAMIO::Audio& audio,
-        PLAMIO::Storage& storage,
+        PRUZEA::Input& input,
+        PRUZEA::Audio& audio,
+        PRUZEA::Storage& storage,
         float deltaSec) override;
     bool onDraw(
-        PLAMIO::Graphics& graphics,
+        PRUZEA::Graphics& graphics,
         bool requestFullRedraw) override;
-    void onTerminate(PLAMIO::Storage& storage) override;
+    void onTerminate(PRUZEA::Storage& storage) override;
 
 private:
     static constexpr int16_t SCREEN_W = 160;
@@ -48,7 +48,7 @@ private:
     static constexpr uint8_t MAX_HEAT = 63;
 
     uint8_t heat[FIRE_H][SCREEN_W] = {};
-    PLAMIO::Graphics::Color palette[MAX_HEAT + 1] = {};
+    PRUZEA::Graphics::Color palette[MAX_HEAT + 1] = {};
 
     bool burning = true;
     uint32_t frameCounter = 0;

@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Configure PLAMIO (Local)",
+      "label": "Configure PRUZEA (Local)",
       "type": "shell",
       "command": "cmake",
       "args": [
@@ -12,7 +12,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Build PLAMIO",
+      "label": "Build PRUZEA",
       "type": "shell",
       "command": "cmake",
       "args": [
@@ -20,7 +20,7 @@
         "--preset",
         "local-build"
       ],
-      "dependsOn": "Configure PLAMIO (Local)",
+      "dependsOn": "Configure PRUZEA (Local)",
       "group": {
         "kind": "build",
         "isDefault": false
@@ -30,7 +30,7 @@
       ]
     },
     {
-      "label": "Build & Deploy PLAMIO UF2",
+      "label": "Build & Deploy PRUZEA UF2",
       "type": "shell",
       "command": "cmake",
       "args": [
@@ -38,7 +38,7 @@
         "--preset",
         "local-deploy"
       ],
-      "dependsOn": "Configure PLAMIO (Local)",
+      "dependsOn": "Configure PRUZEA (Local)",
       "group": {
         "kind": "build",
         "isDefault": true

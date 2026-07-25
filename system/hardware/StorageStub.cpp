@@ -1,6 +1,6 @@
 #include "StorageStub.h"
 
-using namespace PLAMIO;
+using namespace PRUZEA;
 
 bool StorageStub::begin()
 {

@@ -1,5 +1,5 @@
 param(
-    [string]$Uf2Path = "$PSScriptRoot\..\build\system\plamio.uf2",
+    [string]$Uf2Path = "$PSScriptRoot\..\build\system\pruzea.uf2",
     [string]$PicotoolPath = "",
     [int]$TimeoutSeconds = 15
 )

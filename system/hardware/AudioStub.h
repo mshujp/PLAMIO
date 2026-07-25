@@ -2,7 +2,7 @@
 
 #include "AudioBase.h"
 
-namespace PLAMIO {
+namespace PRUZEA {
 
 class AudioStub : public AudioBase {
 private:
@@ -18,4 +18,4 @@ public:
     void end() override;
 };
 
-} // namespace PLAMIO
+} // namespace PRUZEA
