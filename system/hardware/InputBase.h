@@ -25,6 +25,10 @@ public:
         int16_t Y        = -1;
         int16_t L        = -1;
         int16_t R        = -1;
+        int16_t L2       = -1;
+        int16_t R2       = -1;
+        int16_t L3       = -1;
+        int16_t R3       = -1;
         int16_t START    = -1;
         int16_t SELECT   = -1;
         int16_t HOME     = -1;
@@ -49,6 +53,10 @@ private:
         Button::Y,
         Button::L,
         Button::R,
+        Button::L2,
+        Button::R2,
+        Button::L3,
+        Button::R3,
         Button::START,
         Button::SELECT,
         Button::HOME,

@@ -39,7 +39,16 @@ PRUZEA Game design template
    - **Shoulder Buttons**
      - [ ] L
      - [ ] R
-   - **System Buttons**
+     - [ ] L2
+     - [ ] R2
+    - **Analog Stick**
+     - [ ] Left Stick
+     - [ ] Right Stick
+     - [ ] L3
+     - [ ] R3
+    - **Touchscreen**
+     - [ ] Touchscreen 
+    - **System Buttons**
      - [x] START
      - [x] SELECT
    ## Graphics Features

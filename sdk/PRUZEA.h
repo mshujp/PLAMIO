@@ -128,7 +128,11 @@ public:
         R        = 1u << 9,
         START    = 1u << 10,
         SELECT   = 1u << 11,
-
+        L2       = 1u << 12,
+        R2       = 1u << 13,
+        L3       = 1u << 14,
+        R3       = 1u << 15,
+    
         // System-reserved virtual buttons. Hardware implementations may map
         // physical buttons or shortcuts to these.
         HOME     = 1u << 25,
@@ -153,6 +157,19 @@ public:
     // Call this only when changing the default repeat timing.
     virtual void setRepeatSettings(uint16_t dasDelayMsec, uint16_t arrDelayMsec) = 0;
     virtual bool repeat(Button b) const = 0;
+
+    // ## Analog stick input
+    enum Axis : uint8_t
+    {
+        LEFT_X,
+        LEFT_Y,
+        RIGHT_X,
+        RIGHT_Y
+    };
+    virtual bool hasAnalogSticks() const { return false; }
+    // Returns a normalized value from -1000 to 1000.
+    // Returns 0 when the axis is unavailable or inside the dead zone.
+    virtual int16_t axis(Axis axis) const { return 0; }
 
     // ## Touchscreen input
     // Coordinates are already converted to the visible screen coordinate system.

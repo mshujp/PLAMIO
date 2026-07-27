@@ -73,6 +73,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [08](samples/TinyStarfield/) [09](samples/WireframeTunnel/) [10](samples/Software3D/) 3D Samples | Advanced rendering |
 | [11 SL](samples/SL/) | Bonus sample |
 | [12 TouchPaint](samples/TouchPaint/) | Touchscreen |
+| [13 AnalogStick](samples/AnalogStick/) | AnalogStick Input |
 | [GameTemplate](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.
@@ -370,6 +371,17 @@ The IRQ pin is optional.
 Set `irqPin` to `-1` when it is not connected.
 In that case, PRUZEA detects touch input by polling the XPT2046 controller.
 
+## Analog Stick
+
+PRUZEA supports the analog sticks of PlayStation 1 and PlayStation 2 controllers.
+
+Analog stick values are normalized to the range `-1000` to `1000`.
+
+```cpp
+const int16_t moveX = input.axis(Input::Axis::LEFT_X);
+const int16_t moveY = input.axis(Input::Axis::LEFT_Y);
+```
+
 ------------------------------------------------------------------------
 
 # Project Layout
@@ -391,7 +403,7 @@ PRUZEA/
 
 The following hardware configurations have been verified with PRUZEA.
 
-| Platform | ILI9341 | SSD1306 | PWM | I2S | GPIO | SNES Pad | Touchscreen | SD |
+| Platform | ILI9341 | SSD1306 | PWM | I2S | GPIO | SNES Pad | PS Pad | Touchscreen | SD |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | RP2040 | ✅ | ✅ | ✅ |  | ✅ |  |  | ✅ |
 | RP2350 | ✅ |  |  | ✅ | ✅ | ✅ | ✅  | ✅ |
@@ -399,7 +411,7 @@ The following hardware configurations have been verified with PRUZEA.
 - ✅: Verified on actual hardware
 - Blank: Not yet tested. A blank cell does **not** mean unsupported or incompatible.
   Some untested combinations may already be supported by the implementation, but they have not yet been verified on physical hardware.
-
+- PS Pad: PlayStation 1/2 controller with digital buttons and analog stick support.
 
 Additional hardware configurations can be supported by creating a new hardware profile under:
 

@@ -67,10 +67,10 @@ constexpr PRUZEA::InputSnes::Config INPUT_CONFIG {
 /// PlayStation 2 controller (experimental; hardware-unverified)
 constexpr PRUZEA::InputPS::Config INPUT_CONFIG {
     // ===== GPIO Pins =====
-    .clockPin = -1,
-    .commandPin = -1,
-    .attentionPin = -1,
-    .dataPin = -1,
+    .clockPin = 27,
+    .commandPin = 26,
+    .attentionPin = 28,
+    .dataPin = 31,
 
     // ===== Extra Buttons =====
     .buttonMapping = BUTTON_MAPPING
