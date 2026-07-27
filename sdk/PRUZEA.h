@@ -154,6 +154,15 @@ public:
     virtual void setRepeatSettings(uint16_t dasDelayMsec, uint16_t arrDelayMsec) = 0;
     virtual bool repeat(Button b) const = 0;
 
+    // ## Touchscreen input
+    // Coordinates are already converted to the visible screen coordinate system.
+    // Returns -1 for coordinates when no valid touch position has been received.
+    virtual bool touched() const { return false; }
+    virtual bool justTouched() const { return false; }
+    virtual bool justTouchReleased() const { return false; }
+    virtual int16_t touchX() const { return -1; }
+    virtual int16_t touchY() const { return -1; }
+
 protected:
     virtual ~Input() {};
 };

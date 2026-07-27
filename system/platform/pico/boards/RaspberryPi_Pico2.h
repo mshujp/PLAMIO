@@ -91,6 +91,27 @@ constexpr PRUZEA::InputPS::Config INPUT_CONFIG {
 };
 #endif
 
+#if PRUZEA_TOUCH_XPT2046
+/// XPT2046 touchscreen
+constexpr PRUZEA::InputTouchConfig TOUCH_CONFIG {
+    // SPI0 is recommended. Shared-bus operation is not guaranteed.
+    .spiHost = 0,
+    .spiFreq = 2000000,
+    .clkPin = -1,
+    .mosiPin = -1,
+    .misoPin = -1,
+    .csPin = -1,
+    .irqPin = -1,
+    .minX = 250,
+    .maxX = 3850,
+    .minY = 250,
+    .maxY = 3850,
+    .minZ = 200,
+    .nativeWidth = 240,
+    .nativeHeight = 320,
+    .rotate = 1
+};
+#endif
 
 //== Audio ===================================================
 #if PRUZEA_AUDIO_PWM

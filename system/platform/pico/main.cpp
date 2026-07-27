@@ -10,6 +10,10 @@
 #include "InputPS.h"
 #endif
 
+#if PRUZEA_TOUCH_XPT2046
+#include "InputTouch.h"
+#endif
+
 #if PRUZEA_AUDIO_I2S
 #include "AudioI2S.h"
 #elif PRUZEA_AUDIO_PWM
@@ -54,11 +58,23 @@ SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SS
 #endif
 
 #if PRUZEA_INPUT_GPIO_BUTTONS
+#if PRUZEA_TOUCH_XPT2046
+InputTouch<InputGpioButtons> inputImpl(TOUCH_CONFIG, BUTTON_MAPPING);
+#else
 InputGpioButtons inputImpl(BUTTON_MAPPING);
+#endif
 #elif PRUZEA_INPUT_SNES
+#if PRUZEA_TOUCH_XPT2046
+InputTouch<InputSnes> inputImpl(TOUCH_CONFIG, INPUT_CONFIG);
+#else
 InputSnes inputImpl(INPUT_CONFIG);
+#endif
 #elif PRUZEA_INPUT_PS
+#if PRUZEA_TOUCH_XPT2046
+InputTouch<InputPS> inputImpl(TOUCH_CONFIG, INPUT_CONFIG);
+#else
 InputPS inputImpl(INPUT_CONFIG);
+#endif
 #endif
 
 #if PRUZEA_STORAGE_SD

@@ -72,6 +72,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [07 Sprite Adventure](samples/SpriteAdventure/) | Sprite rendering |
 | [08](samples/TinyStarfield/) [09](samples/WireframeTunnel/) [10](samples/Software3D/) 3D Samples | Advanced rendering |
 | [11 SL](samples/SL/) | Bonus sample |
+| [12 TouchPaint](samples/TouchPaint/) | Touchscreen |
 | [GameTemplate](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.
@@ -347,6 +348,28 @@ This configuration has been verified on both RP2040 and RP2350 and is recommende
 PWM audio supports only **MUTE** or **ON**.
 If adjustable volume is required, use an external amplifier or a potentiometer.
 
+## Touchscreen
+
+Touchscreen input is an optional extension to the primary button input.
+It is intended for secondary-screen-style interaction and does not replace system menu controls.
+
+PRUZEA supports ILI9341 display modules with an integrated XPT2046 touchscreen controller.
+
+For builds that use both a touchscreen and an SD card, the following configuration is recommended:
+
+| Peripheral | SPI |
+|------------|-----|
+| ILI9341 LCD | SPI1 |
+| XPT2046 Touchscreen | SPI0 |
+| SD Card | SPI0 |
+
+The touchscreen and SD card may share the SPI0 clock, MOSI, and MISO pins.
+They must use separate CS pins.
+
+The IRQ pin is optional.
+Set `irqPin` to `-1` when it is not connected.
+In that case, PRUZEA detects touch input by polling the XPT2046 controller.
+
 ------------------------------------------------------------------------
 
 # Project Layout
@@ -368,11 +391,14 @@ PRUZEA/
 
 The following hardware configurations have been verified with PRUZEA.
 
-| Target | Display | Input | Audio | Storage | Status |
-|--------|---------|-------|-------|---------|--------|
-| RP2040 | SSD1306 | GPIO Buttons | PWM | SD | ✅ Verified |
-| RP2040 | ILI9341 | GPIO Buttons | PWM | SD | ✅ Verified |
-| RP2350 | ILI9341 | SNES | I2S | SD | ✅ Verified |
+| Platform | ILI9341 | SSD1306 | PWM | I2S | GPIO | SNES Pad | Touchscreen | SD |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| RP2040 | ✅ | ✅ | ✅ |  | ✅ |  |  | ✅ |
+| RP2350 | ✅ |  |  | ✅ | ✅ | ✅ | ✅  | ✅ |
+
+- ✅: Verified on actual hardware
+- Blank: Not yet tested. A blank cell does **not** mean unsupported or incompatible.
+  Some untested combinations may already be supported by the implementation, but they have not yet been verified on physical hardware.
 
 
 Additional hardware configurations can be supported by creating a new hardware profile under:

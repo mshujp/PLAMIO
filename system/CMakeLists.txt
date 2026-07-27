@@ -150,6 +150,10 @@ elseif (PRUZEA_INPUT STREQUAL "PS")
     )
 endif()
 
+if (PRUZEA_TOUCH STREQUAL "XPT2046")
+    target_sources(pruzea PRIVATE platform/pico/TouchXPT2046.cpp)
+endif()
+
 target_link_libraries(pruzea
     pico_stdlib
     pico_multicore
