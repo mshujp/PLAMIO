@@ -106,7 +106,6 @@ For a simpler single-application version that works with the Arduino IDE, see:
   
 - [LovyanGFX](https://github.com/lovyan03/LovyanGFX)
 - [pico-extras](https://github.com/raspberrypi/pico-extras) (required for I2S audio)
-- [pico_audio_i2s_32b](https://github.com/elehobica/pico_audio_i2s_32b) (required for I2S audio)
 - [no-OS-FatFS-SD-SDIO-SPI-RPi-Pico](https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico) (required for SD storage)  
 
 ``` text
