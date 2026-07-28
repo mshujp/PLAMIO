@@ -361,10 +361,10 @@ For builds that use both a touchscreen and an SD card, the following configurati
 | Peripheral | SPI |
 |------------|-----|
 | ILI9341 LCD | SPI1 |
-| XPT2046 Touchscreen | SPI0 |
+| XPT2046 Touchscreen | SPI1 |
 | SD Card | SPI0 |
 
-The touchscreen and SD card may share the SPI0 clock, MOSI, and MISO pins.
+The touchscreen and ILI9341 card may share the SPI1 clock, MOSI, and MISO pins.
 They must use separate CS pins.
 
 The IRQ pin is optional.
