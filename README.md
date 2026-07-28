@@ -115,7 +115,6 @@ PRUZEA/
 └── lib/
     ├── LovyanGFX/
     ├── pico-extras/
-    ├── pico_audio_i2s_32b/
     └── no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/
 ```
 
