@@ -1,46 +1,13 @@
 #pragma once
 
 #include "GraphicsBase.h"
-#include <LovyanGFX.hpp>
+#include "LGFXContext.h"
 
 namespace PRUZEA {
 
-class LGFX_ILI9341 : public lgfx::LGFX_Device
-{
-    lgfx::Panel_ILI9341 panel;
-    lgfx::Bus_SPI bus;
-
-public:
-    // SPI
-    LGFX_ILI9341(uint8_t spiHost, uint32_t spiWriteFreq, int8_t clkPin, int8_t dataPin, int8_t dcPin, int8_t csPin, int8_t rstPin)
-    {
-        {
-            auto cfg = bus.config();
-            cfg.spi_host = spiHost;
-            cfg.spi_mode = 0;
-            cfg.freq_write = spiWriteFreq;
-            cfg.pin_sclk = clkPin;
-            cfg.pin_mosi = dataPin;
-            cfg.pin_dc = dcPin;
-            bus.config(cfg);
-            panel.setBus(&bus);
-        }
-        {
-            auto cfg = panel.config();
-            cfg.pin_cs = csPin;
-            cfg.pin_rst = rstPin;
-            cfg.panel_width = Display::ILI9341_SCREEN_H;
-            cfg.panel_height = Display::ILI9341_SCREEN_W;
-            cfg.invert = false; 
-            panel.config(cfg);
-        }
-        setPanel(&panel);
-    }
-};
-
 class GraphicsILI9341 : public GraphicsBase {
 private:
-    LGFX_ILI9341 lcd;
+    LGFXContext& lcd;
     uint8_t lcdRotate = 0;
     int8_t backLightPin = -1;
 
@@ -71,7 +38,7 @@ public:
         uint16_t maxBufferHeight = 0;
     };
 
-    explicit GraphicsILI9341(const Config& config);
+    GraphicsILI9341(const Config& config, LGFXContext& context);
     uint16_t getScreenWidth() const override { return Display::ILI9341_SCREEN_W; }
     uint16_t getScreenHeight() const override { return Display::ILI9341_SCREEN_H; }
     uint16_t getLogicalScreenWidth() const override { return logicalScreenW; };

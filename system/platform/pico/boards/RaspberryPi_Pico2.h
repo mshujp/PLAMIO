@@ -23,7 +23,7 @@ constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
     .backlightPin = 22,
 
     // ===== Display =====
-    .lcdRotate = 3,  // 0: Normal  3: Rotated 180 degrees
+    .lcdRotate = 1,  // 1: Normal  3: Rotated 180 degrees
 
     // ===== Buffer =====
     .maxBufferWidth = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2350,
@@ -94,7 +94,7 @@ constexpr PRUZEA::InputPS::Config INPUT_CONFIG {
 #if PRUZEA_TOUCH_XPT2046
 /// XPT2046 touchscreen
 constexpr PRUZEA::InputTouchConfig TOUCH_CONFIG {
-    // SPI0 is recommended. Shared-bus operation is not guaranteed.
+    // The LCD and touch panel may use the same or different SPI hosts.
     .spiHost = 0,
     .spiFreq = 2000000,
     .clkPin = -1,
@@ -106,10 +106,10 @@ constexpr PRUZEA::InputTouchConfig TOUCH_CONFIG {
     .maxX = 3850,
     .minY = 250,
     .maxY = 3850,
-    .minZ = 200,
+    .minZ = 2048,
     .nativeWidth = 240,
     .nativeHeight = 320,
-    .rotate = 1
+    .offsetRotation = 5
 };
 #endif
 
