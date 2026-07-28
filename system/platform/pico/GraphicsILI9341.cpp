@@ -62,10 +62,7 @@ bool GraphicsILI9341::setLogicalScreenSize(uint16_t _logicalScreenW, uint16_t _l
 bool GraphicsILI9341::begin()
 {
     const bool lcdInitialized = lcd.init();
-    std::printf("LGFX init: %s\n", lcdInitialized ? "OK" : "FAILED");
-    std::printf("LGFX rotation: setting %u\n", static_cast<unsigned>(lcdRotate));
     lcd.setRotation(lcdRotate);
-    std::printf("LGFX rotation: active width=%d height=%d\n", lcd.width(), lcd.height());
     lcd.finalizeTouchInitialization();
     canvas.setSwapBytes(true);
 

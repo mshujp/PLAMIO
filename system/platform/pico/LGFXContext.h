@@ -209,14 +209,6 @@ public:
 
         const bool pressureAccepted = static_cast<uint32_t>(point.size) * 256 >= static_cast<uint16_t>(minimumTouchPressure);
 
-std::printf(
-    "Touch Z=%u minZ=%d scaledZ=%lu accepted=%d\n",
-    static_cast<unsigned>(point.size),
-    static_cast<int>(minimumTouchPressure),
-    static_cast<unsigned long>(
-        static_cast<uint32_t>(point.size) * 256),
-    pressureAccepted ? 1 : 0);
-
         if (touchResult == 0 || !pressureAccepted) return false;
 
         x = point.x;
