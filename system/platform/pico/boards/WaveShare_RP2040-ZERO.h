@@ -29,7 +29,7 @@ constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341SPIConfig GRAPHICS_CONFIG {
 /// ILI9341 8-bit parallel LCD
 constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341ParallelConfig GRAPHICS_CONFIG {
     .writeFreq = 10000000,
-    .dataPinBase = 8,
+    .dataPinBase = 8,  // The eight data pins must be connected consecutively, starting from dataPinBase
     .wrPin = 0,
     .rdPin = 4,
     .dcPin = 1,
@@ -95,7 +95,7 @@ constexpr PRUZEA::InputSnes::Config INPUT_CONFIG {
     .buttonMapping = BUTTON_MAPPING
 };
 #elif PRUZEA_INPUT_PS
-/// PlayStation 2 controller (experimental; hardware-unverified)
+/// PlayStation controller (experimental; hardware-unverified)
 constexpr PRUZEA::InputPS::Config INPUT_CONFIG {
     // ===== GPIO Pins =====
     .clockPin = -1,

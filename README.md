@@ -401,10 +401,10 @@ PRUZEA/
 
 The following hardware configurations have been verified with PRUZEA.
 
-| Platform | ILI9341 | SSD1306 | PWM | I2S | GPIO | SNES Pad | PS Pad | Touchscreen | SD |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| RP2040 | ✅ | ✅ | ✅ |  | ✅ |  |  | ✅ |
-| RP2350 | ✅ |  |  | ✅ | ✅ | ✅ | ✅  | ✅ |
+| Platform | ILI9341 SPI | ILI9341 Parallel | SSD1306 | PWM Audio | I2S Audio | GPIO Buttons | SNES Pad | PS Pad | SD Card |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| RP2040 | ✅ | ✅ | ✅ | ✅ |  | ✅ |  |  | ✅ |
+| RP2350 | ✅ |  |  |  | ✅ | ✅ | ✅ | ✅  | ✅ |
 
 - ✅: Verified on actual hardware
 - Blank: Not yet tested. A blank cell does **not** mean unsupported or incompatible.
