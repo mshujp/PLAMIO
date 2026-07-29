@@ -1,18 +1,32 @@
 #include "GraphicsILI9341.h"
-#include "PRUZEAConfig.h"
+#include "LGFXContext.h"
+#include "LGFXContextParallel.h"
+#include "LGFXContextSPI.h"
 #include <algorithm>
 
 #include "pico/stdlib.h"
 
 using namespace PRUZEA;
 
-GraphicsILI9341::GraphicsILI9341(const Config& config, LGFXContext& context)
-    : lcd(context), lcdRotate(config.lcdRotate), backLightPin(config.backlightPin),
-        canvas(&lcd), MAX_BUF_WIDTH(config.maxBufferWidth), MAX_BUF_HEIGHT(config.maxBufferHeight)
+GraphicsILI9341::GraphicsILI9341(const GraphicsILI9341SPIConfig& config)
+    : lgfxContext(std::make_unique<LGFXContextSPI>(config)),
+        driverName("ILI9341 SPI"),
+        lcdRotate(config.lcdRotate), backLightPin(config.backlightPin),
+        canvas(lgfxContext.get()), MAX_BUF_WIDTH(config.maxBufferWidth), MAX_BUF_HEIGHT(config.maxBufferHeight)
 {
     logicalScreenW = 0;
     logicalScreenH = 0;
 }
+GraphicsILI9341::GraphicsILI9341(const GraphicsILI9341ParallelConfig& config)
+    : lgfxContext(std::make_unique<LGFXContextParallel>(config)),
+        driverName("ILI9341 Parallel"),
+        lcdRotate(config.lcdRotate), backLightPin(config.backlightPin),
+        canvas(lgfxContext.get()), MAX_BUF_WIDTH(config.maxBufferWidth), MAX_BUF_HEIGHT(config.maxBufferHeight)
+{
+    logicalScreenW = 0;
+    logicalScreenH = 0;
+}
+GraphicsILI9341::~GraphicsILI9341() = default;
 
 void GraphicsILI9341::setTransformInfo()
 {
@@ -31,7 +45,7 @@ void GraphicsILI9341::setTransformInfo()
 
 void GraphicsILI9341::initSprite(LGFX_Sprite& sprite, uint16_t w, uint16_t h, bool psram)
 {
-    sprite.setColorDepth(lcd.getColorDepth());
+    sprite.setColorDepth(lgfxContext->getColorDepth());
     if (psram) sprite.setPsram(true);
     sprite.createSprite(w, h);
 }
@@ -47,10 +61,10 @@ bool GraphicsILI9341::setLogicalScreenSize(uint16_t _logicalScreenW, uint16_t _l
         if (logicalScreenW > 0)
         {
             canvas.deleteSprite();
-            lcd.clear();
+            lgfxContext->clear();
         }
         initSprite(canvas, _logicalScreenW, _logicalScreenH);
-        lcd.fillScreen(Graphics::Color::DARKGRAY);
+        lgfxContext->fillScreen(Graphics::Color::DARKGRAY);
     }
     logicalScreenW = _logicalScreenW;
     logicalScreenH = _logicalScreenH;
@@ -61,9 +75,11 @@ bool GraphicsILI9341::setLogicalScreenSize(uint16_t _logicalScreenW, uint16_t _l
 
 bool GraphicsILI9341::begin()
 {
-    const bool lcdInitialized = lcd.init();
-    lcd.setRotation(lcdRotate);
-    lcd.finalizeTouchInitialization();
+    const bool lcdInitialized = lgfxContext->init();
+    if (!lcdInitialized) return false;
+
+    lgfxContext->setRotation(lcdRotate);
+    lgfxContext->finalizeTouchInitialization();
     canvas.setSwapBytes(true);
 
     if (backLightPin == 0)
@@ -78,7 +94,7 @@ bool GraphicsILI9341::begin()
 void GraphicsILI9341::end()
 {
     canvas.deleteSprite();
-    lcd.clear();
+    lgfxContext->clear();
     if (backLightPin > 0) gpio_put(backLightPin, 0);
     screenDirty = false;
 }
@@ -255,7 +271,7 @@ void GraphicsILI9341::push()
 
     if (scale == 1 && (getScreenWidth() <= getLogicalScreenWidth() && getScreenHeight() <= getLogicalScreenHeight()))
     {
-        canvas.pushSprite(&lcd, -viewportX, -viewportY);
+        canvas.pushSprite(lgfxContext.get(), -viewportX, -viewportY);
     }
     else
     {

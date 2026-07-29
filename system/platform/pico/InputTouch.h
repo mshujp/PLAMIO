@@ -17,9 +17,10 @@ private:
 
 public:
     template<class... Args>
-    explicit InputTouch(LGFXContext& context, Args&&... args)
+    explicit InputTouch(LGFXContext& context, const InputTouchConfig& touchConfig, Args&&... args)
         : T(std::forward<Args>(args)...), context(context)
     {
+        context.enableTouch(touchConfig);
     }
 
     bool begin() override

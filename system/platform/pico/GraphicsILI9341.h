@@ -1,13 +1,17 @@
 #pragma once
 
 #include "GraphicsBase.h"
-#include "LGFXContext.h"
+#include <LovyanGFX.hpp>
+#include <memory>
 
 namespace PRUZEA {
 
+class LGFXContext;
+
 class GraphicsILI9341 : public GraphicsBase {
 private:
-    LGFXContext& lcd;
+    std::unique_ptr<LGFXContext> lgfxContext;
+    const char* driverName;
     uint8_t lcdRotate = 0;
     int8_t backLightPin = -1;
 
@@ -23,28 +27,46 @@ private:
     void setFont(const char* str, Font font);
   
 public:
-    struct Config
-    { 
+    struct GraphicsILI9341SPIConfig
+    {
         uint8_t spiHost = 0;
         uint32_t spiWriteFreq = 60000000;
-        int8_t clkPin   = -1;
-        int8_t dataPin  = -1;
-        int8_t dcPin    = -1;
-        int8_t csPin    = -1;
-        int8_t resetPin   = -1;
+        int8_t clkPin = -1;
+        int8_t dataPin = -1;
+        int8_t dcPin = -1;
+        int8_t csPin = -1;
+        int8_t resetPin = -1;
         int8_t backlightPin = -1;
         uint8_t lcdRotate = 0;
         uint16_t maxBufferWidth = 0;
         uint16_t maxBufferHeight = 0;
     };
+    struct GraphicsILI9341ParallelConfig
+    {
+        uint32_t writeFreq = 10000000;
+        int8_t dataPinBase = -1;
+        int8_t wrPin = -1;
+        int8_t rdPin = -1;
+        int8_t dcPin = -1;
+        int8_t csPin = -1;
+        int8_t resetPin = -1;
+        int8_t backlightPin = -1;
+        uint8_t lcdRotate = 0;
+        uint16_t maxBufferWidth = 0;
+        uint16_t maxBufferHeight = 0;
+    };
+    explicit GraphicsILI9341(const GraphicsILI9341SPIConfig& config);
+    explicit GraphicsILI9341(const GraphicsILI9341ParallelConfig& config);
+    ~GraphicsILI9341() override;
 
-    GraphicsILI9341(const Config& config, LGFXContext& context);
+    LGFXContext& getLGFXContext() { return *lgfxContext; }
+    const LGFXContext& getLGFXContext() const { return *lgfxContext; }
     uint16_t getScreenWidth() const override { return Display::ILI9341_SCREEN_W; }
     uint16_t getScreenHeight() const override { return Display::ILI9341_SCREEN_H; }
     uint16_t getLogicalScreenWidth() const override { return logicalScreenW; };
     uint16_t getLogicalScreenHeight() const override { return logicalScreenH; };
  
-    const char* getName() const override { return "ILI9341 SPI"; }
+    const char* getName() const override { return driverName; }
     CatalogFilterMode getCatalogFilterMode() const override { return CatalogFilterMode::FitInside; }
     bool begin() override;
     void end() override;

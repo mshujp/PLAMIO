@@ -106,11 +106,17 @@ target_include_directories(pruzea PRIVATE
     ${PRUZEA_GAME_INCLUDE_DIRS}
 )
 
-if (PRUZEA_DISPLAY STREQUAL "ILI9341")
+if (PRUZEA_DISPLAY STREQUAL "ILI9341" OR PRUZEA_DISPLAY STREQUAL "ILI9341_PARALLEL")
     target_sources(pruzea PRIVATE
+        platform/pico/BusParallelPIO.cpp
         platform/pico/GraphicsILI9341.cpp
+        platform/pico/LGFXContext.cpp
         ui/SystemUI320x240.cpp
         ui/SystemUI128x64Mono.cpp
+    )
+    pico_generate_pio_header(
+        pruzea
+        ${CMAKE_CURRENT_LIST_DIR}/platform/pico/BusParallelPIO.pio
     )
 elseif (PRUZEA_DISPLAY STREQUAL "SSD1306")
     target_sources(pruzea PRIVATE

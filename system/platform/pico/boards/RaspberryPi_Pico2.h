@@ -9,7 +9,7 @@
 //== Graphics ================================================
 #if PRUZEA_DISPLAY_ILI9341
 /// ILI9341 SPI LCD
-constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
+constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341SPIConfig GRAPHICS_CONFIG {
     // ===== SPI1 =====
     .spiHost = 1,
     .spiWriteFreq = 62500000,
@@ -26,6 +26,21 @@ constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
     .lcdRotate = 1,  // 1: Normal  3: Rotated 180 degrees
 
     // ===== Buffer =====
+    .maxBufferWidth = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2350,
+    .maxBufferHeight = PRUZEA::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2350
+};
+#elif PRUZEA_DISPLAY_ILI9341_PARALLEL
+/// ILI9341 8-bit parallel LCD
+constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341ParallelConfig GRAPHICS_CONFIG {
+    .writeFreq = 10000000,
+    .dataPinBase = -1,  // The eight data pins must be connected consecutively, starting from dataPinBase.
+    .wrPin = -1,
+    .rdPin = -1,
+    .dcPin = -1,
+    .csPin = -1,
+    .resetPin = -1,
+    .backlightPin = -1,
+    .lcdRotate = 1,
     .maxBufferWidth = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2350,
     .maxBufferHeight = PRUZEA::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2350
 };

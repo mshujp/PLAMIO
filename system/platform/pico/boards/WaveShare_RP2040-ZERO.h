@@ -3,9 +3,9 @@
 #include "InputBase.h"
 
 //== Graphics ================================================
-#if PRUZEA_DISPLAY_ILI9341
+#if PRUZEA_DISPLAY_ILI9341 && !PRUZEA_DISPLAY_ILI9341_PARALLEL
 /// ILI9341 SPI LCD
-constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
+constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341SPIConfig GRAPHICS_CONFIG {
     // ===== SPI =====
     .spiHost = 1,
     .spiWriteFreq = 62500000,
@@ -23,6 +23,21 @@ constexpr PRUZEA::GraphicsILI9341::Config GRAPHICS_CONFIG {
 
     // ===== Buffer =====
     .maxBufferWidth  = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2040,
+    .maxBufferHeight = PRUZEA::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2040
+};
+#elif PRUZEA_DISPLAY_ILI9341_PARALLEL
+/// ILI9341 8-bit parallel LCD
+constexpr PRUZEA::GraphicsILI9341::GraphicsILI9341ParallelConfig GRAPHICS_CONFIG {
+    .writeFreq = 10000000,
+    .dataPinBase = 8,
+    .wrPin = 0,
+    .rdPin = 4,
+    .dcPin = 1,
+    .csPin = 2,
+    .resetPin = 3,
+    .backlightPin = -1,
+    .lcdRotate = 1,
+    .maxBufferWidth = PRUZEA::Graphics::ILI9341_SCREEN_BUF_W_MAX_RP2040,
     .maxBufferHeight = PRUZEA::Graphics::ILI9341_SCREEN_BUF_H_MAX_RP2040
 };
 #elif PRUZEA_DISPLAY_SSD1306
@@ -46,19 +61,25 @@ constexpr PRUZEA::GraphicsSSD1306::Config GRAPHICS_CONFIG {
 //== Input ==================================================
 /// Button-GPIO Mapping
 constexpr PRUZEA::InputBase::ButtonMapping BUTTON_MAPPING {
-    .UP        = 9,
-    .DOWN      = 10,
-    .LEFT      = 11,
-    .RIGHT     = 12,
-    .A         = 13,
-    .B         = -1,
+    .UP        = -1,
+    .DOWN      = -1,
+    .LEFT      = -1,
+    .RIGHT     = -1,
+    .A         = 16,
+    .B         = 17,
+    .X         = -1,
+    .Y         = -1,
     .L         = -1,
     .R         = -1,
+    .L2        = -1,
+    .R2        = -1,
+    .L3        = -1,
+    .R3        = -1,
     .START     = -1,
     .SELECT    = -1,
+    .HOME      = 27,
     .VOL_UP    = -1,
     .VOL_DOWN  = -1,
-    .HOME      = 27,
     .MUTE      = -1
 };
 

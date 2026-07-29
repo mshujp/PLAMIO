@@ -50,27 +50,7 @@ namespace
 {
 
 #if PRUZEA_DISPLAY_ILI9341
-#if PRUZEA_TOUCH_XPT2046
-LGFXContext lgfxContext(
-    GRAPHICS_CONFIG.spiHost,
-    GRAPHICS_CONFIG.spiWriteFreq,
-    GRAPHICS_CONFIG.clkPin,
-    GRAPHICS_CONFIG.dataPin,
-    GRAPHICS_CONFIG.dcPin,
-    GRAPHICS_CONFIG.csPin,
-    GRAPHICS_CONFIG.resetPin,
-    &TOUCH_CONFIG);
-#else
-LGFXContext lgfxContext(
-    GRAPHICS_CONFIG.spiHost,
-    GRAPHICS_CONFIG.spiWriteFreq,
-    GRAPHICS_CONFIG.clkPin,
-    GRAPHICS_CONFIG.dataPin,
-    GRAPHICS_CONFIG.dcPin,
-    GRAPHICS_CONFIG.csPin,
-    GRAPHICS_CONFIG.resetPin);
-#endif
-GraphicsILI9341 graphicsImpl(GRAPHICS_CONFIG, lgfxContext);
+GraphicsILI9341 graphicsImpl(GRAPHICS_CONFIG);
 SystemUI320x240 systemUIImpl;
 //SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SSD1306_OFF);
 #elif PRUZEA_DISPLAY_SSD1306
@@ -80,19 +60,19 @@ SystemUI128x64Mono systemUIImpl(Graphics::Color::SSD1306_ON, Graphics::Color::SS
 
 #if PRUZEA_INPUT_GPIO_BUTTONS
 #if PRUZEA_TOUCH_XPT2046
-InputTouch<InputGpioButtons> inputImpl(lgfxContext, BUTTON_MAPPING);
+InputTouch<InputGpioButtons> inputImpl(graphicsImpl.getLGFXContext(), TOUCH_CONFIG, BUTTON_MAPPING);
 #else
 InputGpioButtons inputImpl(BUTTON_MAPPING);
 #endif
 #elif PRUZEA_INPUT_SNES
 #if PRUZEA_TOUCH_XPT2046
-InputTouch<InputSnes> inputImpl(lgfxContext, INPUT_CONFIG);
+InputTouch<InputSnes> inputImpl(graphicsImpl.getLGFXContext(), TOUCH_CONFIG, INPUT_CONFIG);
 #else
 InputSnes inputImpl(INPUT_CONFIG);
 #endif
 #elif PRUZEA_INPUT_PS
 #if PRUZEA_TOUCH_XPT2046
-InputTouch<InputPS> inputImpl(lgfxContext, INPUT_CONFIG);
+InputTouch<InputPS> inputImpl(graphicsImpl.getLGFXContext(), TOUCH_CONFIG, INPUT_CONFIG);
 #else
 InputPS inputImpl(INPUT_CONFIG);
 #endif
