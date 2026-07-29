@@ -110,15 +110,7 @@ private:
     int16_t minimumTouchPressure = 0;
 
 public:
-    LGFXContext(
-        uint8_t spiHost,
-        uint32_t spiWriteFreq,
-        int8_t clkPin,
-        int8_t dataPin,
-        int8_t dcPin,
-        int8_t csPin,
-        int8_t resetPin,
-        const InputTouchConfig* touchConfig = nullptr)
+    LGFXContext(uint8_t spiHost, uint32_t spiWriteFreq, int8_t clkPin, int8_t dataPin, int8_t dcPin, int8_t csPin, int8_t resetPin, const InputTouchConfig* touchConfig = nullptr)
     {
         auto busConfig = bus.config();
         busConfig.spi_host = static_cast<decltype(busConfig.spi_host)>(spiHost);
