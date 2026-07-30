@@ -93,6 +93,7 @@ add_executable(pruzea
     util/SaveData.cpp
     util/Collision.cpp
     util/ScreenShot.cpp
+    platform/pico/graphics/Image.cpp
     ${PRUZEA_GENERATED_GAMES_CPP}
     ${PRUZEA_GAME_SOURCES}
 )

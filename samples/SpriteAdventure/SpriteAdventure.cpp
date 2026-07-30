@@ -348,8 +348,11 @@ void SpriteAdventure::drawTitle(Graphics& graphics)
         98,
         SPRITE_W,
         SPRITE_H,
-        SPRITE_SCALE,
-        TRANSPARENT);
+        {
+            .scale = SPRITE_SCALE,
+            .transparent = true,
+            .transparentColor = TRANSPARENT
+        });
 
     graphics.drawString(
         "SPRITES + CAMERA",
@@ -497,8 +500,11 @@ void SpriteAdventure::drawGems(Graphics& graphics)
             static_cast<int16_t>(gems[i].y),
             SPRITE_W,
             SPRITE_H,
-            SPRITE_SCALE,
-            TRANSPARENT);
+            {
+                .scale = SPRITE_SCALE,
+                .transparent = true,
+                .transparentColor = TRANSPARENT
+            });
     }
 }
 
@@ -519,10 +525,12 @@ void SpriteAdventure::drawPlayer(Graphics& graphics)
         static_cast<int16_t>(playerY),
         SPRITE_W,
         SPRITE_H,
-        SPRITE_SCALE,
-        TRANSPARENT,
-        facingLeft,
-        false);
+        {
+            .scale = SPRITE_SCALE,
+            .flipX = facingLeft,
+            .transparent = true,
+            .transparentColor = TRANSPARENT
+        });
 }
 
 void SpriteAdventure::drawHud(Graphics& graphics)

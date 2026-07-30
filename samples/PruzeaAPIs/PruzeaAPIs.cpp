@@ -759,7 +759,11 @@ void PruzeaAPIs::drawSpriteTest(Graphics& g) {
     const int16_t baseY = 74;
     for (uint8_t scale = 1; scale <= 4; ++scale) {
         int16_t x = 34 + static_cast<int16_t>((scale - 1) * 68);
-        g.drawSprite(DUMMY_SPRITE, x, baseY, 16, 16, scale, Graphics::BLACK);
+        g.drawSprite(DUMMY_SPRITE, x, baseY, 16, 16, {
+            .scale = scale,
+            .transparent = true,
+            .transparentColor = Graphics::BLACK
+        });
         char label[12];
         snprintf(label, sizeof(label), "x%u", static_cast<unsigned>(scale));
         g.drawString(label, x + 16, 178, COL_TEXT, Graphics::SIZE_18,

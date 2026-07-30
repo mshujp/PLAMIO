@@ -394,9 +394,21 @@ void PruzeaAPIsSSD1306::drawViewportTest(Graphics& g) {
 
 void PruzeaAPIsSSD1306::drawSpriteTest(Graphics& g) {
     const int16_t x = getAnimX(Platform::getMsec());
-    g.drawSprite(TEST_SPRITE, x - 8, 20, 8, 8, 1, OFF);
-    g.drawSprite(TEST_SPRITE, x, 27, 8, 8, 2, OFF);
-    g.drawSprite(TEST_SPRITE, x + 18, 35, 8, 8, 3, OFF, true, false);
+    g.drawSprite(TEST_SPRITE, x - 8, 20, 8, 8, {
+        .transparent = true,
+        .transparentColor = OFF
+    });
+    g.drawSprite(TEST_SPRITE, x, 27, 8, 8, {
+        .scale = 2,
+        .transparent = true,
+        .transparentColor = OFF
+    });
+    g.drawSprite(TEST_SPRITE, x + 18, 35, 8, 8, {
+        .scale = 3,
+        .flipX = true,
+        .transparent = true,
+        .transparentColor = OFF
+    });
 }
 
 void PruzeaAPIsSSD1306::drawInputOverlay(Graphics& g) {

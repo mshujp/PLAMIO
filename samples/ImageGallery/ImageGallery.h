@@ -34,14 +34,15 @@ private:
     static constexpr int16_t PNG_W = 64;
     static constexpr int16_t PNG_H = 64;
     static constexpr float MOVE_SPEED = 110.0f;
+    static constexpr float ROTATION_SPEED = 180.0f;
 
-    PRUZEA::Graphics::Image* backgroundImage = nullptr;
-    PRUZEA::Graphics::Image* characterImage = nullptr;
+    PRUZEA::Image::ImageData* backgroundImage = nullptr;
+    PRUZEA::Image::ImageData* characterImage = nullptr;
 
     float characterX = 128.0f;
     float characterY = 92.0f;
+    float characterAngle = 0.0f;
     bool transparencyEnabled = true;
-    bool loadAttempted = false;
     bool loadSucceeded = false;
 
     void closeImages();

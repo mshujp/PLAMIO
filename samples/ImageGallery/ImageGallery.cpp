@@ -50,9 +50,25 @@ void ImageGallery::onInit(Storage& storage)
     closeImages();
     characterX = 128.0f;
     characterY = 92.0f;
+    characterAngle = 0.0f;
     transparencyEnabled = true;
-    loadAttempted = false;
-    loadSucceeded = false;
+
+    backgroundImage = Image::loadJpeg(
+        sample_background_jpg,
+        sample_background_jpg_size,
+        JPEG_W,
+        JPEG_H,
+        Image::ImageFit::STRETCH);
+
+    characterImage = Image::loadPng(
+        sample_character_png,
+        sample_character_png_size,
+        PNG_W,
+        PNG_H,
+        Image::ImageFit::STRETCH);
+
+    loadSucceeded = backgroundImage != nullptr && characterImage != nullptr;
+    if (!loadSucceeded) closeImages();
     dirty = true;
 }
 
@@ -98,6 +114,13 @@ Game::GameState ImageGallery::onUpdate(
         changed = true;
     }
 
+    if (input.pressed(Input::X))
+    {
+        characterAngle += ROTATION_SPEED * deltaSec;
+        while (characterAngle >= 360.0f) characterAngle -= 360.0f;
+        changed = true;
+    }
+
     if (input.justPressed(Input::A))
     {
         transparencyEnabled = !transparencyEnabled;
@@ -109,6 +132,7 @@ Game::GameState ImageGallery::onUpdate(
     {
         characterX = 128.0f;
         characterY = 92.0f;
+        characterAngle = 0.0f;
         audio.playSE(&Audio::SE::NO_2, 0.5f);
         changed = true;
     }
@@ -128,34 +152,6 @@ bool ImageGallery::onDraw(
     if (!requestFullRedraw && !dirty)
     {
         return false;
-    }
-
-    // Embedded image data does not use Storage or perform file I/O.
-    // Decode each image only once, then reuse the resulting RGB565 buffers.
-    if (!loadAttempted)
-    {
-        loadAttempted = true;
-
-        backgroundImage = graphics.loadJpeg(
-            sample_background_jpg,
-            sample_background_jpg_size,
-            JPEG_W,
-            JPEG_H,
-            Graphics::ImageFit::STRETCH);
-
-        characterImage = graphics.loadPng(
-            sample_character_png,
-            sample_character_png_size,
-            PNG_W,
-            PNG_H,
-            Graphics::ImageFit::STRETCH);
-
-        loadSucceeded = backgroundImage != nullptr && characterImage != nullptr;
-
-        if (!loadSucceeded)
-        {
-            closeImages();
-        }
     }
 
     drawScene(graphics);
@@ -227,24 +223,17 @@ void ImageGallery::drawScene(Graphics& graphics)
         Graphics::WHITE);
     graphics.drawImage(*backgroundImage, backgroundX, backgroundY);
 
-    if (transparencyEnabled)
-    {
-        graphics.drawSprite(
-            characterImage->getBuffer(),
-            static_cast<int16_t>(characterX),
-            static_cast<int16_t>(characterY),
-            characterImage->getWidth(),
-            characterImage->getHeight(),
-            1,
-            Graphics::MAGENTA);
-    }
-    else
-    {
-        graphics.drawImage(
-            *characterImage,
-            static_cast<int16_t>(characterX),
-            static_cast<int16_t>(characterY));
-    }
+    graphics.drawSprite(
+        characterImage->getBuffer(),
+        static_cast<int16_t>(characterX),
+        static_cast<int16_t>(characterY),
+        characterImage->getWidth(),
+        characterImage->getHeight(),
+        {
+            .angle = characterAngle,
+            .transparent = transparencyEnabled,
+            .transparentColor = Graphics::MAGENTA
+        });
 }
 
 void ImageGallery::drawStatus(Graphics& graphics)
@@ -274,7 +263,7 @@ void ImageGallery::drawStatus(Graphics& graphics)
         Graphics::VerticalAlign::TOP);
 
     graphics.drawString(
-        "D-PAD: MOVE   B: RESET",
+        "D-PAD: MOVE  X: ROTATE  B: RESET",
         SCREEN_W / 2,
         205,
         Graphics::WHITE,

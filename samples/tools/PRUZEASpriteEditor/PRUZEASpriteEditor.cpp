@@ -592,7 +592,7 @@ bool PRUZEASpriteEditor::writeSourceLine(std::string& line, void* arg)
     if (lineIndex == 22) { line.assign(""); return true; }
     if (lineIndex == 23)
     {
-        snprintf(buffer, sizeof(buffer), "// graphics.drawSprite(slot%uSprite, x, y, 16, 16, 1, PRUZEA::Graphics::BLACK, flipX, flipY);", static_cast<unsigned>(editor->writeSlot + 1));
+        snprintf(buffer, sizeof(buffer), "// graphics.drawSprite(slot%uSprite, x, y, 16, 16, {.flipX = flipX, .flipY = flipY, .transparent = true, .transparentColor = PRUZEA::Graphics::BLACK});", static_cast<unsigned>(editor->writeSlot + 1));
         line.assign(buffer); return true;
     }
     return false;
@@ -610,8 +610,11 @@ void PRUZEASpriteEditor::drawEditor(Graphics& graphics)
     graphics.drawString("ACTUAL", 247, 39, COLOR_TEXT_DIM, Graphics::SIZE_13,
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
     graphics.fillRect(PREVIEW_X - 3, PREVIEW_Y - 3, 38, 38, COLOR_PANEL);
-    graphics.drawSprite(renderPixels, PREVIEW_X, PREVIEW_Y, SPRITE_W, SPRITE_H, 2,
-                        paletteColor(0), false, false);
+    graphics.drawSprite(renderPixels, PREVIEW_X, PREVIEW_Y, SPRITE_W, SPRITE_H, {
+        .scale = 2,
+        .transparent = true,
+        .transparentColor = paletteColor(0)
+    });
 
     graphics.drawString("A DRAW  B ERASE", 183, 112, Graphics::WHITE, Graphics::SIZE_13);
     graphics.drawString("X COLOR  Y PICK", 183, 130, Graphics::WHITE, Graphics::SIZE_13);
@@ -658,7 +661,11 @@ void PRUZEASpriteEditor::drawPreview(Graphics& graphics)
     graphics.fillRect(176, 34, 138, 167, COLOR_PANEL);
     graphics.drawString("PREVIEW", 245, 43, Graphics::WHITE, Graphics::SIZE_22B,
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
-    graphics.drawSprite(renderPixels, 213, 77, SPRITE_W, SPRITE_H, 4, paletteColor(0), false, false);
+    graphics.drawSprite(renderPixels, 213, 77, SPRITE_W, SPRITE_H, {
+        .scale = 4,
+        .transparent = true,
+        .transparentColor = paletteColor(0)
+    });
     graphics.drawString("NORMAL", 245, 147, COLOR_TEXT_DIM, Graphics::SIZE_13,
                         Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::TOP);
     graphics.drawString("START: BACK", 245, 175, COLOR_ACCENT, Graphics::SIZE_13,
