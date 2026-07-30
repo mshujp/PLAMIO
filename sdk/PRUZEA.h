@@ -509,7 +509,6 @@ public:
 
     // ## Embedded MIDI music
     //   - Supports lightweight playback of embedded Standard MIDI File data.
-    //   - The initial implementation supports SMF Format 0.
     //   - MIDI data must remain valid until playback stops.
     //   - Define MIDI byte arrays and Midi objects as `static const`.
     struct Midi
