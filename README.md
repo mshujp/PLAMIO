@@ -20,7 +20,7 @@ A lightweight game framework designed for AI-assisted game development.
 -   Built-in SaveData helper
 -   2D viewport and scrolling support
 -   PWM / I2S audio support
--   SSD1306 / ILI9341 display support
+-   ILI9341 (SPI / Parallel) and SSD1306 display support
 -   AI-oriented documentation and API design
 -   Embedded JPEG / PNG image support
 -   RGB565 sprite scaling, rotation, flipping, and color-key transparency
@@ -82,7 +82,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [12 Touch Paint](samples/TouchPaint/) | Touchscreen |
 | [13 Analog Stick](samples/AnalogStick/) | AnalogStick Input |
 | [14 Image Gallery](samples/ImageGallery/) | JPEG and PNG image rendering |
-| [15 Midi Music Box](samples/MidiMusicBox/) | MIDI music play |
+| [15 Midi Music Box](samples/MidiMusicBox/) | Embedded SMF Format 0 / 1 MIDI playback |
 | [Game Template](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.
@@ -265,7 +265,7 @@ After adding a new game, reconfigure CMake and build the project.
 ## Resource Files
 
 ### Image
-- Embedded JPEG/PNG/RGB565 are supported.
+- Embedded JPEG, PNG, and RGB565 images are supported.
 - Sprites support scaling, rotation, flipping, and color-key transparency.
 
 ### Audio
