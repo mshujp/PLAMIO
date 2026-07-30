@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LGFXContext.h"
+#include "graphics/lgfx/LGFXContext.h"
 #include <utility>
 
 namespace PRUZEA {

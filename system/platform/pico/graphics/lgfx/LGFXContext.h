@@ -1,7 +1,7 @@
 #pragma once
 
-#include "InputTouchConfig.h"
-#include "LGFXTouchXPT2046.h"
+#include "input/InputTouchConfig.h"
+#include "touch/LGFXTouchXPT2046.h"
 #include "PRUZEA.h"
 #include <LovyanGFX.hpp>
 #include <stdint.h>

@@ -112,56 +112,56 @@ target_include_directories(pruzea PRIVATE
 
 if (PRUZEA_DISPLAY STREQUAL "ILI9341" OR PRUZEA_DISPLAY STREQUAL "ILI9341_PARALLEL")
     target_sources(pruzea PRIVATE
-        platform/pico/BusParallelPIO.cpp
-        platform/pico/GraphicsILI9341.cpp
-        platform/pico/LGFXContext.cpp
+        platform/pico/graphics/parallel/BusParallelPIO.cpp
+        platform/pico/graphics/GraphicsILI9341.cpp
+        platform/pico/graphics/lgfx/LGFXContext.cpp
         ui/SystemUI320x240.cpp
         ui/SystemUI128x64Mono.cpp
     )
     pico_generate_pio_header(
         pruzea
-        ${CMAKE_CURRENT_LIST_DIR}/platform/pico/BusParallelPIO.pio
+        ${CMAKE_CURRENT_LIST_DIR}/platform/pico/graphics/parallel/BusParallelPIO.pio
     )
 elseif (PRUZEA_DISPLAY STREQUAL "SSD1306")
     target_sources(pruzea PRIVATE
-        platform/pico/GraphicsSSD1306.cpp
+        platform/pico/graphics/GraphicsSSD1306.cpp
         ui/SystemUI128x64Mono.cpp
     )
 endif()
 
 if (PRUZEA_STORAGE STREQUAL "SD")
-    target_sources(pruzea PRIVATE platform/pico/StorageSD.cpp)
+    target_sources(pruzea PRIVATE platform/pico/storage/StorageSD.cpp)
 elseif (PRUZEA_STORAGE STREQUAL "NONE")
     target_sources(pruzea PRIVATE hardware/StorageStub.cpp)
 endif()
 
 if (PRUZEA_AUDIO STREQUAL "I2S")
-    target_sources(pruzea PRIVATE platform/pico/AudioI2S.cpp)
+    target_sources(pruzea PRIVATE platform/pico/audio/AudioI2S.cpp)
 elseif (PRUZEA_AUDIO STREQUAL "PWM")
-    target_sources(pruzea PRIVATE platform/pico/AudioPWM.cpp)
+    target_sources(pruzea PRIVATE platform/pico/audio/AudioPWM.cpp)
 elseif (PRUZEA_AUDIO STREQUAL "NONE")
     target_sources(pruzea PRIVATE hardware/AudioStub.cpp)
 endif()
 
 if (PRUZEA_INPUT STREQUAL "SNES")
     target_sources(pruzea PRIVATE
-        platform/pico/GpioButtons.cpp
-        platform/pico/InputSnes.cpp
+        platform/pico/input/GpioButtons.cpp
+        platform/pico/input/InputSnes.cpp
     )
 elseif (PRUZEA_INPUT STREQUAL "GPIO_BUTTONS")
     target_sources(pruzea PRIVATE
-        platform/pico/GpioButtons.cpp
-        platform/pico/InputGpioButtons.cpp
+        platform/pico/input/GpioButtons.cpp
+        platform/pico/input/InputGpioButtons.cpp
     )
 elseif (PRUZEA_INPUT STREQUAL "PS")
     target_sources(pruzea PRIVATE
-        platform/pico/GpioButtons.cpp
-        platform/pico/InputPS.cpp
+        platform/pico/input/GpioButtons.cpp
+        platform/pico/input/InputPS.cpp
     )
 endif()
 
 if (PRUZEA_TOUCH STREQUAL "XPT2046")
-    target_sources(pruzea PRIVATE platform/pico/TouchXPT2046.cpp)
+    target_sources(pruzea PRIVATE platform/pico/touch/TouchXPT2046.cpp)
 endif()
 
 target_link_libraries(pruzea

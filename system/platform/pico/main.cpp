@@ -1,38 +1,38 @@
 #include "System.h"
 #include "PRUZEAConfig.h"
-#include "PicoBatteryConfig.h"
+#include "power/PicoBatteryConfig.h"
 
 #if PRUZEA_INPUT_GPIO_BUTTONS
-#include "InputGpioButtons.h"
+#include "input/InputGpioButtons.h"
 #elif PRUZEA_INPUT_SNES
-#include "InputSnes.h"
+#include "input/InputSnes.h"
 #elif PRUZEA_INPUT_PS
-#include "InputPS.h"
+#include "input/InputPS.h"
 #endif
 
 #if PRUZEA_TOUCH_XPT2046
-#include "InputTouch.h"
+#include "input/InputTouch.h"
 #endif
 
 #if PRUZEA_AUDIO_I2S
-#include "AudioI2S.h"
+#include "audio/AudioI2S.h"
 #elif PRUZEA_AUDIO_PWM
-#include "AudioPWM.h"
+#include "audio/AudioPWM.h"
 #elif PRUZEA_AUDIO_NONE
 #include "AudioStub.h"
 #endif
 
 #if PRUZEA_DISPLAY_ILI9341
-#include "GraphicsILI9341.h"
+#include "graphics/GraphicsILI9341.h"
 #include "SystemUI320x240.h"
 #include "SystemUI128x64Mono.h"
 #elif PRUZEA_DISPLAY_SSD1306
-#include "GraphicsSSD1306.h"
+#include "graphics/GraphicsSSD1306.h"
 #include "SystemUI128x64Mono.h"
 #endif
 
 #if PRUZEA_STORAGE_SD
-#include "StorageSD.h"
+#include "storage/StorageSD.h"
 #elif PRUZEA_STORAGE_NONE
 #include "StorageStub.h"
 #endif

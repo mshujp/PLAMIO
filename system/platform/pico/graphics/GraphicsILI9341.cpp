@@ -1,7 +1,7 @@
 #include "GraphicsILI9341.h"
-#include "LGFXContext.h"
-#include "LGFXContextParallel.h"
-#include "LGFXContextSPI.h"
+#include "lgfx/LGFXContext.h"
+#include "lgfx/LGFXContextParallel.h"
+#include "lgfx/LGFXContextSPI.h"
 #include <algorithm>
 #include <cmath>
 #include <cstring>

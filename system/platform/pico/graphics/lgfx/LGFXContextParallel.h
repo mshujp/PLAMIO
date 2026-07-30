@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BusParallelPIO.h"
-#include "GraphicsILI9341.h"
+#include "graphics/parallel/BusParallelPIO.h"
+#include "graphics/GraphicsILI9341.h"
 #include "LGFXContext.h"
 
 namespace PRUZEA {
