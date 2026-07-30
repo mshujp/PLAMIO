@@ -18,12 +18,12 @@ static const P SPEEDWAY_POINTS[] = {
 // and a rounded upper apex. The control points intentionally preserve
 // visible straight sections instead of producing a generic smooth oval.
 static const P TRI_OVAL_POINTS[] = {
-    {160, 198}, {220, 198}, {254, 197}, {276, 188},
-    {287, 174}, {289, 159}, {284, 143}, {270, 125},
-    {239, 99},  {207, 73},  {187, 58},  {174, 52},
-    {160, 50},  {146, 52},  {133, 59},  {121, 73},
-    {101, 101}, {85, 124},  {72, 144},  {64, 161},
-    {63, 175},  {69, 187},  {82, 195},  {104, 198}
+    {160,198}, {220,198}, {254,197}, {276,188},
+    {287,174}, {289,159}, {284,143}, {270,125},
+    {239,99},  {207,73},  {187,58},  {174,52},
+    {160,50},  {146,52},  {133,59},  {121,73},
+    {101,101}, {85,124},  {72,144},  {64,161},
+    {63,175},  {69,187},  {82,195},  {104,198}
 };
 
 // D-shaped oval: a nearly straight back stretch and a bowed front side.
@@ -45,6 +45,26 @@ static const P EGG_OVAL_POINTS[] = {
     {219, 59},  {188, 71},  {151, 85},  {113, 99},
     {78, 112},  {52, 124},  {38, 138},  {32, 154},
     {34, 171},  {44, 187},  {62, 196},  {88, 198}
+};
+
+// Top-down car sprite, 16x12, nose pointing toward +X (matches carAngle == 0.0f).
+// SpriteOptions::transparent uses the default transparentColor (MAGENTA), so every
+// MAGENTA pixel below is drawn as transparent background.
+static const uint16_t CAR_SPRITE_W = 16;
+static const uint16_t CAR_SPRITE_H = 12;
+static const uint16_t CAR_SPRITE_BITMAP[] = {
+    0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F,
+    0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F,
+    0xF81F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xF81F,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0xFFFF, 0xF81F,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x4208, 0x4208, 0x4208, 0x4208, 0x07FF, 0x07FF, 0xFFFF,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x4208, 0x4208, 0x4208, 0x4208, 0x07FF, 0x07FF, 0xFFE0,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x4208, 0x4208, 0x4208, 0x4208, 0x07FF, 0x07FF, 0xFFE0,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x4208, 0x4208, 0x4208, 0x4208, 0x07FF, 0x07FF, 0xFFFF,
+    0xF81F, 0xFFFF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0x07FF, 0xFFFF, 0xF81F,
+    0xF81F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xF81F,
+    0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F,
+    0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0xF81F, 0x0000, 0x0000, 0xF81F, 0xF81F, 0xF81F,
 };
 }
 
@@ -526,21 +546,13 @@ void RCQualifying::drawTrack(Graphics& g) const
 
 void RCQualifying::drawCar(Graphics& g) const
 {
-    const float c = Math::cos(carAngle);
-    const float s = Math::sin(carAngle);
-    const float fx = c * 9.0f;
-    const float fy = s * 9.0f;
-    const float sx = -s * 5.0f;
-    const float sy = c * 5.0f;
-    const int16_t noseX = static_cast<int16_t>(carX + fx);
-    const int16_t noseY = static_cast<int16_t>(carY + fy);
-    const int16_t leftX = static_cast<int16_t>(carX - fx * 0.65f + sx);
-    const int16_t leftY = static_cast<int16_t>(carY - fy * 0.65f + sy);
-    const int16_t rightX = static_cast<int16_t>(carX - fx * 0.65f - sx);
-    const int16_t rightY = static_cast<int16_t>(carY - fy * 0.65f - sy);
-    g.fillTriangle(noseX, noseY, leftX, leftY, rightX, rightY, Graphics::CYAN);
-    g.drawTriangle(noseX, noseY, leftX, leftY, rightX, rightY, Graphics::WHITE);
-    g.fillCircle(static_cast<int16_t>(carX + c * 2.0f), static_cast<int16_t>(carY + s * 2.0f), 2, Graphics::YELLOW);
+    Graphics::SpriteOptions options;
+    options.angle = carAngle; // carAngle == 0 already faces +X, matching the sprite's nose direction.
+    options.transparent = true; // Drops every MAGENTA pixel in CAR_SPRITE_BITMAP.
+
+    const int16_t x = static_cast<int16_t>(carX) - static_cast<int16_t>(CAR_SPRITE_W / 2);
+    const int16_t y = static_cast<int16_t>(carY) - static_cast<int16_t>(CAR_SPRITE_H / 2);
+    g.drawSprite(CAR_SPRITE_BITMAP, x, y, CAR_SPRITE_W, CAR_SPRITE_H, options);
 }
 
 void RCQualifying::drawHud(Graphics& g, uint32_t now) const
