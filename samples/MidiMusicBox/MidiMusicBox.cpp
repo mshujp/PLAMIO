@@ -19,7 +19,7 @@ struct SongInfo
 static const SongInfo SONGS[] = {
     { "FURUSATO", "JAPANESE SONG" },
     { "CANON", "PACHELBEL" },
-    { "HIMAWARI", "Mu" }
+    { "HIMAWARI", "myuu" }
 };
 
 static const Audio::Midi MIDI_SONGS[] = {

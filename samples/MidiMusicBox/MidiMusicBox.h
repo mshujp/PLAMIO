@@ -10,7 +10,6 @@
 //
 // MIDI data:
 //   https://www.ne.jp/asahi/music/myuu/midi/midi.htm
-//   MIDI programmer: nagisa matui
 // -----------------------------------------------------------------------------
 
 #pragma once
