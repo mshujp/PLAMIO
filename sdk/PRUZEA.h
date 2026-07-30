@@ -60,6 +60,11 @@ namespace Math {
     void rotate(float x, float y, float radians, float& outX, float& outY);
     void normalize(float& x, float& y); // Normalize the vector. If the vector is zero, it is left unchanged.
     float angle(float x, float y); /// Returns the absolute angle of vector (x, y), in radians. Equivalent to atan2f(y, x). Return range: -PI to PI.
+    constexpr float PI      = 3.14159265358979323846f;
+    constexpr float HALF_PI = PI * 0.5f;
+    constexpr float TWO_PI  = PI * 2.0f;
+    float degToRad(float degrees);
+    float radToDeg(float radians);
 }
 namespace Collision {
     // =========================================================================
@@ -358,7 +363,7 @@ public:
     struct SpriteOptions
     {
         uint8_t scale = 1;
-        float angle = 0.0f;
+        float angle = 0.0f;  /// Rotation angle in radians.
         bool flipX = false;
         bool flipY = false;
 

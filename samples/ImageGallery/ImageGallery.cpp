@@ -230,7 +230,7 @@ void ImageGallery::drawScene(Graphics& graphics)
         characterImage->getWidth(),
         characterImage->getHeight(),
         {
-            .angle = characterAngle,
+            .angle = Math::degToRad(characterAngle),
             .transparent = transparencyEnabled,
             .transparentColor = Graphics::MAGENTA
         });

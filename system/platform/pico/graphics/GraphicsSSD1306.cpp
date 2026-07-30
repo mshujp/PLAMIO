@@ -216,28 +216,11 @@ void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, u
 
         if (options.transparent)
         {
-            canvas.pushImageRotateZoom(
-                destinationX, destinationY,
-                w * 0.5f, h * 0.5f,
-                options.angle,
-                zoomX, zoomY,
-                w, h,
-                bitmap,
-                static_cast<uint16_t>(options.transparentColor),
-                sourceDepth,
-                palette);
+            canvas.pushImageRotateZoom(destinationX, destinationY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, static_cast<uint16_t>(options.transparentColor), sourceDepth, palette);
         }
         else
         {
-            canvas.pushImageRotateZoom(
-                destinationX, destinationY,
-                w * 0.5f, h * 0.5f,
-                options.angle,
-                zoomX, zoomY,
-                w, h,
-                bitmap,
-                sourceDepth,
-                palette);
+            canvas.pushImageRotateZoom(destinationX, destinationY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, sourceDepth, palette);
         }
     }
 
