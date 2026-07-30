@@ -74,6 +74,7 @@ This allows game logic to remain clean, portable, and easy to generate.
 | [11 SL](samples/SL/) | Bonus sample |
 | [12 TouchPaint](samples/TouchPaint/) | Touchscreen |
 | [13 AnalogStick](samples/AnalogStick/) | AnalogStick Input |
+| [14 ImageGallery](samples/ImageGallery/) | JPEG and PNG image rendering |
 | [GameTemplate](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.

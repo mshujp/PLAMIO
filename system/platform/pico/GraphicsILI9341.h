@@ -8,6 +8,39 @@ namespace PRUZEA {
 
 class LGFXContext;
 
+class GraphicsILI9341Image : public Graphics::Image
+{
+private:
+    struct PngDecodeState;
+
+    mutable LGFX_Sprite sprite;
+    uint16_t width = 0;
+    uint16_t height = 0;
+
+    explicit GraphicsILI9341Image(LGFX_Device* parent);
+    ~GraphicsILI9341Image() override = default;
+
+    bool create(uint16_t width, uint16_t height);
+    bool decodeJpeg(const uint8_t* data, uint32_t size, Graphics::ImageFit fit);
+    bool decodePng(const uint8_t* data, uint32_t size, Graphics::ImageFit fit);
+    void drawTo(LGFX_Sprite& destination, int16_t x, int16_t y) const;
+
+    static bool readJpegSize(const uint8_t* data, uint32_t size, uint16_t& width, uint16_t& height);
+    static uint32_t readPngData(void* userData, uint8_t* buffer, uint32_t length);
+    static void drawPngData(void* userData, uint32_t x, uint32_t y, uint_fast8_t divX, size_t length, const uint8_t* argb);
+
+    friend class GraphicsILI9341;
+
+public:
+    GraphicsILI9341Image(const GraphicsILI9341Image&) = delete;
+    GraphicsILI9341Image& operator=(const GraphicsILI9341Image&) = delete;
+
+    const uint16_t* getBuffer() const override { return static_cast<const uint16_t*>(sprite.getBuffer()); }
+    uint16_t getWidth() const override { return width; }
+    uint16_t getHeight() const override { return height; }
+    void close() override { delete this; }
+};
+
 class GraphicsILI9341 : public GraphicsBase {
 private:
     std::unique_ptr<LGFXContext> lgfxContext;
@@ -89,6 +122,9 @@ public:
     void drawString(const char* str, int16_t x, int16_t y, Graphics::Color color, Font font) override;
     uint16_t getTextWidth(const char* text, Font font) override;
     void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t spriteScale,  Color transparentColor, bool flipX = false, bool flipY = false) override;
+    Image* loadJpeg(const uint8_t* jpegData, uint32_t jpegSize, uint16_t outputWidth, uint16_t outputHeight, ImageFit fit) override;
+    Image* loadPng(const uint8_t* pngData, uint32_t pngSize, uint16_t outputWidth, uint16_t outputHeight, ImageFit fit) override;
+    void drawImage(const Image& image, int16_t x, int16_t y) override;
     void setViewport(int16_t viewportX, int16_t viewportY) override;
     bool readScreenLine(uint16_t y, uint16_t* outPixels, uint16_t pixelCount) override;
 
