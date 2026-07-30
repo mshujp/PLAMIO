@@ -21,6 +21,7 @@ bool AudioPWM::begin()
     pwm_set_gpio_level(pin, 0);
     pwm_set_enabled(sliceNum, true);
 
+    pcmMode = false;
     started = true;
     return true;
 }
@@ -41,6 +42,18 @@ void AudioPWM::end()
 uint32_t AudioPWM::sampleRate() const
 {
     return SAMPLE_RATE;
+}
+
+void AudioPWM::configurePcmMode()
+{
+    if (pcmMode) return;
+
+    pwm_set_enabled(sliceNum, false);
+    pwm_set_clkdiv(sliceNum, 1.0f);
+    pwm_set_wrap(sliceNum, 255);
+    pwm_set_gpio_level(pin, 128);
+    pwm_set_enabled(sliceNum, true);
+    pcmMode = true;
 }
 
 void AudioPWM::setToneFrequency(int frequency)
@@ -67,6 +80,7 @@ void AudioPWM::setToneFrequency(int frequency)
     pwm_set_clkdiv(sliceNum, div);
     pwm_set_wrap(sliceNum, static_cast<uint16_t>(wrap));
     pwm_set_enabled(sliceNum, true);
+    pcmMode = false;
 }
 
 void AudioPWM::setDuty(float volumeScale)
@@ -135,5 +149,33 @@ bool AudioPWM::toneSamples(int startFrequency, int endFrequency, uint32_t totalS
     }
 
     silence();
+    return true;
+}
+
+
+bool AudioPWM::pcmSamples(const int16_t* samples, uint32_t sampleCount)
+{
+    if (!started || samples == nullptr || sampleCount == 0) return true;
+
+    configurePcmMode();
+
+    float volumeScale = getVolumeLevel() > 0 ? 0.75f : 0.0f;
+    uint64_t deadlineUsec = time_us_64();
+    uint32_t timingRemainder = 0;
+
+    for (uint32_t i = 0; i < sampleCount; ++i)
+    {
+        const int32_t scaled = static_cast<int32_t>(static_cast<float>(samples[i]) * volumeScale);
+        const int32_t duty = 128 + (scaled >> 8);
+        pwm_set_gpio_level(pin, static_cast<uint16_t>(std::clamp<int32_t>(duty, 0, 255)));
+
+        timingRemainder += 1000000u;
+        deadlineUsec += timingRemainder / SAMPLE_RATE;
+        timingRemainder %= SAMPLE_RATE;
+        busy_wait_until(from_us_since_boot(deadlineUsec));
+
+    }
+
+    pwm_set_gpio_level(pin, 128);
     return true;
 }

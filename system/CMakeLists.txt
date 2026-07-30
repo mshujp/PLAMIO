@@ -83,6 +83,7 @@ add_executable(pruzea
     hardware/InputBase.cpp
     hardware/GraphicsBase.cpp
     hardware/AudioBase.cpp
+    hardware/MidiPlayer.cpp
     hardware/StorageBase.cpp
     ui/SystemUI.cpp
     ui/CoreRing.cpp

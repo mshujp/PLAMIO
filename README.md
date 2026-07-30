@@ -22,10 +22,17 @@ A lightweight game framework designed for AI-assisted game development.
 -   PWM / I2S audio support
 -   SSD1306 / ILI9341 display support
 -   AI-oriented documentation and API design
+-   Embedded JPEG / PNG image support
+-   RGB565 sprite scaling, rotation, flipping, and color-key transparency
+-   ToneNote and embedded SMF Format 0 / 1 MIDI playback
+-   Simultaneous background music and sound-effect mixing
+-   GPIO buttons, gamepads, analog sticks, and touchscreen input
 
 - **Supported platforms**
-  - Raspberry Pi Pico family (RP2040 / RP2350)
-  - ESP32 (planned)
+  - Raspberry Pi Pico family
+    - RP2040
+    - RP2350
+  - ESP32 family (planned)
   
 
 | Hardware |  |
@@ -67,15 +74,16 @@ This allows game logic to remain clean, portable, and easy to generate.
 |--------|-------------|
 | [01 PRUZEA APIs](samples/PruzeaAPIs/) | Learn the basic APIs |
 | [02 Collision Lab](samples/CollisionLab/) | Collision detection |
-| [03 SoundTile](samples/SoundTile/) | Audio and input |
+| [03 Sound Tile](samples/SoundTile/) | Audio and input |
 | [04](samples/ParticleLab/) [05](samples/FireEffect/) [06](samples/WaterRipple/) Graphics Effects | Animation techniques |
 | [07 Sprite Adventure](samples/SpriteAdventure/) | Sprite rendering |
 | [08](samples/TinyStarfield/) [09](samples/WireframeTunnel/) [10](samples/Software3D/) 3D Samples | Advanced rendering |
 | [11 SL](samples/SL/) | Bonus sample |
-| [12 TouchPaint](samples/TouchPaint/) | Touchscreen |
-| [13 AnalogStick](samples/AnalogStick/) | AnalogStick Input |
-| [14 ImageGallery](samples/ImageGallery/) | JPEG and PNG image rendering |
-| [GameTemplate](samples/GameTemplate/) | Empty project template |
+| [12 Touch Paint](samples/TouchPaint/) | Touchscreen |
+| [13 Analog Stick](samples/AnalogStick/) | AnalogStick Input |
+| [14 Image Gallery](samples/ImageGallery/) | JPEG and PNG image rendering |
+| [15 Midi Music Box](samples/MidiMusicBox/) | MIDI music play |
+| [Game Template](samples/GameTemplate/) | Empty project template |
 
 Each sample is placed under the [`samples`](samples) directory.
 
@@ -155,7 +163,8 @@ Available options include:
 - Display (`ILI9341`, `SSD1306`)
 - Storage (`SD`, `NONE`)
 - Audio (`PWM`, `I2S`, `NONE`)
-- Input (`GPIO_BUTTONS`, `SNES`)
+- Input (`GPIO_BUTTONS`, `SNES`, `PS`)
+- Touchscreen (`XPT2046`, `NONE`)
 - Japanese font (`ON`, `OFF`)
 - PSRAM (`ON`, `OFF`)
 - Sample projects (`ON`, `OFF`)
@@ -172,7 +181,7 @@ These values define the project's default configuration and can be overridden fr
 
 ------------------------------------------------------------------------
 
-## Build
+# Build
 
 Build the project with CMake:
 
@@ -182,7 +191,7 @@ cmake --build build
 ```
 ------------------------------------------------------------------------
 
-## Deployment
+# Deployment
 
 After building, the generated firmware can be found at:
 
@@ -252,6 +261,17 @@ games/
 ```
 
 After adding a new game, reconfigure CMake and build the project.
+
+## Resource Files
+
+### Image
+- Embedded JPEG/PNG/RGB565 are supported.
+- Sprites support scaling, rotation, flipping, and color-key transparency.
+
+### Audio
+- ToneNote sound effects, ToneNote music, and MIDI music are supported.
+- ToneNote music and MIDI music can play simultaneously with sound effects.
+- Embedded MIDI supports SMF Format 0 and Format 1.
 
 ## AI Workflow
 

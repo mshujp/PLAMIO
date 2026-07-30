@@ -115,3 +115,40 @@ bool AudioI2S::toneSamples(
 
     return true;
 }
+
+bool AudioI2S::pcmSamples(const int16_t* inputSamples, uint32_t sampleCount)
+{
+    if (!started || producerPool == nullptr || inputSamples == nullptr || sampleCount == 0) return true;
+
+    float volumeScale = 0.0f;
+    switch (getVolumeLevel())
+    {
+        case 1: volumeScale = 0.20f; break;
+        case 2: volumeScale = 0.50f; break;
+        case 3: volumeScale = 1.00f; break;
+        default: volumeScale = 0.0f; break;
+    }
+
+    uint32_t written = 0;
+    while (written < sampleCount)
+    {
+        audio_buffer_t* buffer = take_audio_buffer(producerPool, true);
+        if (buffer == nullptr) return true;
+
+        int16_t* output = reinterpret_cast<int16_t*>(buffer->buffer->bytes);
+        const uint32_t count = std::min<uint32_t>(buffer->max_sample_count, sampleCount - written);
+        for (uint32_t i = 0; i < count; ++i)
+        {
+            const int32_t scaled = static_cast<int32_t>(static_cast<float>(inputSamples[written + i]) * volumeScale);
+            const int16_t sample = static_cast<int16_t>(std::clamp<int32_t>(scaled, -32768, 32767));
+            output[i * 2] = sample;
+            output[i * 2 + 1] = sample;
+        }
+
+        buffer->sample_count = count;
+        give_audio_buffer(producerPool, buffer);
+        written += count;
+
+    }
+    return true;
+}

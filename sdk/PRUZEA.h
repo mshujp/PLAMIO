@@ -506,6 +506,22 @@ public:
     //   - Music and ToneNote data passed to playMusic() must remain valid until playback stops.
     //   - Define custom music data as `static const`. Do not pass pointers to local variables.
     virtual void playMusic(const Music* music) = 0;
+
+    // ## Embedded MIDI music
+    //   - Supports lightweight playback of embedded Standard MIDI File data.
+    //   - The initial implementation supports SMF Format 0.
+    //   - MIDI data must remain valid until playback stops.
+    //   - Define MIDI byte arrays and Midi objects as `static const`.
+    struct Midi
+    {
+        const uint8_t* data;
+        uint32_t size;
+        uint8_t playCount; // 0 = infinite, 1 = play once
+        float gain;        // Valid range: 0.0-1.0.
+    };
+    virtual void playMidi(const Midi* midi) = 0;
+
+    // Stops either ToneNote music or MIDI music.
     virtual void stopMusic() = 0;
 
 protected:
