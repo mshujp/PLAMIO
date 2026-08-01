@@ -371,7 +371,7 @@ public:
         virtual const uint16_t* getBitmap() const = 0;
         virtual uint16_t getWidth() const = 0;
         virtual uint16_t getHeight() const = 0;
-        virtual void close() = 0;
+        virtual void close();
 
     protected:
         Image() = default;

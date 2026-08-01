@@ -230,7 +230,7 @@ public:
     void close() override
     {
         delete sprite;
-        delete this;
+        Graphics::Image::close();
     }
 
 private:
@@ -273,4 +273,8 @@ Graphics::Image* Graphics::Image::loadPng(const uint8_t* pngData, uint32_t pngSi
     }
 }
 
+void Graphics::Image::close() 
+{
+    delete this;
+}
 
