@@ -53,30 +53,15 @@ void ImageGallery::onInit(Storage& storage)
     characterAngle = 0.0f;
     transparencyEnabled = true;
 
-    backgroundImage = Image::loadJpeg(
-        sample_background_jpg,
-        sample_background_jpg_size,
-        JPEG_W,
-        JPEG_H,
-        Image::ImageFit::STRETCH);
-
-    characterImage = Image::loadPng(
-        sample_character_png,
-        sample_character_png_size,
-        PNG_W,
-        PNG_H,
-        Image::ImageFit::STRETCH);
+    backgroundImage = Graphics::Image::loadJpeg(sample_background_jpg, sample_background_jpg_size, JPEG_W, JPEG_H, Graphics::Image::Fit::STRETCH);
+    characterImage = Graphics::Image::loadPng(sample_character_png, sample_character_png_size, PNG_W, PNG_H, Graphics::Image::Fit::STRETCH);
 
     loadSucceeded = backgroundImage != nullptr && characterImage != nullptr;
     if (!loadSucceeded) closeImages();
     dirty = true;
 }
 
-Game::GameState ImageGallery::onUpdate(
-    Input& input,
-    Audio& audio,
-    Storage& storage,
-    float deltaSec)
+Game::GameState ImageGallery::onUpdate(Input& input, Audio& audio, Storage& storage, float deltaSec)
 {
     (void)storage;
 
@@ -224,7 +209,7 @@ void ImageGallery::drawScene(Graphics& graphics)
     graphics.drawImage(*backgroundImage, backgroundX, backgroundY);
 
     graphics.drawSprite(
-        characterImage->getBuffer(),
+        characterImage->getBitmap(),
         static_cast<int16_t>(characterX),
         static_cast<int16_t>(characterY),
         characterImage->getWidth(),

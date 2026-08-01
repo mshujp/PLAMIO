@@ -36,8 +36,8 @@ private:
     static constexpr float MOVE_SPEED = 110.0f;
     static constexpr float ROTATION_SPEED = 180.0f;
 
-    PRUZEA::Image::ImageData* backgroundImage = nullptr;
-    PRUZEA::Image::ImageData* characterImage = nullptr;
+    PRUZEA::Graphics::Image* backgroundImage = nullptr;
+    PRUZEA::Graphics::Image* characterImage = nullptr;
 
     float characterX = 128.0f;
     float characterY = 92.0f;
