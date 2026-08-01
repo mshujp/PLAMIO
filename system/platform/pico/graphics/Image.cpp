@@ -229,6 +229,7 @@ public:
 
     void close() override
     {
+        sprite->deleteSprite();
         delete sprite;
         Graphics::Image::close();
     }
