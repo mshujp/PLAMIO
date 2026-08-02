@@ -17,7 +17,7 @@ constexpr uint16_t SCREEN_W = 320;
 constexpr uint16_t SCREEN_H = 240;
 constexpr uint32_t DRAW_STEP_MSEC = 5000;
 constexpr uint32_t DRAW_HOLD_MSEC = 1000;
-constexpr uint8_t DRAW_STEP_COUNT = 19;
+constexpr uint8_t DRAW_STEP_COUNT = 20;
 constexpr uint8_t SE_COUNT = 12;
 constexpr uint8_t MUSIC_COUNT = 3;
 constexpr int16_t UI_SAFE_BOTTOM = 224;
@@ -53,7 +53,8 @@ const char* const DRAW_STEP_NAMES[DRAW_STEP_COUNT] = {
     "Font",
     "Alignment",
     "Viewport",
-    "Sprite"
+    "Sprite",
+    "SpriteSheet"
 };
 
 const Audio::Sound* SE_LIST[SE_COUNT] = {
@@ -147,6 +148,98 @@ static const uint16_t DUMMY_SPRITE[16 * 16] = {
     0x07FF,0x07FF,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x07FF,0x07FF,
     0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000
 };
+
+constexpr Graphics::Color _BK = Graphics::rgb565(0, 0, 0);          // BLACK
+constexpr Graphics::Color _WT = Graphics::rgb565(255, 255, 255);    // WHITE
+constexpr Graphics::Color _GR = Graphics::rgb565(132, 132, 130);    // GRAY
+constexpr Graphics::Color _DG = Graphics::rgb565(66, 66, 66);       // DARKGRAY
+constexpr Graphics::Color _RD = Graphics::rgb565(248, 0, 0);        // RED
+constexpr Graphics::Color _YL = Graphics::rgb565(255, 255, 0);      // YELLOW
+constexpr Graphics::Color _BL = Graphics::rgb565(0, 0, 248);        // BLUE
+constexpr Graphics::Color _GN = Graphics::rgb565(0, 248, 0);        // GREEN
+constexpr Graphics::Color _CN = Graphics::rgb565(0, 255, 255);      // CYAN
+constexpr Graphics::Color _MG = Graphics::rgb565(248, 0, 248);      // MAGENTA (透過色)
+constexpr Graphics::Color _OR = Graphics::rgb565(250, 160, 0);      // ORANGE
+constexpr Graphics::Color _BR = Graphics::rgb565(160, 80, 40);       // BROWN
+constexpr Graphics::Color ___ = _MG;
+
+static const uint16_t DUMMY_SPRITE_SHEET_DATA[64 * 64] = {
+    _MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_DG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_DG,_MG,_MG,_MG,  _MG,_MG,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_MG,_MG,  _MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_YL,_YL,_MG,_MG,_YL,_YL,_MG,_MG,_YL,_YL,_MG,_MG,_MG,  _MG,_MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,_MG,  _MG,_MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,_MG,  _MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,
+    _MG,_MG,_YL,_YL,_MG,_MG,_MG,_YL,_YL,_MG,_MG,_MG,_YL,_YL,_MG,_MG,  _MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,  _MG,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_MG,  _MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,
+    _MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,  _MG,_DG,_WT,_WT,_DG,_WT,_WT,_WT,_WT,_WT,_WT,_DG,_WT,_WT,_DG,_MG,  _MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,  _MG,_DG,_WT,_WT,_WT,_WT,_WT,_DG,_DG,_WT,_WT,_WT,_WT,_WT,_DG,_MG,  _MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_YL,_YL,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _DG,_DG,_WT,_DG,_WT,_WT,_DG,_DG,_DG,_DG,_WT,_WT,_DG,_WT,_DG,_DG,  _MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,  _MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_YL,_YL,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _DG,_DG,_WT,_DG,_WT,_WT,_DG,_DG,_DG,_DG,_WT,_WT,_DG,_WT,_DG,_DG,  _MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_DG,_WT,_WT,_WT,_WT,_WT,_DG,_DG,_WT,_WT,_WT,_WT,_WT,_DG,_MG,  _MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_MG,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_DG,_WT,_WT,_DG,_WT,_WT,_WT,_WT,_WT,_WT,_DG,_WT,_WT,_DG,_MG,  _MG,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,  _MG,_MG,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_MG,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,_MG,  _MG,_MG,_WT,_WT,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,_WT,_MG,_MG,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_MG,_MG,_DG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_DG,_MG,_MG,_MG,  _MG,_MG,_MG,_WT,_WT,_MG,_MG,_MG,_MG,_WT,_WT,_MG,_WT,_WT,_MG,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_YL,_WT,_WT,_WT,_YL,_YL,_BK,_BK,_YL,_YL,_WT,_WT,_WT,_YL,_MG,  _MG,_MG,_MG,_MG,_DG,_WT,_WT,_DG,_DG,_WT,_WT,_DG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_WT,_WT,_MG,  _MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_WT,_WT,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_OR,_OR,_OR,_OR,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_OR,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,_MG,  _MG,_MG,_BL,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_MG,_MG,  _MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,
+    _MG,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_DG,_DG,_DG,_DG,_DG,_DG,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_DG,_DG,_DG,_DG,_DG,_DG,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_DG,_DG,_DG,_DG,_DG,_DG,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_DG,_DG,_DG,_DG,_DG,_DG,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_WT,_WT,_WT,_WT,_WT,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_DG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_DG,_MG,_MG,_MG,
+    _MG,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_OR,_MG,_MG,  _MG,_MG,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_WT,_MG,_MG,  _MG,_MG,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_BL,_MG,_MG,  _MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+
+    _MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_RD,_RD,_RD,_RD,_RD,_MG,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,  _MG,_MG,_MG,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,  _YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,  _RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_MG,_MG,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,  _MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,  _MG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,  _MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,  _MG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,  _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,  _MG,_MG,_MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_MG,  _MG,_MG,_YL,_YL,_YL,_MG,_MG,_YL,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_CN,_CN,_WT,_WT,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,
+    _YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,_YL,  _MG,_MG,_YL,_YL,_MG,_MG,_MG,_MG,_YL,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_RD,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_CN,_CN,_WT,_WT,_WT,_WT,_WT,_WT,_CN,_CN,_CN,_CN,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_YL,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,  _MG,_YL,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_YL,_YL,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_CN,_CN,_CN,_CN,_CN,_CN,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_DG,_DG,_DG,_DG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+
+    _MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_MG,_MG,  _RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,  _RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,
+    _MG,_MG,_MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,  _MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,
+    _MG,_MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,  _MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,
+    _MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,  _MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,
+    _GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,  _MG,_MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_GN,_GN,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_GN,_GN,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_GN,_GN,_GN,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_GN,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _RD,_RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_RD,_MG,
+    _MG,_MG,_MG,_MG,_GN,_GN,_GN,_GN,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _RD,_RD,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_RD,_RD,_MG,
+    _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG
+};
+
+static const Graphics::SpriteSheet DUMMY_SPRITE_SHEET(
+    DUMMY_SPRITE_SHEET_DATA,
+    16,
+    16,
+    4,
+    4
+);
 
 void drawTextBox(Graphics& g, int16_t x, int16_t y, int16_t w, int16_t h, const char* text, bool active) {
     g.fillRoundRect(x, y, w, h, 8, active ? COL_PANEL_2 : COL_PANEL);
@@ -534,6 +627,7 @@ bool PruzeaAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
     if (drawStep == 15) drawFontTest(g);
     if (drawStep == 16) drawAlignmentTest(g);
     if (drawStep == 18) drawSpriteTest(g);
+    if (drawStep == 19) drawSpriteSheetTest(g);
 
     drawCenteredHint(g, "A: Next   B/START: Title", 214);
     return true;
@@ -769,6 +863,40 @@ void PruzeaAPIs::drawSpriteTest(Graphics& g) {
         g.drawString(label, x + 16, 178, COL_TEXT, Graphics::SIZE_18,
                      Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
     }
+}
+
+void PruzeaAPIs::drawSpriteSheetTest(Graphics& g)
+{
+    const uint32_t index = ((Platform::getMsec() - stepStartMsec) / 1000) % (DUMMY_SPRITE_SHEET.columns * DUMMY_SPRITE_SHEET.rows);
+
+    const uint16_t column = index % DUMMY_SPRITE_SHEET.columns;
+    const uint16_t row    = index / DUMMY_SPRITE_SHEET.columns;
+
+    g.drawSprite(DUMMY_SPRITE_SHEET, column, row, 166, 88,
+        {
+            .scale = 4,
+            .transparent = true,
+            .transparentColor = Graphics::MAGENTA
+        }
+    );
+    g.drawRect(166, 88, 64, 64, 1, COL_ACCENT);
+
+    char text[32];
+    snprintf(text, sizeof(text), "Column:%u  Row:%u",column, row);
+
+    g.drawString(text, 160, 200, COL_TEXT, Graphics::SIZE_13, Graphics::HorizontalAlign::CENTER, Graphics::VerticalAlign::MIDDLE);
+
+    const int startX = 90;
+    const int startY = 88;
+
+    g.drawSprite(DUMMY_SPRITE_SHEET_DATA, startX, startY, 64, 64,
+        {
+            .scale = 1,
+            .transparent = true,
+            .transparentColor = Graphics::MAGENTA
+        }
+    );
+    g.drawRect(startX + column * 16, startY + row * 16, 16, 16, 1, COL_WARN);
 }
 
 void PruzeaAPIs::drawButtonLamp(Graphics& g, int16_t x, int16_t y, int16_t w, int16_t h, const char* label, bool on) {

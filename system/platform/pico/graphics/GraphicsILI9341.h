@@ -26,6 +26,9 @@ private:
     void initSprite(LGFX_Sprite& sprite, uint16_t w, uint16_t h, bool psram = false);
     void setFont(const char* str, Font font);
   
+    uint16_t* spriteSheetBuf = nullptr;
+    uint32_t spriteSheetBufSize = 0;
+
 public:
     struct GraphicsILI9341SPIConfig
     {
@@ -90,6 +93,7 @@ public:
     uint16_t getTextWidth(const char* text, Font font) override;
     void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h) override;
     void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, const SpriteOptions& options) override;
+    void drawSprite(const SpriteSheet& sheet, uint16_t column, uint16_t row, int16_t x, int16_t y, const SpriteOptions& options) override;
     void drawImage(const Image& image, int16_t x, int16_t y) override;
     void setViewport(int16_t viewportX, int16_t viewportY) override;
     bool readScreenLine(uint16_t y, uint16_t* outPixels, uint16_t pixelCount) override;

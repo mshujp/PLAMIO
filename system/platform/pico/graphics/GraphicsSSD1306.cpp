@@ -39,6 +39,9 @@ void GraphicsSSD1306::end()
     canvas.deleteSprite();
     lcd.clear();
     screenDirty = false;
+    delete[] spriteSheetBuf;
+    spriteSheetBuf = nullptr;
+    spriteSheetBufSize = 0;
 }
 
 bool GraphicsSSD1306::setLogicalScreenSize(uint16_t w, uint16_t h)
@@ -213,18 +216,57 @@ void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, u
         const float zoomY = options.flipY ? -static_cast<float>(options.scale) : static_cast<float>(options.scale);
         const float destinationX = x + (w * options.scale) * 0.5f;
         const float destinationY = y + (h * options.scale) * 0.5f;
+        const float pivotFixX = 0.5f * (static_cast<float>(options.scale) - 1.0f);
+        const float pivotFixY = 0.5f * (static_cast<float>(options.scale) - 1.0f);
 
         if (options.transparent)
         {
-            canvas.pushImageRotateZoom(destinationX, destinationY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, static_cast<uint16_t>(options.transparentColor), sourceDepth, palette);
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, static_cast<uint16_t>(options.transparentColor), sourceDepth, palette);
         }
         else
         {
-            canvas.pushImageRotateZoom(destinationX, destinationY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, sourceDepth, palette);
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, sourceDepth, palette);
         }
     }
 
     screenDirty = true;
+}
+
+void GraphicsSSD1306::drawSprite(const SpriteSheet& sheet, uint16_t column, uint16_t row, int16_t x, int16_t y, const SpriteOptions& options)
+{
+    if (sheet.bitmap == nullptr || options.scale == 0) return;
+    if (sheet.spriteWidth == 0 || sheet.spriteHeight == 0) return;
+    if (column >= sheet.columns || row >= sheet.rows) return;
+
+    if (spriteSheetBuf == nullptr || spriteSheetBufSize < sheet.spriteWidth * sheet.spriteHeight)
+    {
+        if (spriteSheetBuf != nullptr)
+        {
+            delete[] spriteSheetBuf;
+            spriteSheetBuf = nullptr;
+            spriteSheetBufSize = 0;
+        }
+        spriteSheetBufSize = sheet.spriteWidth * sheet.spriteHeight;
+        spriteSheetBuf = new (std::nothrow) uint16_t[spriteSheetBufSize];
+        if (spriteSheetBuf == nullptr)
+        {
+            spriteSheetBufSize = 0;
+            return;
+        }
+    }
+
+    const uint32_t sheetWidthPixels = sheet.columns * sheet.spriteWidth;
+    const uint32_t spriteBaseOffset = row * sheet.spriteHeight * sheetWidthPixels + column * sheet.spriteWidth;
+    const uint16_t* spriteBitmap = sheet.bitmap + spriteBaseOffset;
+
+    for (uint32_t i = 0; i <  sheet.spriteHeight; ++i)
+    {
+        const uint16_t* sourceRow = spriteBitmap + (i * sheet.spriteWidth * sheet.columns);
+        const uint32_t destIndex = i * sheet.spriteWidth;
+        std::copy(sourceRow, sourceRow + sheet.spriteWidth, spriteSheetBuf + destIndex);
+    }
+
+    drawSprite(spriteSheetBuf, x, y, sheet.spriteWidth, sheet.spriteHeight, options);
 }
 
 bool GraphicsSSD1306::readScreenLine(uint16_t y, uint16_t* outPixels, uint16_t pixelCount)

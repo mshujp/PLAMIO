@@ -84,6 +84,7 @@ private:
     void drawAlignmentTest(PRUZEA::Graphics& graphics);
     void drawViewportTest(PRUZEA::Graphics& graphics);
     void drawSpriteTest(PRUZEA::Graphics& graphics);
+    void drawSpriteSheetTest(PRUZEA::Graphics& graphics);
     void drawButtonLamp(PRUZEA::Graphics& graphics, int16_t x, int16_t y, int16_t w, int16_t h, const char* label, bool on);
 
     int16_t getAnimX(uint32_t now) const;
