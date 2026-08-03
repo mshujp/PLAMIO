@@ -25,7 +25,7 @@ protected:
     int16_t toScreenY(int16_t y) const; 
     uint16_t toScreenW(uint16_t w) const; 
     uint16_t toScreenH(uint16_t h) const; 
-    float toScreenScale(float scale) const; 
+    float toScreenScale(float scale) const;
 
 public:
     enum class CatalogFilterMode
