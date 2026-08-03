@@ -53,6 +53,10 @@ private:
     float angleY = 0.0f;
     bool autoRotate = false;
 
+    int16_t offsetX = 0;
+    int16_t offsetY = 0;
+    float zoom = 1.0f;
+
     // Timer and visibility flag for blinking title text
     uint32_t lastBlinkTime = 0;
     bool showPressStart = true;

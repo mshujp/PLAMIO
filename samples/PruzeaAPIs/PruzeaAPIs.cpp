@@ -233,13 +233,13 @@ static const uint16_t DUMMY_SPRITE_SHEET_DATA[64 * 64] = {
     _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,  _MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG,_MG
 };
 
-static const Graphics::SpriteSheet DUMMY_SPRITE_SHEET(
-    DUMMY_SPRITE_SHEET_DATA,
-    16,
-    16,
-    4,
-    4
-);
+static const Graphics::SpriteSheet DUMMY_SPRITE_SHEET = {
+    .bitmap = DUMMY_SPRITE_SHEET_DATA,
+    .spriteWidth = 16,
+    .spriteHeight = 16,
+    .columns = 4,
+    .rows = 4
+};
 
 void drawTextBox(Graphics& g, int16_t x, int16_t y, int16_t w, int16_t h, const char* text, bool active) {
     g.fillRoundRect(x, y, w, h, 8, active ? COL_PANEL_2 : COL_PANEL);

@@ -424,6 +424,7 @@ void System::drawSystemStatus()
             default: volumeText = "VOL: ?"; break;
         }
     }
+    graphics.suspendCamera();
     if (volumeText != nullptr)
     {
         graphics.drawString(volumeText, 14 + viewportX, 225 + viewportY, Graphics::BLACK, Graphics::Font::SIZE_10);
@@ -439,6 +440,7 @@ void System::drawSystemStatus()
         graphics.drawString(fpsText, 142 + viewportX, 226 + viewportY, Graphics::BLACK, Graphics::Font::SIZE_10);
         graphics.drawString(fpsText, 142 + viewportX, 225 + viewportY, Graphics::WHITE, Graphics::Font::SIZE_10);
     }
+    graphics.resumeCamera();
 
     requestFullRedraw = true;
 }

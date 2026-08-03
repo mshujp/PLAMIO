@@ -58,7 +58,7 @@ bool GraphicsILI9341::setLogicalScreenSize(uint16_t _logicalScreenW, uint16_t _l
         spriteSheetBuf = nullptr;
         spriteSheetBufSize = 0;
     }
-
+    resetCamera();
 
     _logicalScreenW = std::clamp(_logicalScreenW, static_cast<uint16_t>(0), MAX_BUF_WIDTH);
     _logicalScreenH = std::clamp(_logicalScreenH, static_cast<uint16_t>(0), MAX_BUF_HEIGHT);
@@ -96,6 +96,8 @@ bool GraphicsILI9341::begin()
         gpio_set_dir(backLightPin, GPIO_OUT);
         gpio_put(backLightPin, 1);
     }
+
+    resetCamera();
     return true;
 }
 
@@ -124,73 +126,73 @@ void GraphicsILI9341::fillScreen(Graphics::Color color)
 
 void GraphicsILI9341::drawPixel(int16_t x, int16_t y, Graphics::Color color)
 {
-    canvas.drawPixel(x, y, color);
+    canvas.drawPixel(toScreenX(x), toScreenY(y), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.drawLine(x1, y1, x2, y2, color);
+    canvas.drawLine(toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.drawTriangle(x0, y0, x1, y1, x2, y2, color);
+    canvas.drawTriangle(toScreenX(x0), toScreenY(y0), toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.fillTriangle(x0, y0, x1, y1, x2, y2, color);
+    canvas.fillTriangle(toScreenX(x0), toScreenY(y0), toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color)
 {
-    canvas.drawRect(x, y, w, h, color);
+    canvas.drawRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t radius, Graphics::Color color)
 {
-    canvas.drawRoundRect(x, y, w, h, radius, color);
+    canvas.drawRoundRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), toScreenW(radius), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::fillRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color)
 {
-    canvas.fillRect(x, y, w, h, color);
+    canvas.fillRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), color);
     screenDirty = true;
 }
 
-void GraphicsILI9341::fillRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, int16_t r, Graphics::Color color)
+void GraphicsILI9341::fillRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, int16_t radius, Graphics::Color color)
 {
-    canvas.fillRoundRect(x, y, w, h, r, color);
+    canvas.fillRoundRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), toScreenW(radius), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawCircle(int16_t x, int16_t y, uint16_t r, Graphics::Color color)
 {
-    canvas.drawCircle(x, y, r, color);
+    canvas.drawCircle(toScreenX(x), toScreenY(y), toScreenW(r), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::drawCircle(int16_t x, int16_t y, uint16_t rx, uint16_t ry, Graphics::Color color)
 {
-    canvas.drawEllipse(x, y, rx, ry, color);
+    canvas.drawEllipse(toScreenX(x), toScreenY(y), toScreenW(rx), toScreenH(ry), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::fillCircle(int16_t x, int16_t y, uint16_t r, Graphics::Color color)
 {
-    canvas.fillCircle(x, y, r, color);
+    canvas.fillCircle(toScreenX(x), toScreenY(y), toScreenW(r), color);
     screenDirty = true;
 }
 
 void GraphicsILI9341::fillCircle(int16_t x, int16_t y, uint16_t rx, uint16_t ry, Graphics::Color color)
 {
-    canvas.fillEllipse(x, y, rx, ry, color);
+    canvas.fillEllipse(toScreenX(x), toScreenY(y), toScreenW(rx), toScreenH(ry), color);
     screenDirty = true;
 }
 
@@ -220,7 +222,7 @@ void GraphicsILI9341::setFont(const char* str, Font font)
     }
  
     canvas.setFont(targetFont);
-    canvas.setTextSize(scaleS);
+    canvas.setTextSize(toScreenScale(scaleS));
 }
 
 void GraphicsILI9341::drawString(const char* str, int16_t x, int16_t y, Graphics::Color color, Font font)
@@ -228,7 +230,7 @@ void GraphicsILI9341::drawString(const char* str, int16_t x, int16_t y, Graphics
     if (str == nullptr) return;
     setFont(str, font);
     canvas.setTextColor(color);
-    canvas.drawString(str, x, y);
+    canvas.drawString(str, toScreenX(x), toScreenY(y));
     screenDirty = true;
 }
 
@@ -246,37 +248,43 @@ void GraphicsILI9341::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, u
 
 void GraphicsILI9341::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, const SpriteOptions& options)
 {
-    if (bitmap == nullptr || options.scale == 0) return;
+    float scale = static_cast<float>(options.scale);
+    scale = toScreenScale(scale);
 
-    const bool transformed = options.scale != 1 || options.angle != 0.0f || options.flipX || options.flipY;
+    if (bitmap == nullptr || scale == 0) return;
+
+    const bool transformed = scale != 1 || options.angle != 0.0f || options.flipX || options.flipY;
 
     if (!transformed)
     {
         if (options.transparent)
         {
-            canvas.pushImage(x, y, w, h, bitmap, static_cast<uint16_t>(options.transparentColor));
+            canvas.pushImage(toScreenX(x), toScreenY(y), w, h, bitmap, static_cast<uint16_t>(options.transparentColor));
         }
         else
         {
-            canvas.pushImage(x, y, w, h, bitmap);
+            canvas.pushImage(toScreenX(x), toScreenY(y), w, h, bitmap);
         }
     }
     else
     {
-        const float zoomX = options.flipX ? -static_cast<float>(options.scale) : static_cast<float>(options.scale);
-        const float zoomY = options.flipY ? -static_cast<float>(options.scale) : static_cast<float>(options.scale);
-        const float destinationX = x + (w * options.scale) * 0.5f;
-        const float destinationY = y + (h * options.scale) * 0.5f;
-        const float pivotFixX = 0.5f * (static_cast<float>(options.scale) - 1.0f);
-        const float pivotFixY = 0.5f * (static_cast<float>(options.scale) - 1.0f);
+        const float zoomX = options.flipX ? - scale : scale;
+        const float zoomY = options.flipY ? -scale : scale;
+        const float destinationX = toScreenX(x) + (w * scale) * 0.5f;
+        const float destinationY = toScreenY(y) + (h * scale) * 0.5f;
+        const float pivotFixX = 0.5f * (scale - 1.0f);
+        const float pivotFixY = 0.5f * (scale - 1.0f);
 
         if (options.transparent)
         {
-            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, static_cast<uint16_t>(options.transparentColor));
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f,
+                                        Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap,
+                                        static_cast<uint16_t>(options.transparentColor));
         }
         else
         {
-            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap);
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f,
+                                        Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap);
         }
     }
 
@@ -325,14 +333,6 @@ void GraphicsILI9341::drawImage(const Image& image, int16_t x, int16_t y)
     drawSprite(image.getBitmap(), x, y, image.getWidth(), image.getHeight());
 }
 
-void GraphicsILI9341::setViewport(int16_t x, int16_t y)
-{
-    if (viewportX == x && viewportY == y) return;
-    viewportX = x;
-    viewportY = y;
-    screenDirty = true;
-}
-
 void GraphicsILI9341::push()
 {
     if (!screenDirty) return;
@@ -343,13 +343,13 @@ void GraphicsILI9341::push()
     }
     else
     {
-        float screenCenterX = (float)getScreenWidth() / 2.0f;
-        float screenCenterY = (float)getScreenHeight() / 2.0f;
-        float targetX = screenCenterX - ((float)viewportX * (float)scale);
-        float targetY = screenCenterY - ((float)viewportY * (float)scale);
+        float screenCenterX = static_cast<float>(getScreenWidth()) / 2.0f;
+        float screenCenterY = static_cast<float>(getScreenHeight()) / 2.0f;
+        float targetX = screenCenterX - (static_cast<float>(viewportX) * static_cast<float>(scale));
+        float targetY = screenCenterY - (static_cast<float>(viewportY) * static_cast<float>(scale));
 
         canvas.setPivot(canvas.width() / 2, canvas.height() / 2);
-        canvas.pushRotateZoom(targetX, targetY, 0.0f, (float)scale, (float)scale);
+        canvas.pushRotateZoom(targetX, targetY, 0.0f, static_cast<float>(scale), static_cast<float>(scale));
     }
 
     screenDirty = false;

@@ -341,8 +341,6 @@ public:
     virtual void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, const SpriteOptions& options) = 0;
     struct SpriteSheet
     {
-        SpriteSheet(const uint16_t* bitmap, uint16_t spriteWidth, uint16_t spriteHeight, uint16_t columns, uint16_t rows)
-            : bitmap(bitmap), spriteWidth(spriteWidth), spriteHeight(spriteHeight), columns(columns), rows(rows) {}
         const uint16_t* bitmap = nullptr;
         uint16_t spriteWidth = 0;
         uint16_t spriteHeight = 0;
@@ -407,6 +405,17 @@ public:
     //     The available margin depends on the active display backend.
     virtual void setViewport(int16_t viewportX, int16_t viewportY) = 0;
     virtual void resetViewport() = 0;
+
+    struct Camera
+    {
+        int16_t x = 0;
+        int16_t y = 0;
+        float zoom = 1.0f;
+        int16_t zoomCenterX = 0;
+        int16_t zoomCenterY = 0;
+    };
+    virtual void setCamera(const Camera& camera) = 0;
+    virtual void resetCamera() = 0;
 
 protected:
     virtual ~Graphics() {};
@@ -689,7 +698,7 @@ private:
 //   [!IMPORTANT] Never call init(), update(), draw(), or terminate() directly.
 //   The PRUZEA runtime calls them automatically.
 //   [!IMPORTANT] Override all pure virtual functions.
-// =====================================================================
+// ==========================================================&===========
 class Game {
 public:
     // [!IMPORTANT] GameState is a lifecycle status returned by onUpdate().
@@ -862,4 +871,3 @@ public:
 };
 
 } // namespace PRUZEA
-

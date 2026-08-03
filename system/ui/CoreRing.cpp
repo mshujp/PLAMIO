@@ -108,6 +108,8 @@ bool CoreRing::drawOverlay(GraphicsBase& graphics, bool requestRedraw)
 {
     if (!dirty && !requestRedraw) return false;
 
+    graphics.suspendCamera();
+
     if (baseMode == MODE_SPLASH)
     {
     }
@@ -123,6 +125,8 @@ bool CoreRing::drawOverlay(GraphicsBase& graphics, bool requestRedraw)
     {
         drawMini(graphics, 304, 232);
     }
+
+    graphics.resumeCamera();
 
     dirty = false;
     return true;

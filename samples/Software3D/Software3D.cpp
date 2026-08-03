@@ -87,28 +87,62 @@ PRUZEA::Game::GameState Software3D::onUpdate(PRUZEA::Input& input, PRUZEA::Audio
                 dirty = true;
             }
 
+            if (input.repeat(PRUZEA::Input::X)) {
+                zoom += 0.02f;
+                if (zoom > 3.0f) zoom = 3.0f;
+                dirty = true;
+            }
+            if (input.repeat(PRUZEA::Input::Y)) {
+                zoom -= 0.02f;
+                if (zoom < 0.3f) zoom = 0.3f;
+                dirty = true;
+            }
+
             if (autoRotate) {
                 angleY += ROTATE_SPEED * 0.55f * dt;
                 angleX += ROTATE_SPEED * 0.20f * dt;
                 isRotating = true;
             }
 
-            // Handle D-pad inputs for rotation
-            if (input.pressed(PRUZEA::Input::UP)) {
-                angleX -= ROTATE_SPEED * dt;
-                isRotating = true;
-            }
-            if (input.pressed(PRUZEA::Input::DOWN)) {
-                angleX += ROTATE_SPEED * dt;
-                isRotating = true;
-            }
-            if (input.pressed(PRUZEA::Input::LEFT)) {
-                angleY -= ROTATE_SPEED * dt;
-                isRotating = true;
-            }
-            if (input.pressed(PRUZEA::Input::RIGHT)) {
-                angleY += ROTATE_SPEED * dt;
-                isRotating = true;
+            if (input.pressed(PRUZEA::Input::B)) {
+                if (input.pressed(PRUZEA::Input::UP)) {
+                    offsetY += 3;
+                    if (offsetY > 100) offsetY = 100;
+                    dirty = true;
+                }
+                if (input.pressed(PRUZEA::Input::DOWN)) {
+                    offsetY -= 3;
+                    if (offsetY < -100) offsetY = -100;
+                    dirty = true;
+                }
+                if (input.pressed(PRUZEA::Input::LEFT)) {
+                    offsetX += 3;
+                    if (offsetX > 100) offsetX = 100;
+                    dirty = true;
+                }
+                if (input.pressed(PRUZEA::Input::RIGHT)) {
+                    offsetX -= 3;
+                    if (offsetX < -100) offsetX = -100;
+                    dirty = true;
+                }
+             } else {
+                // Handle D-pad inputs for rotation
+                if (input.pressed(PRUZEA::Input::UP)) {
+                    angleX -= ROTATE_SPEED * dt;
+                    isRotating = true;
+                }
+                if (input.pressed(PRUZEA::Input::DOWN)) {
+                    angleX += ROTATE_SPEED * dt;
+                    isRotating = true;
+                }
+                if (input.pressed(PRUZEA::Input::LEFT)) {
+                    angleY -= ROTATE_SPEED * dt;
+                    isRotating = true;
+                }
+                if (input.pressed(PRUZEA::Input::RIGHT)) {
+                    angleY += ROTATE_SPEED * dt;
+                    isRotating = true;
+                }
             }
 
             // Audio feedback during manual rotation is throttled to avoid clogging channels.
@@ -147,6 +181,7 @@ bool Software3D::onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) {
     graphics.fillScreen(PRUZEA::Graphics::Color::DARKGRAY);
 
     // Common UI Header
+    graphics.resetCamera();
     graphics.drawString("3D CUBE SOFTWARE RENDERER", 160, 15,
                         PRUZEA::Graphics::Color::WHITE, PRUZEA::Graphics::SIZE_13,
                         PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
@@ -166,6 +201,18 @@ bool Software3D::onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) {
         // --- Start of 3D Pipeline ---
         Vector3D transformedVertices[VERTEX_COUNT];
         Point2D projectedPoints[VERTEX_COUNT];
+
+        if (zoom != 1.0f || offsetX != 0 || offsetY != 0) {
+            graphics.setCamera(
+                {
+                    .x = offsetX,
+                    .y = offsetY,
+                    .zoom = zoom,
+                    .zoomCenterX = static_cast<int16_t>(getLogicalScreenWidth() / 2),
+                    .zoomCenterY = static_cast<int16_t>(getLogicalScreenHeight() / 2)
+                }
+            );
+        }
 
         // 1. Precompute sine and cosine values
         float sinX = sinf(angleX); float cosX = cosf(angleX);
@@ -230,7 +277,12 @@ bool Software3D::onDraw(PRUZEA::Graphics& graphics, bool requestFullRedraw) {
         }
 
         // Navigation guide (Placed to avoid overlaying the system OSD area at Y:225-240)
-        graphics.drawString(autoRotate ? "A: AUTO ON   SELECT: MENU"
+        graphics.resetCamera();
+        graphics.drawString("X / Y: Zoom   B + D-Pad: Move Cube",
+                            160, 200,
+                            PRUZEA::Graphics::Color::LIGHTGRAY, PRUZEA::Graphics::SIZE_13,
+                            PRUZEA::Graphics::HorizontalAlign::CENTER, PRUZEA::Graphics::VerticalAlign::MIDDLE);
+         graphics.drawString(autoRotate ? "A: AUTO ON   SELECT: MENU"
                                        : "A: AUTO OFF  SELECT: MENU",
                             160, 215,
                             PRUZEA::Graphics::Color::LIGHTGRAY, PRUZEA::Graphics::SIZE_13,

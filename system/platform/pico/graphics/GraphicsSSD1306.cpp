@@ -4,10 +4,8 @@
 using namespace PRUZEA;
 
 GraphicsSSD1306::GraphicsSSD1306(const Config& config)
-    : lcd(config.sdaPin, config.sclPin, config.i2cPort,
-          config.i2cAddr, config.resetPin),
-      canvas(&lcd),
-      rotate(config.oledRotate)
+    : lcd(config.sdaPin, config.sclPin, config.i2cPort, config.i2cAddr, config.resetPin),
+      canvas(&lcd), rotate(config.oledRotate)
 {
 }
 
@@ -66,73 +64,73 @@ void GraphicsSSD1306::fillScreen(Graphics::Color color)
 
 void GraphicsSSD1306::drawPixel(int16_t x, int16_t y, Graphics::Color color)
 {
-    canvas.drawPixel((int32_t)x, (int32_t)y, mono(color));
+    canvas.drawPixel(toScreenX(x), toScreenY(y), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.drawLine(x1, y1, x2, y2, mono(color));
+    canvas.drawLine(toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.drawTriangle(x0, y0, x1, y1, x2, y2, mono(color));
+    canvas.drawTriangle(toScreenX(x0), toScreenY(y0), toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::fillTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, Graphics::Color color)
 {
-    canvas.fillTriangle(x0, y0, x1, y1, x2, y2, mono(color));
+    canvas.fillTriangle(toScreenX(x0), toScreenY(y0), toScreenX(x1), toScreenY(y1), toScreenX(x2), toScreenY(y2), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color)
 {
-    canvas.drawRect(x, y, w, h, mono(color));
+    canvas.drawRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t radius, Graphics::Color color)
 {
-    canvas.drawRoundRect(x, y, w, h, radius, mono(color));
+    canvas.drawRoundRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), radius, mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::fillRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color)
 {
-    canvas.fillRect(x, y, w, h, mono(color));
+    canvas.fillRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::fillRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, int16_t r, Graphics::Color color)
 {
-    canvas.fillRoundRect(x, y, w, h, r, mono(color));
+    canvas.fillRoundRect(toScreenX(x), toScreenY(y), toScreenW(w), toScreenH(h), toScreenW(r), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawCircle(int16_t x, int16_t y, uint16_t r, Graphics::Color color)
 {
-    canvas.drawCircle(x, y, r, mono(color));
+    canvas.drawCircle(toScreenX(x), toScreenY(y), toScreenW(r), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::drawCircle(int16_t x, int16_t y, uint16_t rx, uint16_t ry, Graphics::Color color)
 {
-    canvas.drawEllipse(x, y, rx, ry, mono(color));
+    canvas.drawEllipse(toScreenX(x), toScreenY(y), toScreenW(rx), toScreenH(ry), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::fillCircle(int16_t x, int16_t y, uint16_t r, Graphics::Color color)
 {
-    canvas.fillCircle(x, y, r, mono(color));
+    canvas.fillCircle(toScreenX(x), toScreenY(y), toScreenW(r), mono(color));
     screenDirty = true;
 }
 
 void GraphicsSSD1306::fillCircle(int16_t x, int16_t y, uint16_t rx, uint16_t ry, Graphics::Color color)
 {
-    canvas.fillEllipse(x, y, rx, ry, mono(color));
+    canvas.fillEllipse(toScreenX(x), toScreenY(y), toScreenW(rx), toScreenH(ry), mono(color));
     screenDirty = true;
 }
 
@@ -162,7 +160,7 @@ void GraphicsSSD1306::setFont(const char* str, Font font)
     }
  
     canvas.setFont(targetFont);
-    canvas.setTextSize(scaleS);
+    canvas.setTextSize(toScreenScale(scaleS));
 }
 
 void GraphicsSSD1306::drawString(const char* str, int16_t x, int16_t y, Graphics::Color color, Font font)
@@ -170,7 +168,7 @@ void GraphicsSSD1306::drawString(const char* str, int16_t x, int16_t y, Graphics
     if (str == nullptr) return;
     setFont(str, font);
     canvas.setTextColor(mono(color), 0);
-    canvas.drawString(str, x, y);
+    canvas.drawString(str, toScreenX(x), toScreenY(y));
     screenDirty = true;
 }
 
@@ -186,46 +184,46 @@ void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, u
     drawSprite(bitmap, x, y, w, h, SpriteOptions{});
 }
 
+
 void GraphicsSSD1306::drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, const SpriteOptions& options)
 {
-    if (bitmap == nullptr || options.scale == 0) return;
+    float scale = static_cast<float>(options.scale);
+    scale = toScreenScale(scale);
 
-    constexpr auto sourceDepth = lgfx::color_depth_t::rgb565_nonswapped;
-    const auto* palette = static_cast<const lgfx::rgb888_t*>(nullptr);
-    const bool transformed = options.scale != 1 || options.angle != 0.0f || options.flipX || options.flipY;
+    if (bitmap == nullptr || scale == 0) return;
+
+    const bool transformed = scale != 1 || options.angle != 0.0f || options.flipX || options.flipY;
 
     if (!transformed)
     {
         if (options.transparent)
         {
-            canvas.pushImage(
-                x, y, w, h,
-                bitmap,
-                static_cast<uint16_t>(options.transparentColor),
-                sourceDepth,
-                palette);
+            canvas.pushImage(toScreenX(x), toScreenY(y), w, h, bitmap, static_cast<uint16_t>(options.transparentColor));
         }
         else
         {
-            canvas.pushImage(x, y, w, h, bitmap, sourceDepth, palette);
+            canvas.pushImage(toScreenX(x), toScreenY(y), w, h, bitmap);
         }
     }
     else
     {
-        const float zoomX = options.flipX ? -static_cast<float>(options.scale) : static_cast<float>(options.scale);
-        const float zoomY = options.flipY ? -static_cast<float>(options.scale) : static_cast<float>(options.scale);
-        const float destinationX = x + (w * options.scale) * 0.5f;
-        const float destinationY = y + (h * options.scale) * 0.5f;
-        const float pivotFixX = 0.5f * (static_cast<float>(options.scale) - 1.0f);
-        const float pivotFixY = 0.5f * (static_cast<float>(options.scale) - 1.0f);
+        const float zoomX = options.flipX ? - scale : scale;
+        const float zoomY = options.flipY ? -scale : scale;
+        const float destinationX = toScreenX(x) + (w * scale) * 0.5f;
+        const float destinationY = toScreenY(y) + (h * scale) * 0.5f;
+        const float pivotFixX = 0.5f * (scale - 1.0f);
+        const float pivotFixY = 0.5f * (scale - 1.0f);
 
         if (options.transparent)
         {
-            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, static_cast<uint16_t>(options.transparentColor), sourceDepth, palette);
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f,
+                                        Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap,
+                                        static_cast<uint16_t>(options.transparentColor));
         }
         else
         {
-            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f, Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap, sourceDepth, palette);
+            canvas.pushImageRotateZoom(destinationX + pivotFixX, destinationY + pivotFixY, w * 0.5f, h * 0.5f,
+                                        Math::radToDeg(options.angle), zoomX, zoomY, w, h, bitmap);
         }
     }
 
