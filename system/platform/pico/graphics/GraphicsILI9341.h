@@ -84,6 +84,7 @@ public:
     void drawRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color) override;
     void drawRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t radius, Graphics::Color color) override;
     void fillRect(int16_t x, int16_t y, uint16_t w, uint16_t h, Graphics::Color color) override;
+    void fillRectAlpha(int16_t x, int16_t y, uint16_t w, uint16_t h, uint8_t alpha, Graphics::Color color) override;
     void fillRoundRect(int16_t x, int16_t y, uint16_t w, uint16_t h, int16_t r, Graphics::Color color) override;
     void drawCircle(int16_t x, int16_t y, uint16_t r, Graphics::Color color) override;
     void drawCircle(int16_t x, int16_t y, uint16_t rx, uint16_t ry, Graphics::Color color) override;
@@ -95,8 +96,8 @@ public:
     void drawSprite(const uint16_t* bitmap, int16_t x, int16_t y, uint16_t w, uint16_t h, const SpriteOptions& options) override;
     void drawSprite(const SpriteSheet& sheet, uint16_t column, uint16_t row, int16_t x, int16_t y, const SpriteOptions& options) override;
     void drawImage(const Image& image, int16_t x, int16_t y) override;
-    bool readScreenLine(uint16_t y, uint16_t* outPixels, uint16_t pixelCount) override;
 
+    bool readScreenLine(uint16_t y, uint16_t* outPixels, uint16_t pixelCount) override;
     void push() override;
 };
 

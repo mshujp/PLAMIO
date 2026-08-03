@@ -17,7 +17,7 @@ constexpr uint16_t SCREEN_W = 320;
 constexpr uint16_t SCREEN_H = 240;
 constexpr uint32_t DRAW_STEP_MSEC = 5000;
 constexpr uint32_t DRAW_HOLD_MSEC = 1000;
-constexpr uint8_t DRAW_STEP_COUNT = 20;
+constexpr uint8_t DRAW_STEP_COUNT = 21;
 constexpr uint8_t SE_COUNT = 12;
 constexpr uint8_t MUSIC_COUNT = 3;
 constexpr int16_t UI_SAFE_BOTTOM = 224;
@@ -45,6 +45,7 @@ const char* const DRAW_STEP_NAMES[DRAW_STEP_COUNT] = {
     "drawRect thick",
     "drawRoundRect thick",
     "fillRect",
+    "fillRectAlpha",
     "fillRoundRect",
     "drawCircle",
     "drawCircle ellipse",
@@ -602,9 +603,9 @@ bool PruzeaAPIs::drawTitle(Graphics& g) {
 
 bool PruzeaAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
     const bool staticStep =
-        drawStep == 15 ||
         drawStep == 16 ||
-        drawStep == 18;
+        drawStep == 17 ||
+        drawStep == 19;
 
     if (staticStep && !requestFullRedraw && lastDrawStep == drawStep) {
         return false;
@@ -613,7 +614,7 @@ bool PruzeaAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
         lastDrawStep = drawStep;
     }
 
-    if (drawStep == 17) {
+    if (drawStep == 18) {
         drawViewportTest(g);
         return true;
     }
@@ -624,10 +625,10 @@ bool PruzeaAPIs::drawDrawTest(Graphics& g, bool requestFullRedraw) {
     int16_t x = getAnimX(now);
     drawMovingShape(g, drawStep, x, 130);
 
-    if (drawStep == 15) drawFontTest(g);
-    if (drawStep == 16) drawAlignmentTest(g);
-    if (drawStep == 18) drawSpriteTest(g);
-    if (drawStep == 19) drawSpriteSheetTest(g);
+    if (drawStep == 16) drawFontTest(g);
+    if (drawStep == 17) drawAlignmentTest(g);
+    if (drawStep == 19) drawSpriteTest(g);
+    if (drawStep == 20) drawSpriteSheetTest(g);
 
     drawCenteredHint(g, "A: Next   B/START: Title", 214);
     return true;
@@ -778,18 +779,21 @@ void PruzeaAPIs::drawMovingShape(Graphics& g, uint8_t step, int16_t x, int16_t y
             g.fillRect(x - 44, y - 30, 88, 60, COL_ACCENT);
             break;
         case 10:
+            g.fillRectAlpha(x - 44, y - 30, 88, 60, 100, COL_ACCENT);
+            break;
+         case 11:
             g.fillRoundRect(x - 44, y - 30, 88, 60, 12, COL_ACCENT);
             break;
-        case 11:
+        case 12:
             g.drawCircle(x, y, 38, COL_ACCENT);
             break;
-        case 12:
+        case 13:
             g.drawCircle(x, y, 58, 28, COL_ACCENT);
             break;
-        case 13:
+        case 14:
             g.fillCircle(x, y, 38, COL_PURPLE);
             break;
-        case 14:
+        case 15:
             g.fillCircle(x, y, 58, 28, COL_PURPLE);
             break;
         default:
