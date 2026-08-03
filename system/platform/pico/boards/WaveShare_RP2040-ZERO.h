@@ -61,12 +61,12 @@ constexpr PRUZEA::GraphicsSSD1306::Config GRAPHICS_CONFIG {
 //== Input ==================================================
 /// Button-GPIO Mapping
 constexpr PRUZEA::InputBase::ButtonMapping BUTTON_MAPPING {
-    .UP        = -1,
-    .DOWN      = -1,
-    .LEFT      = -1,
-    .RIGHT     = -1,
-    .A         = 16,
-    .B         = 17,
+    .UP        = 9,
+    .DOWN      = 10,
+    .LEFT      = 11,
+    .RIGHT     = 12,
+    .A         = 14,
+    .B         = 15,
     .X         = -1,
     .Y         = -1,
     .L         = -1,
