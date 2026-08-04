@@ -1,5 +1,7 @@
 #include "PRUZEA.h"
 #include <cmath>
+#include "pico/stdlib.h"
+#include "pico/rand.h"
 
 namespace PRUZEA
 {
@@ -137,6 +139,32 @@ float degToRad(float degrees)
 float radToDeg(float radians)
 {
     return radians * (180.0f / Math::PI);
+}
+
+int random(int max)
+{
+    if (max <= 0) return 0;
+    uint64_t random_raw = get_rand_32();
+    return static_cast<int>((random_raw * static_cast<uint32_t>(max)) >> 32);
+}
+
+int random(int min, int max) {
+    if (min >= max) return min;
+    return min + random(max - min);
+}
+
+float randomFloat() {
+    return static_cast<float>(get_rand_32()) / 0x1.0p32f;
+}
+
+float randomFloat(float max) {
+    if (max <= 0.0f) return 0.0f;
+    return randomFloat() * max;
+}
+
+float randomFloat(float min, float max) {
+    if (min >= max) return min;
+    return min + randomFloat() * (max - min);
 }
 
 } // namespace Math

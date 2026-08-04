@@ -65,6 +65,11 @@ namespace Math {
     constexpr float TWO_PI  = PI * 2.0f;
     float degToRad(float degrees);
     float radToDeg(float radians);
+    int random(int max);          // [0, max)
+    int random(int min, int max); // [min, max)
+    float randomFloat();          // [0.0f, 1.0f)
+    float randomFloat(float max); // [0.0f, max)
+    float randomFloat(float min, float max); // [min, max)
 }
 namespace Collision {
     // =========================================================================

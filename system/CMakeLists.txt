@@ -169,6 +169,7 @@ endif()
 target_link_libraries(pruzea
     pico_stdlib
     pico_multicore
+    pico_rand
     hardware_gpio
     hardware_adc
     hardware_spi
