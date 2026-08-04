@@ -24,7 +24,7 @@
 namespace PRUZEA
 {
 
-constexpr char PRUZEA_VERSION[] = "1.1";
+constexpr char PRUZEA_VERSION[] = "1.2.0";
 
 namespace Platform {
     // =========================================================================
