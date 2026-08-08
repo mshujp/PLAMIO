@@ -730,8 +730,8 @@ void PruzeaAPIs::drawBackground(Graphics& g) {
 void PruzeaAPIs::drawHeader(Graphics& g, const char* label) {
     g.fillRect(0, 0, SCREEN_W, 34, COL_PANEL);
     g.drawLine(0, 34, SCREEN_W - 1, 34, COL_LINE);
-    g.drawString(label, 10, 17, COL_ACCENT, Graphics::SIZE_18,
-                 Graphics::HorizontalAlign::LEFT, Graphics::VerticalAlign::MIDDLE);
+    g.drawString(label, 10, 13, COL_ACCENT, Graphics::SIZE_18,
+                 Graphics::HorizontalAlign::LEFT, Graphics::VerticalAlign::TOP);
 }
 
 void PruzeaAPIs::drawCenteredHint(Graphics& g, const char* text, int16_t y) {

@@ -715,7 +715,7 @@ void PRUZEASoundEffectEditor::drawEditor(Graphics& graphics)
 {
     graphics.fillScreen(COLOR_BG);
     graphics.fillRect(0, 0, 320, 38, COLOR_PANEL);
-    graphics.drawString("SOUND EFFECT EDITOR", 10, 8, Graphics::WHITE, Graphics::SIZE_22B);
+    graphics.drawString("SOUND EFFECT EDITOR", 10, 8, Graphics::WHITE, Graphics::Font::SIZE_13);
 
     char stepText[24];
     graphics.drawString("STEP", 275, 10, Graphics::WHITE, Graphics::SIZE_13,
