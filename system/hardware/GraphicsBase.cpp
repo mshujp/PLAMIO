@@ -33,7 +33,7 @@ uint16_t GraphicsBase::getTextHeight(const char* text, Font font)
         case Font::SIZE_32J: size = 32; break;
         default: return 0;
      }
-     if (std::strpbrk(text, "gjpqy_") == nullptr) size *= 0.8;
+     if (std::strpbrk(text, "gjpqy_") == nullptr) size = static_cast<uint16_t>(roundf(size * 0.8));
 
      return zoom == 1.0f || cameraSuspended ? size : static_cast<uint16_t>(roundf(size * zoom));
 }
